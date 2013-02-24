@@ -11,6 +11,8 @@
 
 @implementation Player
 
+@synthesize paddleSprite;
+
 +(id)playerWithParentNode:(CCNode *)parentNode
 {
     return[[self alloc] initWithParentNode:parentNode];
@@ -29,6 +31,7 @@
         score = 0;
         [self addChild:paddleSprite];
         
+    
         [self scheduleUpdate];
     }
     
@@ -50,14 +53,23 @@
     paddleSprite.position = position;
 }
 
+-(CGFloat) getPaddleWidth {
+    return (paddleSprite.contentSize.width * paddleSprite.scaleX);
+}
+
 -(void) moveRight
 {
-    position.x += velocity;
+    if ((paddleSprite.position.x + ([self getPaddleWidth]/2)) <= screenSize.width) {
+        position.x += velocity;
+    }
 }
 
 -(void) moveLeft
 {
-    position.x -= velocity;
+    int ScreenLeftEdgeXPos = 0;
+    if ((paddleSprite.position.x - ([self getPaddleWidth]/2)) >= ScreenLeftEdgeXPos) {
+        position.x -= velocity;
+    }
 }
 -(void) setPosition:(CGPoint)p
 {

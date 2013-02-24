@@ -26,7 +26,7 @@
         CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
         self.isTouchEnabled = YES;
         
-        
+        // move this to a header file for use in other classes
         CGSize screenSize = [CCDirector sharedDirector].winSize;
         
         CCSprite *background = [CCSprite spriteWithFile:@"court.png"];
@@ -70,22 +70,33 @@
     CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
 }
 
-
--(void)  ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+-(void) movePlayerLeft
 {
-    
+    [player1 moveLeft];
+}
+
+-(void) movePlayerRight
+{
+    [player1 moveRight];
+}
+
+-(void) ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
     UITouch *touch = [touches anyObject];
     CGPoint point = [touch locationInView: [touch view]];
-    
-    if(point.x > [AIplayer getXpos])
-        [player1 moveRight];
-    if(point.x < [AIplayer getXpos])
-        [player1 moveLeft];
-    
-    
-    
-    
-    
+    CGFloat currPaddleWidth = player1.getPaddleWidth;
+    if(point.x < (player1.paddleSprite.position.x - (currPaddleWidth/2))) {
+        [self schedule:@selector(movePlayerLeft)];
+    }
+    else {
+        [self schedule:@selector(movePlayerRight)];
+    }
+}
+
+-(void) ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self unschedule:@selector(movePlayerLeft)];
+    [self unschedule:@selector(movePlayerRight)];
 }
 
 -(void) update:(ccTime)delta

@@ -14,9 +14,10 @@
     int score;
     int velocity;
     CGPoint position;
-    CCSprite* paddleSprite;
     CGSize screenSize;
 }
+
+@property (nonatomic,assign) CCSprite* paddleSprite;
 
 -(void) setSprite: (CCSprite*) paddleSprite;
 -(void) setVelocity: (int) velocity;
@@ -28,6 +29,7 @@
 -(id)initWithParentNode:(CCNode*)parentNode;
 -(int) getScore;
 -(void) updateScore;
+-(CGFloat) getPaddleWidth;
 
 
 

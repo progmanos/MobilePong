@@ -26,7 +26,7 @@
         [parentNode addChild:self];
         screenSize = [CCDirector sharedDirector].winSize;
         
-        ballSprite = [CCSprite spriteWithFile:@"ball1.png"];
+        ballSprite = [CCSprite spriteWithFile:@"ball.png"];
         ballSprite.position = CGPointMake(CCRANDOM_0_1() * screenSize.width, CCRANDOM_0_1() * screenSize.height);
         [self addChild:ballSprite];
         
