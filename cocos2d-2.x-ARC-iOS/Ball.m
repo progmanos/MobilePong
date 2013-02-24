@@ -102,14 +102,19 @@
     position.x += curVelocity.x;
     position.y += curVelocity.y;
     
-    if(position.x < 0 || position.x >305){
+    
+    //Handles bouncing on walls
+    if(position.x < 0 || position.x >screenSize.width){
         curVelocity.x = -curVelocity.x;}
     
+    //AI scores and serves ball
     if(position.y < -16)
     {
         score = TRUE;
         [self AIserveBall];
     }
+    
+    //pplayer scores and serves ball
     if(position.y >500)
     {
         score = TRUE;
@@ -127,37 +132,47 @@
     self.didCollide = TRUE;
 }
 
+
+//Freezes ball on players side of the screen for 5 seconds
 -(void) player1serveBall
 {
     
     tempVelocity = curVelocity;
     
-    for(int i = 0; i<10000; i++) {
-        screenSize = [CCDirector sharedDirector].winSize;
-        position = CGPointMake((arc4random()%300) + 1, (screenSize.height/4));
-        curVelocity.x = 0;
-        curVelocity.y = 0;
-    }
-    score = FALSE;
-    curVelocity = CGPointMake(tempVelocity.x, tempVelocity.y);
-    tempVelocity = CGPointMake(0, 0);
+    screenSize = [CCDirector sharedDirector].winSize;
+    position = CGPointMake((arc4random()%300) + 1, (screenSize.height/4));
+    curVelocity.x = 0;
+    curVelocity.y = 0;
+    
+    [self performSelector:@selector(resumeMove) withObject:nil afterDelay:2.0];
+
+
 }
 
+
+//Freezes ball on AI side of the screen for 5 seconds
 -(void) AIserveBall
 {
     
     tempVelocity = curVelocity;
     
-    for(int i = 0; i<10000; i++) {
-        screenSize = [CCDirector sharedDirector].winSize;
-        position = CGPointMake((arc4random()%300) + 1, (screenSize.height - (screenSize.height/4)));
-        curVelocity.x = 0;
-        curVelocity.y = 0;
-    }
+    screenSize = [CCDirector sharedDirector].winSize;
+    position = CGPointMake((arc4random()%300) + 1, (screenSize.height - (screenSize.height/4)));
+    curVelocity.x = 0;
+    curVelocity.y = 0;
+    [self performSelector:@selector(resumeMove) withObject:nil afterDelay:2.0];
+
+}
+
+
+//Ball resumes movement
+-(void) resumeMove
+{
     score = FALSE;
     curVelocity = CGPointMake(tempVelocity.x, tempVelocity.y);
     tempVelocity = CGPointMake(0, 0);
 }
+
 
 
 -(float) getXpos
@@ -169,5 +184,7 @@
 {
     return position.y;
 }
+
+
 
 @end

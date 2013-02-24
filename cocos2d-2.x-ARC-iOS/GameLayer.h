@@ -13,14 +13,21 @@
 
 @interface GameLayer : CCLayer
 {
-    Ball *ball1;
+    Ball *ball;
     Player *player1;
     Player *AIplayer;
     CCLabelTTF *AIscoreLabel;
     CCLabelTTF *player1scoreLabel;
     CCLabelTTF *timeLabel;
+    CCLabelTTF *highScoreLabel;
+    CCLabelTTF *winnerLabel;
     ccTime totalTime;
+    NSString *highscore;
+    NSString *winner;
     NSUserDefaults *prefs;
+    NSInteger *currhighscore;
+    NSInteger *currentscore;
+    BOOL playerScored;
 }
 
 
