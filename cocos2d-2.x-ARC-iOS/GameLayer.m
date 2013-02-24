@@ -24,7 +24,8 @@
         if(currhighscore == nil)
             currhighscore = 0;
         
-        highscore = [NSString stringWithFormat:@"highscore: %n ", currhighscore];
+        highscore = [NSString stringWithFormat:@"highScore: %d ", (int)currhighscore];
+        
         
         // get level, set default level if the level key does not exist
         NSInteger level = [self GetLevel];
@@ -180,15 +181,14 @@
     //updates time
     [timeLabel setString:[NSString stringWithFormat:@"%d", (int)totalTime]];
     
-    if([AIplayer getScore] == 11)
-    {
-        [self AIwinsGame];
-    }
     
-    if([player1 getScore] == 5)
-    {
+    //play to 11 to win
+    if([AIplayer getScore] == 11)
+        [self AIwinsGame];
+    
+    //play to 11 to win
+    if([player1 getScore] == 11)
         [self player1WinsGame];
-    }
     
 
 
@@ -213,7 +213,7 @@
     
     
     currentscore = (NSInteger)totalTime;
-    if(currentscore > currhighscore)
+    if(currentscore < currhighscore)
     {
         [prefs setInteger:currentscore forKey:@"highScore"];
         [prefs synchronize];
