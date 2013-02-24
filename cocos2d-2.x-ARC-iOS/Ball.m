@@ -31,7 +31,7 @@
         [self addChild:ballSprite];
         
         [self scheduleUpdate];
-        curVelocity = CGPointMake(5, 5);
+        curVelocity = CGPointMake(4, 4);
     }
 
     
@@ -108,16 +108,15 @@
     if(position.y < -16)
     {
         score = TRUE;
-        [self serveBall];
-        //position.y = 460;
-    // curVelocity.y = -curVelocity.y;
+        [self AIserveBall];
     }
-    if(position.y >460)
+    if(position.y >500)
     {
-        curVelocity.y = -curVelocity.y;
+        score = TRUE;
+        [self player1serveBall];
     }
     
-    if(position.y > 230)
+    if(position.y > 230 && position.y < 350)
         self.didCollide = FALSE;
     
 }
@@ -128,22 +127,38 @@
     self.didCollide = TRUE;
 }
 
--(void) serveBall
+-(void) player1serveBall
 {
     
     tempVelocity = curVelocity;
     
-    for(int i = 0; i<10000000; i++) {
-        //i++;
+    for(int i = 0; i<10000; i++) {
         screenSize = [CCDirector sharedDirector].winSize;
-        position = CGPointMake(200, 100);
+        position = CGPointMake((arc4random()%300) + 1, (screenSize.height/4));
         curVelocity.x = 0;
         curVelocity.y = 0;
     }
     score = FALSE;
-    curVelocity = CGPointMake(-tempVelocity.x, -tempVelocity.y);
+    curVelocity = CGPointMake(tempVelocity.x, tempVelocity.y);
     tempVelocity = CGPointMake(0, 0);
 }
+
+-(void) AIserveBall
+{
+    
+    tempVelocity = curVelocity;
+    
+    for(int i = 0; i<10000; i++) {
+        screenSize = [CCDirector sharedDirector].winSize;
+        position = CGPointMake((arc4random()%300) + 1, (screenSize.height - (screenSize.height/4)));
+        curVelocity.x = 0;
+        curVelocity.y = 0;
+    }
+    score = FALSE;
+    curVelocity = CGPointMake(tempVelocity.x, tempVelocity.y);
+    tempVelocity = CGPointMake(0, 0);
+}
+
 
 -(float) getXpos
 {

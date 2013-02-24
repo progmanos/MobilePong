@@ -18,6 +18,9 @@
     Player *AIplayer;
     CCLabelTTF *AIscoreLabel;
     CCLabelTTF *player1scoreLabel;
+    CCLabelTTF *timeLabel;
+    ccTime totalTime;
+    NSUserDefaults *prefs;
 }
 
 

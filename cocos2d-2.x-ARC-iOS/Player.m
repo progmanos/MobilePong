@@ -89,4 +89,9 @@
     score += 1;
 }
 
+-(void) resetScore
+{
+    score = 0;
+}
+
 @end

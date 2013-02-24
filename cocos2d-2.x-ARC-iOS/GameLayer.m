@@ -48,8 +48,12 @@
         player1scoreLabel.position = ccp(240, 160);
         [self addChild:player1scoreLabel z:1];
         
+        timeLabel = [CCLabelTTF labelWithString:@"8" fontName:@"Marker Felt" fontSize:24];
+        timeLabel.position = ccp(30, 30);
+        [self addChild:timeLabel z:1];
+        
         [player1 setVelocity:(5)];
-        [AIplayer setVelocity:(1)];
+        [AIplayer setVelocity:(20)];
         
         
         [self scheduleUpdate];
@@ -102,13 +106,17 @@
 -(void) update:(ccTime)delta
 {
 
-    
-    if([ball1 getYpos] <= 30 && ball1.didCollide == FALSE && ([ball1 getXpos]) > ([player1 getXpos] - 30) && ([ball1 getXpos] < [player1 getXpos] + 30))
-    {
+    totalTime += delta;
+
+    if([ball1 getYpos] <= 30 && ([ball1 getYpos]+9) >= 20 &&ball1.didCollide == FALSE && ([ball1 getXpos]) > ([player1 getXpos] - 30) && (([ball1 getXpos]+9) < [player1 getXpos] + 30))
         [ball1 switchVel];
-        
-    }
-    if([ball1 getYpos] == 10)
+    
+    if(([ball1 getYpos]+9) >= 459 && ([ball1 getYpos]+9) <= 469 && ball1.didCollide == FALSE && ([ball1 getXpos]+9) > ([AIplayer getXpos] - 30) && ([ball1 getXpos]+9) < ([AIplayer getXpos] + 30))
+        [ball1 switchVel];
+    
+    if([ball1 getYpos] <= -10)
+        [AIplayer updateScore];
+    if([ball1 getYpos] >= 496)
         [player1 updateScore];
 
     
@@ -122,7 +130,8 @@
     [AIscoreLabel setString:[NSString stringWithFormat:@"%d", [AIplayer getScore]]];
     [player1scoreLabel setString:[NSString stringWithFormat:@"%d", [player1 getScore]]];
     
-    
+    [timeLabel setString:[NSString stringWithFormat:@"%d", (int)totalTime]];
+
 
 }
 

@@ -29,6 +29,7 @@
 -(id)initWithParentNode:(CCNode*)parentNode;
 -(int) getScore;
 -(void) updateScore;
+-(void) resetScore;
 -(CGFloat) getPaddleWidth;
 
 

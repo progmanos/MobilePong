@@ -39,7 +39,8 @@
 -(CGPoint) getPosition;
 -(void) moveBall;
 -(void) switchVel;
--(void) serveBall;
+-(void) player1serveBall;
+-(void) AIserveBall;
 -(float) getXpos;
 -(float) getYpos;
 +(id)ballWithParentNode:(CCNode*)parentNode;

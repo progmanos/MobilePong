@@ -1010,10 +1010,10 @@
 		DC4C8E0016D8585600A40403 /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				CE8AC44316C1ECCB00859F40 /* GameLayer.h */,
 				CE8AC44416C1ECCB00859F40 /* GameLayer.m */,
 				DC4C8DEB16D4981300A40403 /* GameScene.h */,
 				DC4C8DEC16D4981300A40403 /* GameScene.m */,
-				CE8AC44316C1ECCB00859F40 /* GameLayer.h */,
 			);
 			name = Game;
 			sourceTree = "<group>";
