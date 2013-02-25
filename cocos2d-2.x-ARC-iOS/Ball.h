@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
+#import "math.h"
+
 
 @interface Ball : CCNode
 
@@ -24,6 +26,9 @@
     CCSprite* ballSprite;
     CGSize screenSize;
     BOOL score;
+    CGFloat lastPositionY;
+    CGFloat lastPositionX;
+    
 }
 
 @property (nonatomic) BOOL didCollide;
@@ -45,6 +50,13 @@
 -(float) getYpos;
 +(id)ballWithParentNode:(CCNode*)parentNode;
 -(id)initWithParentNode:(CCNode*)parentNode;
+-(CGFloat) tipOfBall;
+-(CGFloat) rightOfBall;
+-(CGFloat) leftOfBall;
+-(CGFloat) tipOfBallX;
+-(float) getBallWidth;
+-(BOOL) movingRight;
+-(CGFloat) opponentTipOfBall;
 
 
 

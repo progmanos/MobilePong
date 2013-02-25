@@ -138,20 +138,109 @@
     totalTime += delta;
     
     //collsion for player paddle
-    if([ball getYpos] <= 30 && ([ball getYpos]+9) >= 20 &&ball.didCollide == FALSE && ([ball getXpos]) > ([player1 getXpos] - 30) && (([ball getXpos]+9) < [player1 getXpos] + 30))
+    /*if([ball getYpos] <= 30 && ([ball getYpos]+9) >= 20 &&ball.didCollide == FALSE && ([ball getXpos]) > ([player1 getXpos] - 30) && (([ball getXpos]+9) < [player1 getXpos] + 30))
+        [ball switchVel];*/
+    
+    //first if statement checks to see if the ball is hitting the paddle
+    if(([ball tipOfBall]<=([player1 tipOfPaddle]))&&[ball tipOfBall]>=([player1 tipOfPaddle]-.5)){
+        //check to see if it hits section C
+        if (([player1 first]<=[ball tipOfBallX])&&([ball tipOfBallX] <= [player1 second])) {
+            
+            [ball switchVel];
+        }
+         //checks to see if it hits section B(part before or) and section D (part after or)
+        else if (([player1 third]<=[ball tipOfBallX] &&[ball tipOfBallX]<= [player1 first])
+                 || ([player1 second]<=[ball tipOfBallX]&& [ball tipOfBallX]<= [player1 fourth])){
+            
+            
+            [ball switchVel];
+        }
+        //checks to see if it hits section A(part before or) and section E (part after or)
+        else if (([player1 fifth]<=[ball tipOfBallX] &&[ball tipOfBallX]<= [player1 third])
+                ||([player1 fourth]<=[ball tipOfBallX]&&[ball tipOfBallX] <= [player1 sixth])){
+            
+            [ball switchVel];
+        }
+        /*else if{
+            [AIplayer updateScore];
+            
+            [ball AIserveBall];
+            
+        }*/
+    }
+    
+    //checks to see if ball is going to hit right side of paddle
+    if (([player1 rightOfPaddle]+.5)>=[ball leftOfBall]&& [ball leftOfBall]>=[player1 rightOfPaddle]){
+        if ([player1 getYpos]<=[ball getYpos]&&[ball getYpos]<=[player1 tipOfPaddle]) {
+            [ball switchVel];
+        }
+        
+    }
+    
+    //checks to see if ball is going to hit left side of paddle
+    else if (([player1 leftOfPaddle]-.5)<=[ball rightOfBall]&& [ball rightOfBall]<=[player1 leftOfPaddle]){
+        if ([player1 getYpos]<=[ball getYpos]&&[ball getYpos]<=[player1 tipOfPaddle]) {
+            [ball switchVel];
+        }
+    }
+
+    
+//collision for AIpaddle
+   /* if(([ball getYpos]+9) >= 459 && ([ball getYpos]+9) <= 469 && ball.didCollide == FALSE && ([ball getXpos]+9) > ([AIplayer getXpos] - 30) && ([ball getXpos]+9) < ([AIplayer getXpos] + 30))
         [ball switchVel];
+    */
     
+    //first if statement checks to see if the ball is hitting the paddle
+    if([ball opponentTipOfBall]<=[AIplayer OpponentTipOfPaddle]&&[ball opponentTipOfBall]>=([AIplayer OpponentTipOfPaddle]-.5)){
+        
+        //check to see if it hits section C
+        if (([AIplayer first]<=[ball tipOfBallX])&&([ball tipOfBallX] <= [AIplayer second])) {
+            
+            [ball switchVel];
+        }
+        //checks to see if it hits section B(part before or) and section D (part after or)
+        else if (([AIplayer third]<=[ball tipOfBallX] &&[ball tipOfBallX]<= [AIplayer first])
+                 || ([AIplayer second]<=[ball tipOfBallX]&& [ball tipOfBallX]<= [AIplayer fourth])){
+            
+            
+            [ball switchVel];
+        }
+        //checks to see if it hits section A(part before or) and section E (part after or)
+        else if (([AIplayer fifth]<=[ball tipOfBallX] &&[ball tipOfBallX]<= [AIplayer third])
+                 ||([AIplayer fourth]<=[ball tipOfBallX]&&[ball tipOfBallX] <= [AIplayer sixth])){
+            
+            [ball switchVel];
+        }
+        /*else if{
+         [AIplayer updateScore];
+         
+         [ball AIserveBall];
+         
+         }*/
+    }
     
-    //collision for AIpaddle
-    if(([ball getYpos]+9) >= 459 && ([ball getYpos]+9) <= 469 && ball.didCollide == FALSE && ([ball getXpos]+9) > ([AIplayer getXpos] - 30) && ([ball getXpos]+9) < ([AIplayer getXpos] + 30))
-        [ball switchVel];
+    //checks to see if ball is going to hit right side of paddle
+    if (([AIplayer rightOfPaddle]+.5)>=[ball leftOfBall]&& [ball leftOfBall]>=[AIplayer rightOfPaddle]){
+        if ([AIplayer getYpos]<=[ball getYpos]&&[ball getYpos]<=[AIplayer OpponentTipOfPaddle]) {
+            [ball switchVel];
+        }
+        
+    }
     
+    //checks to see if ball is going to hit right side of paddle
+    else if (([AIplayer leftOfPaddle]-.5)<=[ball rightOfBall]&& [ball rightOfBall]<=[AIplayer leftOfPaddle]){
+        if ([AIplayer getYpos]<=[ball getYpos]&&[ball getYpos]<=[AIplayer OpponentTipOfPaddle]) {
+            [ball switchVel];
+        }
+    }
     
     //AI score
     if([ball getYpos] <= -10 && !playerScored)
     {
+        
         [AIplayer updateScore];
         playerScored = TRUE;
+       
     }
     
     //Player score
