@@ -31,6 +31,20 @@
 -(void) updateScore;
 -(void) resetScore;
 -(CGFloat) getPaddleWidth;
+-(CGFloat) first;
+-(CGFloat) second;
+-(CGFloat) third;
+-(CGFloat) fourth;
+-(CGFloat) fifth;
+-(CGFloat) sixth;
+-(CGFloat) tipOfPaddle;
+-(CGFloat) rightOfPaddle;
+-(CGFloat) leftOfPaddle;
+-(CGFloat) OpponentTipOfPaddle;
+-(BOOL) inSegmentA: (CGFloat) ballposCtr leftPos: (CGFloat) ballposL rightPos: (CGFloat) ballposR;
+-(BOOL) inSegmentE: (CGFloat) ballposCtr leftPos: (CGFloat) ballposL rightPos: (CGFloat) ballposR;
+-(BOOL) inSegmentB: (CGFloat) ballposCtr leftPos: (CGFloat) ballposL rightPos: (CGFloat) ballposR;
+-(BOOL) inSegmentD: (CGFloat) ballposCtr leftPos: (CGFloat) ballposL rightPos: (CGFloat) ballposR;
 
 
 
