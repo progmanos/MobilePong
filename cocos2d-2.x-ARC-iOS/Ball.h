@@ -24,22 +24,22 @@
 
     CGSize screenSize;
     BOOL score;
+    CGFloat lastPosition;
+    CGFloat baseXVelocity;
 }
 
 @property (nonatomic) CCSprite* ballSprite;
 @property (nonatomic) BOOL didCollide;
--(void) setMaxVel: (CGPoint) maxVelocity;
--(void) setMinVel: (CGPoint) minVelocity;
 -(void) setCurVel: (CGPoint) curVelocity;
--(void) setMinAngle: (double) minAngle;
--(void) setMaxAngle: (double) maxAngle;
--(void) setCurAngle: (double) curAngle;
--(double) getAngle;
 -(CGPoint) getVelocity;
 -(void) setPosition: (CGPoint) position;
 -(CGPoint) getPosition;
 -(void) moveBall;
--(void) switchVel;
+-(void) updateVelocityA;
+-(void) updateVelocityB;
+-(void) updateVelocityC;
+-(void) updateVelocityD;
+-(void) updateVelocityE;
 -(void) player1serveBall;
 -(void) AIserveBall;
 -(float) getXpos;
@@ -60,6 +60,13 @@
 
 +(id)ballWithParentNode:(CCNode*)parentNode;
 -(id)initWithParentNode:(CCNode*)parentNode;
+-(CGFloat) tipOfBall;
+-(CGFloat) rightOfBall;
+-(CGFloat) leftOfBall;
+-(CGFloat) tipOfBallX;
+-(float) getBallWidth;
+-(BOOL) movingRight;
+-(CGFloat) opponentTipOfBall;
 
 
 

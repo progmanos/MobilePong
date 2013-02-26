@@ -7,7 +7,7 @@
 //
 
 #import "Ball.h"
-
+//#import "Math.h"
 
 @implementation Ball
 
@@ -53,38 +53,13 @@
     }
 }
 
--(void) setMaxVel: (CGPoint) mxV
-{
-    maxVelocity = mxV;
-}
-
--(void) setMinVel: (CGPoint) mnV
-{
-    minVelocity = mnV;
-}
 
 -(void) setCurVel: (CGPoint) crV
 {
     curVelocity = crV;
 }
 
--(void) setMinAngle: (double) mnA
-{
-    minAngle = mnA;
-}
 
--(void) setMaxAngle: (double) mxA
-{
-    maxAngle = mxA;
-}
--(void) setCurAngle: (double) crA
-{
-    curAngle = crA;
-}
--(double) getAngle
-{
-    return curAngle;
-}
 -(CGPoint) getVelocity
 {
     return curVelocity;
@@ -130,13 +105,6 @@
     
 }
 
--(void) switchVel
-{
-    curVelocity.y = -curVelocity.y;
-    self.didCollide = TRUE;
-}
-
-
 //Freezes ball on players side of the screen for 5 seconds
 -(void) player1serveBall
 {
@@ -178,6 +146,47 @@
 }
 
 
+//changes x velocity by 30%
+-(void) updateVelocityA
+{
+    curVelocity.y = - curVelocity.y;
+    curVelocity.x = -baseXVelocity*1.3;
+    
+}
+
+//changes x velocity by 15%
+-(void) updateVelocityB
+{
+    curVelocity.y = - curVelocity.y;
+    curVelocity.x = -baseXVelocity*1.15;
+}
+
+
+-(void) updateVelocityC
+{
+    curVelocity.y = - curVelocity.y;
+    if(curVelocity.x > 0)
+        curVelocity.x = baseXVelocity;
+    else
+        curVelocity.x = -baseXVelocity;
+}
+
+//changes x velocity by 15%
+-(void) updateVelocityD
+{
+    curVelocity.y = - curVelocity.y;
+    
+    curVelocity.x = baseXVelocity*1.15;
+}
+
+//changes x velocity by 30%
+-(void) updateVelocityE
+{
+    curVelocity.y = - curVelocity.y;
+    
+    curVelocity.x = baseXVelocity*1.3;
+}
+
 
 -(float) getXpos
 {
@@ -187,6 +196,42 @@
 -(float) getYpos
 {
     return position.y;
+}
+//subtracts half of ball to get tip of ball as it approaches user
+-(CGFloat) tipOfBall{
+    return(position.y - (ballSprite.contentSize.height /* ballSprite.scaleY*/)/2);
+}
+
+//adds half of ball to get tip of ball as it approaches user
+-(CGFloat) opponentTipOfBall{
+    return(position.y + (ballSprite.contentSize.height /* ballSprite.scaleY*/)/2);
+}
+
+//adds half of ball to get right of ball to get right tip
+-(CGFloat) rightOfBall{
+    return(position.x + (ballSprite.contentSize.height /* ballSprite.scaleY*/)/2);
+}
+
+//subtracts half of ball to get left of ball to get right tip
+-(CGFloat) leftOfBall{
+    return(position.x - (ballSprite.contentSize.height /* ballSprite.scaleY*/)/2);
+}
+
+//gets x position of the ball when looking at the top or bottom
+-(CGFloat) tipOfBallX{
+    return  position.x;
+}
+
+//method not working trying to figure out a way to track directions of ball but it changes when it is headed toward user so this does not work... i think
+-(BOOL) movingRight{
+    if (lastPosition<position.x){
+        return true;
+    }
+    else{
+        return false;
+    }
+    
+    
 }
 
 -(float) getDiameter
