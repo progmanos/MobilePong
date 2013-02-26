@@ -105,7 +105,7 @@
 //Freezes ball on players side of the screen for 5 seconds
 -(void) player1serveBall
 {
-   // curVelocity.y = -curVelocity.y;
+    
     tempVelocity = curVelocity;
     
     screenSize = [CCDirector sharedDirector].winSize;
@@ -122,7 +122,7 @@
 //Freezes ball on AI side of the screen for 5 seconds
 -(void) AIserveBall
 {
-    //curVelocity.y = -curVelocity.y;
+    
     tempVelocity = curVelocity;
     
     screenSize = [CCDirector sharedDirector].winSize;
@@ -231,51 +231,6 @@
     
 }
 
-//subtracts half of ball to get tip of ball as it approaches user
--(CGFloat) tipOfBall{
-    return(position.y - (ballSprite.contentSize.height /* ballSprite.scaleY*/)/2);
-}
 
-//adds half of ball to get tip of ball as it approaches user
--(CGFloat) opponentTipOfBall{
-    return(position.y + (ballSprite.contentSize.height /* ballSprite.scaleY*/)/2);
-}
-
-//adds half of ball to get right of ball to get right tip
--(CGFloat) rightOfBall{
-    return(position.x + (ballSprite.contentSize.height /* ballSprite.scaleY*/)/2);
-}
-
-//subtracts half of ball to get left of ball to get right tip
--(CGFloat) leftOfBall{
-    return(position.x - (ballSprite.contentSize.height /* ballSprite.scaleY*/)/2);
-}
-
-//gets x position of the ball when looking at the top or bottom
--(CGFloat) tipOfBallX{
-    return  position.x;
-}
-
-//method not working trying to figure out a way to track directions of ball but it changes when it is headed toward user so this does not work... i think
--(BOOL) movingRight{
-    //if it is true then the ball is traveling towards the ai player
-    if (lastPositionY < position.y){
-        if (lastPositionX < position.x){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-    else{
-        if (lastPositionX < position.x){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-    
-}
 
 @end

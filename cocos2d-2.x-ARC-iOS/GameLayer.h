@@ -28,7 +28,6 @@
     NSInteger *currhighscore;
     NSInteger *currentscore;
     BOOL playerScored;
-    int passed;
 }
 
 

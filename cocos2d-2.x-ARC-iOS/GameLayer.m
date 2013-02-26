@@ -190,57 +190,12 @@
         }
 
     
-    //first if statement checks to see if the ball is hitting the paddle
-    if([ball opponentTipOfBall]<=[AIplayer OpponentTipOfPaddle]&&[ball opponentTipOfBall]>=([AIplayer OpponentTipOfPaddle]-.5)){
-        
-        //check to see if it hits section C
-        if (([AIplayer first]<=[ball tipOfBallX])&&([ball tipOfBallX] <= [AIplayer second])) {
-            
-            [ball switchVel];
-        }
-        //checks to see if it hits section B(part before or) and section D (part after or)
-        else if (([AIplayer third]<=[ball tipOfBallX] &&[ball tipOfBallX]<= [AIplayer first])
-                 || ([AIplayer second]<=[ball tipOfBallX]&& [ball tipOfBallX]<= [AIplayer fourth])){
-            
-            
-            [ball switchVel];
-        }
-        //checks to see if it hits section A(part before or) and section E (part after or)
-        else if (([AIplayer fifth]<=[ball tipOfBallX] &&[ball tipOfBallX]<= [AIplayer third])
-                 ||([AIplayer fourth]<=[ball tipOfBallX]&&[ball tipOfBallX] <= [AIplayer sixth])){
-            
-            [ball switchVel];
-        }
-        /*else if{
-         [AIplayer updateScore];
-         
-         [ball AIserveBall];
-         
-         }*/
-    }
-    
-    //checks to see if ball is going to hit right side of paddle
-    if (([AIplayer rightOfPaddle]+.5)>=[ball leftOfBall]&& [ball leftOfBall]>=[AIplayer rightOfPaddle]){
-        if ([AIplayer getYpos]<=[ball getYpos]&&[ball getYpos]<=[AIplayer OpponentTipOfPaddle]) {
-            [ball switchVel];
-        }
-        
-    }
-    
-    //checks to see if ball is going to hit right side of paddle
-    else if (([AIplayer leftOfPaddle]-.5)<=[ball rightOfBall]&& [ball rightOfBall]<=[AIplayer leftOfPaddle]){
-        if ([AIplayer getYpos]<=[ball getYpos]&&[ball getYpos]<=[AIplayer OpponentTipOfPaddle]) {
-            [ball switchVel];
-        }
-    }
     
     //AI score
     if([ball getYpos] <= -10 && !playerScored)
     {
-        
         [AIplayer updateScore];
         playerScored = TRUE;
-       
     }
     
     //Player score

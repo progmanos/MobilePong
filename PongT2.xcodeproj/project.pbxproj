@@ -8,13 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		CE3F842416C6E3460028F4DF /* Ball.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3F842316C6E3460028F4DF /* Ball.m */; };
+		CE60A2A316DC952600325F5D /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = CE60A2A216DC952600325F5D /* Default.png */; };
 		CE8AC44516C1ECCB00859F40 /* GameLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8AC44416C1ECCB00859F40 /* GameLayer.m */; };
 		CEB3DFE716DAB58100F57214 /* paddle-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB3DFE516DAB58000F57214 /* paddle-hd.png */; };
 		CEB3DFE816DAB58100F57214 /* paddle.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB3DFE616DAB58000F57214 /* paddle.png */; };
 		CEB3DFEC16DAB5C500F57214 /* court-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB3DFE916DAB5C400F57214 /* court-hd.png */; };
 		CEB3DFED16DAB5C500F57214 /* ball-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB3DFEA16DAB5C400F57214 /* ball-hd.png */; };
 		CEB3DFEE16DAB5C500F57214 /* ball.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB3DFEB16DAB5C500F57214 /* ball.png */; };
-		CEB3DFF016DABA8000F57214 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB3DFEF16DABA7F00F57214 /* Default.png */; };
 		CEEC906316D087F40020F89B /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC906216D087F30020F89B /* Player.m */; };
 		DC0864B815BD8CE60044A820 /* CCNode+Debug.h in Headers */ = {isa = PBXBuildFile; fileRef = DC0864B515BD8CE60044A820 /* CCNode+Debug.h */; };
 		DC0864B915BD8CE60044A820 /* CCNode+Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = DC0864B615BD8CE60044A820 /* CCNode+Debug.m */; };
@@ -281,6 +281,7 @@
 /* Begin PBXFileReference section */
 		CE3F842216C6E3460028F4DF /* Ball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ball.h; sourceTree = "<group>"; };
 		CE3F842316C6E3460028F4DF /* Ball.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Ball.m; sourceTree = "<group>"; };
+		CE60A2A216DC952600325F5D /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		CE8AC44316C1ECCB00859F40 /* GameLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameLayer.h; sourceTree = "<group>"; };
 		CE8AC44416C1ECCB00859F40 /* GameLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameLayer.m; sourceTree = "<group>"; };
 		CEB3DFE516DAB58000F57214 /* paddle-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "paddle-hd.png"; sourceTree = "<group>"; };
@@ -288,7 +289,6 @@
 		CEB3DFE916DAB5C400F57214 /* court-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "court-hd.png"; sourceTree = "<group>"; };
 		CEB3DFEA16DAB5C400F57214 /* ball-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ball-hd.png"; sourceTree = "<group>"; };
 		CEB3DFEB16DAB5C500F57214 /* ball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ball.png; sourceTree = "<group>"; };
-		CEB3DFEF16DABA7F00F57214 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		CEEC906116D087F30020F89B /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		CEEC906216D087F30020F89B /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
 		DC0864B515BD8CE60044A820 /* CCNode+Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCNode+Debug.h"; sourceTree = "<group>"; };
@@ -641,7 +641,7 @@
 		DC0C4A08154AB4DD00B4B727 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				CEB3DFEF16DABA7F00F57214 /* Default.png */,
+				CE60A2A216DC952600325F5D /* Default.png */,
 				CEB3DFE916DAB5C400F57214 /* court-hd.png */,
 				CEB3DFEA16DAB5C400F57214 /* ball-hd.png */,
 				CEB3DFEB16DAB5C500F57214 /* ball.png */,
@@ -1286,7 +1286,7 @@
 				CEB3DFEC16DAB5C500F57214 /* court-hd.png in Resources */,
 				CEB3DFED16DAB5C500F57214 /* ball-hd.png in Resources */,
 				CEB3DFEE16DAB5C500F57214 /* ball.png in Resources */,
-				CEB3DFF016DABA8000F57214 /* Default.png in Resources */,
+				CE60A2A316DC952600325F5D /* Default.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
