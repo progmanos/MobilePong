@@ -156,11 +156,31 @@
     //time in seconds
     totalTime += delta;
     
-    //collsion for player paddle
-    if( ([ball getYpos] <= 30) && (([ball getYpos]+9) >= 20) && ball.didCollide == FALSE &&
-        ( ([ball getXpos]) > ([player1 getXpos] - 30)) && (([ball getXpos]+9) < [player1 getXpos] + 30))
-        [ball switchVel];
-    
+    //Checks collison with player
+    if([ball tipOfBall] <= [player1 tipOfPaddle] && [ball tipOfBall] >= [player1 tipOfPaddle]-5)
+        if([ball rightOfBall] >= [player1 leftOfPaddle] && [ball leftOfBall] <= [player1 rightOfPaddle])
+        {
+            //Checks segment A -- furthest left segment
+            if([player1 inSegmentA:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball rightOfBall])])
+                [ball updateVelocityA];
+            
+            //Checks segment B -- second left segment
+            else if([player1 inSegmentB:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball rightOfBall])])
+                [ball updateVelocityB];
+            
+            //Checks segment D -- second right segment
+            else if([player1 inSegmentD:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball rightOfBall])])
+                [ball updateVelocityD];
+            
+            //Checks segment E -- second right segment
+            else if([player1 inSegmentE:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball rightOfBall])])
+                [ball updateVelocityE];
+            
+            //Center segment
+            else
+                [ball updateVelocityC];
+            
+        }
     
     //Checks collision with AI
     if([ball opponentTipOfBall] >= [AIplayer OpponentTipOfPaddle] && [ball opponentTipOfBall] <= [AIplayer OpponentTipOfPaddle]+5)
@@ -188,6 +208,7 @@
                 [ball updateVelocityC];
         }
 
+    
     
     /*
     if(([ball getYpos]+9) >= 459 && ([ball getYpos]+9) <= 469) {

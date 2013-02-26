@@ -113,4 +113,89 @@
 -(void) resizePaddleWidth:(float)width  {
     paddleSprite.scaleX = width / paddleSprite.contentSize.width;
 }
+
+//first point to the left of center (end of section C)
+-(CGFloat) first{
+    return (position.x - ((paddleSprite.contentSize.width * paddleSprite.scaleX*.25)/2.0));
+}
+
+//first point to the right of center (end of section C)
+-(CGFloat) second{
+    return (position.x + ((paddleSprite.contentSize.width * paddleSprite.scaleX*.25)/2.0));
+}
+
+//second point to the left of center (end of section B)
+-(CGFloat) third{
+    return (position.x - ((paddleSprite.contentSize.width * paddleSprite.scaleX*.375)/2.0));
+}
+
+//second point to the right of center (end of section D)
+-(CGFloat) fourth{
+    return (position.x + ((paddleSprite.contentSize.width * paddleSprite.scaleX*.375)/2.0));
+}
+
+//third point to the left of center (end of section A)
+-(CGFloat) fifth
+{
+    return (position.x - ((paddleSprite.contentSize.width * paddleSprite.scaleX)/2.0));
+}
+
+//third point to the right of center (end of section E)
+-(CGFloat) sixth
+{
+    return (position.x + ((paddleSprite.contentSize.width * paddleSprite.scaleX)/2.0));
+}
+
+// adds half of height to user paddle to get the top of paddle
+-(CGFloat) tipOfPaddle{
+    return(position.y + (paddleSprite.contentSize.height/* * paddleSprite.scaleY*/)/2);
+}
+
+// adds half of width to user paddle to get the right side of paddle
+-(CGFloat) rightOfPaddle{
+    return(position.x + (paddleSprite.contentSize.width/* * paddleSprite.scaleY*/)/2);
+}
+
+// subtracts half of width to user paddle to get the left side of paddle
+-(CGFloat) leftOfPaddle{
+    return(position.x - (paddleSprite.contentSize.width/* * paddleSprite.scaleY*/)/2);
+}
+
+// subtracts half of height to opponents paddle to get the top of paddle
+-(CGFloat) OpponentTipOfPaddle{
+    return(position.y - (paddleSprite.contentSize.height/* * paddleSprite.scaleY*/)/2);
+    
+}
+
+
+
+-(BOOL) inSegmentA: (CGFloat) ballposCtr leftPos: (CGFloat) ballposL rightPos: (CGFloat) ballposR
+{
+    if(ballposR >= [self leftOfPaddle] && ballposCtr < [self third])
+        return TRUE;
+    else
+        return  FALSE;
+}
+
+-(BOOL) inSegmentE: (CGFloat) ballposCtr leftPos: (CGFloat) ballposL rightPos: (CGFloat) ballposR
+{
+    if(ballposL <= [self rightOfPaddle] && ballposCtr > [self fourth])
+        return TRUE;
+    else
+        return FALSE;
+}
+-(BOOL) inSegmentB: (CGFloat) ballposCtr leftPos: (CGFloat) ballposL rightPos: (CGFloat) ballposR
+{
+    if(ballposCtr >= [self third] && ballposCtr <= [self first])
+        return TRUE;
+    else
+        return FALSE;
+}
+-(BOOL) inSegmentD: (CGFloat) ballposCtr leftPos: (CGFloat) ballposL rightPos: (CGFloat) ballposR
+{
+    if(ballposL <= [self fourth] && ballposCtr >= [self second])
+        return TRUE;
+    else
+        return FALSE;
+}
 @end

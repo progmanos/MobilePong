@@ -36,6 +36,7 @@
         [self scheduleUpdate];
         curVelocity = CGPointMake(4, 4);
         
+        baseXVelocity = 4;
     }
 
     
@@ -202,9 +203,21 @@
     return(position.y - (ballSprite.contentSize.height /* ballSprite.scaleY*/)/2);
 }
 
+-(float) getDiameter
+{
+    // use scaleX to account for retina display
+    return (ballSprite.contentSize.width * ballSprite.scaleX);
+}
+
 //adds half of ball to get tip of ball as it approaches user
 -(CGFloat) opponentTipOfBall{
     return(position.y + (ballSprite.contentSize.height /* ballSprite.scaleY*/)/2);
+}
+
+-(float) getTopTipY
+{
+    float diameter = [self getDiameter];
+    return (ballSprite.position.y + (diameter/2.0));
 }
 
 //adds half of ball to get right of ball to get right tip
@@ -212,14 +225,32 @@
     return(position.x + (ballSprite.contentSize.height /* ballSprite.scaleY*/)/2);
 }
 
+-(float) getBottomTipY
+{
+    float diameter = [self getDiameter];
+    return (ballSprite.position.y - (diameter/2.0));
+}
+
 //subtracts half of ball to get left of ball to get right tip
 -(CGFloat) leftOfBall{
     return(position.x - (ballSprite.contentSize.height /* ballSprite.scaleY*/)/2);
 }
 
+-(float) getLeftTipX
+{
+    float diameter = [self getDiameter];
+    return (ballSprite.position.x - (diameter/2.0));
+}
+
 //gets x position of the ball when looking at the top or bottom
 -(CGFloat) tipOfBallX{
     return  position.x;
+}
+
+-(float) getRightTipX
+{
+    float diameter = [self getDiameter];
+    return (ballSprite.position.x + (diameter/2.0));
 }
 
 //method not working trying to figure out a way to track directions of ball but it changes when it is headed toward user so this does not work... i think
@@ -234,34 +265,6 @@
     
 }
 
--(float) getDiameter
-{
-    // use scaleX to account for retina display
-    return (ballSprite.contentSize.width * ballSprite.scaleX);
-}
 
--(float) getTopTipY
-{
-    float diameter = [self getDiameter];
-    return (ballSprite.position.y + (diameter/2.0));
-}
-
--(float) getBottomTipY
-{
-    float diameter = [self getDiameter];
-    return (ballSprite.position.y - (diameter/2.0));
-}
-
--(float) getLeftTipX
-{
-    float diameter = [self getDiameter];
-    return (ballSprite.position.x - (diameter/2.0));
-}
-
--(float) getRightTipX
-{
-    float diameter = [self getDiameter];
-    return (ballSprite.position.x + (diameter/2.0));
-}
 
 @end
