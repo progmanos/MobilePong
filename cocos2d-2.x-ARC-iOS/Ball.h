@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
+#import "math.h"
+
 
 @interface Ball : CCNode
 

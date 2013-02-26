@@ -25,6 +25,7 @@
 -(void) moveLeft;
 -(void) setPosition:(CGPoint)position;
 -(float) getXpos;
+-(float) getYpos;
 +(id)playerWithParentNode:(CCNode*)parentNode;
 -(id)initWithParentNode:(CCNode*)parentNode;
 -(int) getScore;
@@ -46,6 +47,11 @@
 -(BOOL) inSegmentB: (CGFloat) ballposCtr leftPos: (CGFloat) ballposL rightPos: (CGFloat) ballposR;
 -(BOOL) inSegmentD: (CGFloat) ballposCtr leftPos: (CGFloat) ballposL rightPos: (CGFloat) ballposR;
 
+/*
+-(bool) range1;
+-(bool) range2;
+-(bool) range3;
+*/
 
 
 @end

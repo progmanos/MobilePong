@@ -79,6 +79,12 @@
 {
     return position.x;
 }
+
+-(float) getYpos
+{
+    return position.y;
+}
+
 -(int) getScore
 {
     return score;
