@@ -8,9 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
+#import "OptionsLayer.h"
 
 @interface OptionsScene : CCScene {
-    
+    OptionsLayer *optionsLayer;
 }
 
 @end

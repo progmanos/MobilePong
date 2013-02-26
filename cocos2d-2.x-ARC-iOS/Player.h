@@ -18,6 +18,7 @@
 }
 
 @property (nonatomic,assign) CCSprite* paddleSprite;
+@property (nonatomic, readonly) CGFloat initialPaddleWidth;
 
 -(void) setSprite: (CCSprite*) paddleSprite;
 -(void) setVelocity: (int) velocity;
@@ -31,7 +32,11 @@
 -(void) updateScore;
 -(void) resetScore;
 -(CGFloat) getPaddleWidth;
-
-
+-(float) getTopCenterY;
+-(float) getLeftCenterY;
+-(float) getRightCenterY;
+-(float) getLeftCornerX;
+-(float) getRightCornerX;
+-(void) resizePaddleWidth:(float)width;
 
 @end

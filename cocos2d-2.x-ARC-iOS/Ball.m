@@ -12,6 +12,7 @@
 @implementation Ball
 
 @synthesize didCollide;
+@synthesize ballSprite;
 
 +(id)ballWithParentNode:(CCNode *)parentNode
 {
@@ -27,11 +28,14 @@
         screenSize = [CCDirector sharedDirector].winSize;
         
         ballSprite = [CCSprite spriteWithFile:@"ball.png"];
-        ballSprite.position = CGPointMake(CCRANDOM_0_1() * screenSize.width, CCRANDOM_0_1() * screenSize.height);
+        
+        // create initial serving position, needs to be refactored
+        position = CGPointMake(CCRANDOM_0_1() * screenSize.width, CCRANDOM_0_1() * screenSize.height);
         [self addChild:ballSprite];
         
         [self scheduleUpdate];
         curVelocity = CGPointMake(4, 4);
+        
     }
 
     
@@ -185,6 +189,34 @@
     return position.y;
 }
 
+-(float) getDiameter
+{
+    // use scaleX to account for retina display
+    return (ballSprite.contentSize.width * ballSprite.scaleX);
+}
 
+-(float) getTopTipY
+{
+    float diameter = [self getDiameter];
+    return (ballSprite.position.y + (diameter/2.0));
+}
+
+-(float) getBottomTipY
+{
+    float diameter = [self getDiameter];
+    return (ballSprite.position.y - (diameter/2.0));
+}
+
+-(float) getLeftTipX
+{
+    float diameter = [self getDiameter];
+    return (ballSprite.position.x - (diameter/2.0));
+}
+
+-(float) getRightTipX
+{
+    float diameter = [self getDiameter];
+    return (ballSprite.position.x + (diameter/2.0));
+}
 
 @end

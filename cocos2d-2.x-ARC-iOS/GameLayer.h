@@ -10,6 +10,7 @@
 #import "cocos2d.h"
 #import "Ball.h"
 #import "Player.h"
+#import "Constants.h"
 
 @interface GameLayer : CCLayer
 {

@@ -11,4 +11,12 @@
 
 @implementation OptionsScene
 
+-(id)init {
+    self = [super init];
+    if (self != nil) {
+        optionsLayer = [OptionsLayer node];
+        [self addChild:optionsLayer];
+    }
+    return self;
+}
 @end

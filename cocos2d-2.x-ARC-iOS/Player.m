@@ -12,6 +12,7 @@
 @implementation Player
 
 @synthesize paddleSprite;
+@synthesize initialPaddleWidth;
 
 +(id)playerWithParentNode:(CCNode *)parentNode
 {
@@ -26,6 +27,8 @@
         screenSize = [CCDirector sharedDirector].winSize;
         
         paddleSprite = [CCSprite spriteWithFile:@"paddle.png"];
+        initialPaddleWidth = [self getPaddleWidth];
+        
         paddleSprite.position = CGPointMake(CCRANDOM_0_1() * screenSize.width, CCRANDOM_0_1() * screenSize.height);
         
         score = 0;
@@ -55,6 +58,14 @@
 
 -(CGFloat) getPaddleWidth {
     return (paddleSprite.contentSize.width * paddleSprite.scaleX);
+}
+
+-(float) getLeftCornerX {
+    return (paddleSprite.position.x - ([self getPaddleWidth]/2));
+}
+
+-(float) getRightCornerX {
+    return (paddleSprite.position.x + ([self getPaddleWidth]/2));
 }
 
 -(void) moveRight
@@ -93,5 +104,7 @@
 {
     score = 0;
 }
-
+-(void) resizePaddleWidth:(float)width  {
+    paddleSprite.scaleX = width / paddleSprite.contentSize.width;
+}
 @end

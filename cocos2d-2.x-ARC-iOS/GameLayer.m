@@ -31,7 +31,8 @@
         NSInteger level = [self GetLevel];
         
         if (level == 0) {
-            NSInteger defaultLevel = 1;
+            NSInteger defaultLevel = Level_One;
+            level = defaultLevel;
             [self SetLevel:defaultLevel];
         }
     
@@ -87,9 +88,27 @@
         
         //initialize player and AI velocity
         [player1 setVelocity:(5)];
-        [AIplayer setVelocity:(2)];
         
-        
+        //rudimentary AI
+        //shrink the paddle by 20 pixels for level 1 and 10 for level two
+        // use normal size for level three
+        // increase the velocity per level
+        switch (level) {
+            case Level_One:
+                [AIplayer setVelocity:(3)];
+                [AIplayer resizePaddleWidth:([AIplayer initialPaddleWidth] - 20)];
+                break;
+            case Level_Two:
+                [AIplayer setVelocity:(4)];
+                [AIplayer resizePaddleWidth:([AIplayer initialPaddleWidth] - 10)];
+                break;
+            case Level_Three:
+                [AIplayer setVelocity:(5)];
+                break;
+            default:
+                break;
+        }
+                
         [self scheduleUpdate];
         
         
@@ -138,7 +157,8 @@
     totalTime += delta;
     
     //collsion for player paddle
-    if([ball getYpos] <= 30 && ([ball getYpos]+9) >= 20 &&ball.didCollide == FALSE && ([ball getXpos]) > ([player1 getXpos] - 30) && (([ball getXpos]+9) < [player1 getXpos] + 30))
+    if( ([ball getYpos] <= 30) && (([ball getYpos]+9) >= 20) && ball.didCollide == FALSE &&
+        ( ([ball getXpos]) > ([player1 getXpos] - 30)) && (([ball getXpos]+9) < [player1 getXpos] + 30))
         [ball switchVel];
     
     
@@ -146,6 +166,28 @@
     if(([ball getYpos]+9) >= 459 && ([ball getYpos]+9) <= 469 && ball.didCollide == FALSE && ([ball getXpos]+9) > ([AIplayer getXpos] - 30) && ([ball getXpos]+9) < ([AIplayer getXpos] + 30))
         [ball switchVel];
     
+    /*
+    if(([ball getYpos]+9) >= 459 && ([ball getYpos]+9) <= 469) {
+        NSLog(@"ball getTopTipY value: %f", [ball getTopTipY]);
+        NSLog(@"ball getYPos: %f", [ball getYpos]);
+        NSLog(@"AI player position: %f", [[AIplayer paddleSprite] position].y);
+    }
+    //NSLog(@"")
+    
+    //collision for player paddle
+    if(([ball getBottomTipY] >= [[player1 paddleSprite] position].y)
+        && ([ball getBottomTipY] <= 30)
+       && ([ball getXpos] >= [player1 getLeftCornerX]) &&
+       ([ball getXpos] <= [player1 getRightCornerX]))
+    {
+        [ball switchVel];
+    }
+    else if(([ball getTopTipY] <= [[AIplayer paddleSprite] position].y)
+            && ([ball getTopTipY] >= 455)
+            && ([ball getXpos] >= [AIplayer getLeftCornerX]) && ([ball getXpos] <= [AIplayer getRightCornerX]))
+    {
+        [ball switchVel];
+    }*/
     
     //AI score
     if([ball getYpos] <= -10 && !playerScored)
