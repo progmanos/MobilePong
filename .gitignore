@@ -15,6 +15,7 @@ build/
 !default.xcworkspace
 =======
 xcuserdata
+xcuserstate
 profile
 *.moved-aside
 DerivedData
