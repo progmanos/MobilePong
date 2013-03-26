@@ -35,7 +35,7 @@
             level = defaultLevel;
             [self SetLevel:defaultLevel];
         }
-    
+        
         CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
         self.isTouchEnabled = YES;
         
@@ -46,6 +46,12 @@
         CCSprite *background = [CCSprite spriteWithFile:@"court.png"];
         [self addChild:background z:0 tag:1];
         background.position = CGPointMake(screenSize.width/2, screenSize.height/2);
+        
+        pauseButton = [CCMenuItemImage itemFromNormalImage:@"pausebutton.png" selectedImage:@"pausebutton.png" target:self selector:@selector(pauseButtonTapped:)];
+        
+        menu = [CCMenu menuWithItems:pauseButton, nil];
+        menu.position = CGPointMake(screenSize.width/2, screenSize.height/2);
+        [self addChild:menu z:0];
         
         //creates ball, player, and AI player
         ball = [Ball ballWithParentNode:self];
@@ -108,13 +114,17 @@
             default:
                 break;
         }
-                
+        
         [self scheduleUpdate];
         
         
     }
 	
     return self;
+}
+
+- (void)pauseButtonTapped: (id)sender {
+    [[CCDirector sharedDirector] popScene];
 }
 
 -(void) dealloc
@@ -207,31 +217,31 @@
             else
                 [ball updateVelocityC];
         }
-
+    
     
     
     /*
-    if(([ball getYpos]+9) >= 459 && ([ball getYpos]+9) <= 469) {
-        NSLog(@"ball getTopTipY value: %f", [ball getTopTipY]);
-        NSLog(@"ball getYPos: %f", [ball getYpos]);
-        NSLog(@"AI player position: %f", [[AIplayer paddleSprite] position].y);
-    }
-    //NSLog(@"")
-    
-    //collision for player paddle
-    if(([ball getBottomTipY] >= [[player1 paddleSprite] position].y)
-        && ([ball getBottomTipY] <= 30)
-       && ([ball getXpos] >= [player1 getLeftCornerX]) &&
-       ([ball getXpos] <= [player1 getRightCornerX]))
-    {
-        [ball switchVel];
-    }
-    else if(([ball getTopTipY] <= [[AIplayer paddleSprite] position].y)
-            && ([ball getTopTipY] >= 455)
-            && ([ball getXpos] >= [AIplayer getLeftCornerX]) && ([ball getXpos] <= [AIplayer getRightCornerX]))
-    {
-        [ball switchVel];
-    }*/
+     if(([ball getYpos]+9) >= 459 && ([ball getYpos]+9) <= 469) {
+     NSLog(@"ball getTopTipY value: %f", [ball getTopTipY]);
+     NSLog(@"ball getYPos: %f", [ball getYpos]);
+     NSLog(@"AI player position: %f", [[AIplayer paddleSprite] position].y);
+     }
+     //NSLog(@"")
+     
+     //collision for player paddle
+     if(([ball getBottomTipY] >= [[player1 paddleSprite] position].y)
+     && ([ball getBottomTipY] <= 30)
+     && ([ball getXpos] >= [player1 getLeftCornerX]) &&
+     ([ball getXpos] <= [player1 getRightCornerX]))
+     {
+     [ball switchVel];
+     }
+     else if(([ball getTopTipY] <= [[AIplayer paddleSprite] position].y)
+     && ([ball getTopTipY] >= 455)
+     && ([ball getXpos] >= [AIplayer getLeftCornerX]) && ([ball getXpos] <= [AIplayer getRightCornerX]))
+     {
+     [ball switchVel];
+     }*/
     
     //AI score
     if([ball getYpos] <= -10 && !playerScored)
@@ -250,7 +260,7 @@
     //prevents scoring from incrementing more than once
     if([ball getYpos] > 10 && [ball getYpos] < 400)
         playerScored = FALSE;
-
+    
     //handles movement of AI paddle
     if ([AIplayer getXpos] > [ball getXpos] && [ball getYpos] > 200)
         [AIplayer moveLeft];
@@ -276,8 +286,8 @@
     if([player1 getScore] == 11)
         [self player1WinsGame];
     
-
-
+    
+    
 }
 
 //Displays "Sorry, you lose" in red for 3 seconds. Then starts a new game

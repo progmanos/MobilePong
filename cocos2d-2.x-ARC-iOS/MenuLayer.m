@@ -21,7 +21,11 @@
 {
     [[CCDirector sharedDirector] pushScene:[OptionsScene node]];
 }
-
+-(void)showMultiplayer
+{
+    [Nextpeer launchDashboard];
+    
+}
 -(void) displayMenu
 {
     CGSize screenSize = [CCDirector sharedDirector].winSize;
@@ -33,14 +37,21 @@
     
     CCMenuItemFont *optionsItemLabel = [CCMenuItemFont itemWithLabel:optionsLabel target:self selector:@selector(showOptions)];
     
+    
+    CCLabelTTF *multiplayerLabel = [CCLabelTTF labelWithString:@"Multiplayer" fontName:@"Arial" fontSize:32];
+    optionsLabel.color = ccRED;
+    
+    CCMenuItemFont *multiplayerItemLabel = [CCMenuItemFont itemWithLabel:multiplayerLabel target:self selector:@selector(showMultiplayer)];
+    
+    
     mainMenu = [CCMenu
-                menuWithItems:playGameItemLabel,optionsItemLabel,nil];
+                menuWithItems:playGameItemLabel,optionsItemLabel, multiplayerItemLabel, nil];
     
     [mainMenu alignItemsVerticallyWithPadding:screenSize.height * 0.059f];
     [mainMenu setPosition:
      ccp(screenSize.width / 2.0f,
          screenSize.height / 2.0f)];
-
+    
     [self addChild:mainMenu z:1];
 }
 
@@ -49,7 +60,7 @@
 {
     self = [super init];
     if (self != nil) {
-        CGSize screenSize = [CCDirector sharedDirector].winSize; 
+        CGSize screenSize = [CCDirector sharedDirector].winSize;
         CCSprite *background =
         [CCSprite spriteWithFile:@"court.png"];
         [background setPosition:ccp(screenSize.width/2,

@@ -29,6 +29,10 @@
     NSInteger *currhighscore;
     NSInteger *currentscore;
     BOOL playerScored;
+    CCMenuItemImage* pauseButton;
+    CCMenu* menu;
+    
+    
 }
 
 
