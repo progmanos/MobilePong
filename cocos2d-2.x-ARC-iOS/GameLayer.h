@@ -11,6 +11,7 @@
 #import "Ball.h"
 #import "Player.h"
 #import "Constants.h"
+#import "Nextpeer/Nextpeer.h"
 
 @interface GameLayer : CCLayer
 {
@@ -37,4 +38,8 @@
 
 
 -(id) init;
+-(void)singlePlayerGame;
+-(void)multiPlayerGame;
+-(void) checkCollisionWithPlayer;
+-(void)checkCollisionWithOpponent;
 @end

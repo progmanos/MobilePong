@@ -13,6 +13,7 @@
 
 -(void) playGame
 {
+    multiplayer = false;
     //push the game scene so we can easily pop it of the stack and return to the main menu
     [[CCDirector sharedDirector] pushScene:[GameScene node]];
 }
@@ -23,6 +24,7 @@
 }
 -(void)showMultiplayer
 {
+    multiplayer = TRUE;
     [Nextpeer launchDashboard];
     
 }
@@ -67,6 +69,7 @@
                                     screenSize.height/2)];
         [self addChild:background];
         [self displayMenu];
+        
     }
     
     return self;

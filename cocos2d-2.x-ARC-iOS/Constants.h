@@ -13,6 +13,10 @@ typedef enum {
     Level_One = 1,
     Level_Two = 2,
     Level_Three = 3
-} GameLevel;
+
+} GameLevel; 
+
+BOOL multiplayer;
+
 
 #endif

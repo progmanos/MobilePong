@@ -217,31 +217,7 @@
             else
                 [ball updateVelocityC];
         }
-    
-    
-    
-    /*
-     if(([ball getYpos]+9) >= 459 && ([ball getYpos]+9) <= 469) {
-     NSLog(@"ball getTopTipY value: %f", [ball getTopTipY]);
-     NSLog(@"ball getYPos: %f", [ball getYpos]);
-     NSLog(@"AI player position: %f", [[AIplayer paddleSprite] position].y);
-     }
-     //NSLog(@"")
-     
-     //collision for player paddle
-     if(([ball getBottomTipY] >= [[player1 paddleSprite] position].y)
-     && ([ball getBottomTipY] <= 30)
-     && ([ball getXpos] >= [player1 getLeftCornerX]) &&
-     ([ball getXpos] <= [player1 getRightCornerX]))
-     {
-     [ball switchVel];
-     }
-     else if(([ball getTopTipY] <= [[AIplayer paddleSprite] position].y)
-     && ([ball getTopTipY] >= 455)
-     && ([ball getXpos] >= [AIplayer getLeftCornerX]) && ([ball getXpos] <= [AIplayer getRightCornerX]))
-     {
-     [ball switchVel];
-     }*/
+
     
     //AI score
     if([ball getYpos] <= -10 && !playerScored)
@@ -357,6 +333,20 @@
     
     // save the data
     [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+-(void) pushPaddlePos
+{
+    NSError* error;
+    NSNumber* paddleX = [NSNumber numberWithInt:[player1 position].x];
+    NSData* outData = [NSPropertyListSerialization dataWithPropertyList:paddleX format:NSPropertyListBinaryFormat_v1_0 options:0 error:&error];
+    
+    [Nextpeer pushDataToOtherPlayers:outData];
+}
+
+-(void) sendBallPos
+{
+    
 }
 @end
 
