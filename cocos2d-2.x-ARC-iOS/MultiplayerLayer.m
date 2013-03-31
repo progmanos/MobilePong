@@ -336,11 +336,15 @@
     [self updateScore];
     [self checkOpponentScore];
     
+    if(player1)
+    {
+        [self sendBallPosition:[ball getPosition]];
+        [ball moveBall];
+    }
     if([ball getPosition].y <= screenSize.height/2)
     {
         
-        [self sendBallPosition:[ball getPosition]];
-        [ball moveBall];
+        
     }
   
     //prevents scoring from incrementing more than once
@@ -653,7 +657,7 @@
         SPosReceivedPacket packet;
         packet.type = kPacketTypePosReceived;
         packet.didReceivePos = posRec;
-		
+        
 		[[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
 	}
 }
