@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 #import "MenuLayer.h"
-
 @interface MenuScene : CCScene {
     MenuLayer *menuLayer;
 }

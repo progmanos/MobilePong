@@ -31,6 +31,7 @@
         
         paddleSprite.position = CGPointMake(CCRANDOM_0_1() * screenSize.width, CCRANDOM_0_1() * screenSize.height);
         
+        roundScore = 0;
         score = 0;
         [self addChild:paddleSprite];
         
@@ -113,6 +114,21 @@
 -(void) resetScore
 {
     score = 0;
+}
+
+-(int) getRoundScore
+{
+    return roundScore;
+}
+
+-(void) updateRoundScore
+{
+    roundScore += 1;
+}
+
+-(void) resetRoundScore
+{
+    roundScore = 0;
 }
 -(void) resizePaddleWidth:(float)width  {
     paddleSprite.scaleX = width / paddleSprite.contentSize.width;

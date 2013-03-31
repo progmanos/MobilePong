@@ -11,6 +11,7 @@
 
 @interface Player : CCNode
 {
+    int roundScore;
     int score;
     int velocity;
     CGPoint position;
@@ -32,6 +33,9 @@
 -(int) getScore;
 -(void) updateScore;
 -(void) resetScore;
+-(void) updateRoundScore;
+-(void) resetRoundScore;
+-(int) getRoundScore;
 -(CGFloat) getPaddleWidth;
 -(float) getTopCenterY;
 -(float) getLeftCenterY;

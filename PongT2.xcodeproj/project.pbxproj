@@ -28,6 +28,18 @@
 		CEB3DFEC16DAB5C500F57214 /* court-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB3DFE916DAB5C400F57214 /* court-hd.png */; };
 		CEB3DFED16DAB5C500F57214 /* ball-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB3DFEA16DAB5C400F57214 /* ball-hd.png */; };
 		CEB3DFEE16DAB5C500F57214 /* ball.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB3DFEB16DAB5C500F57214 /* ball.png */; };
+		CECB066C1708E3FF009D3412 /* Tutorial Layout.png in Resources */ = {isa = PBXBuildFile; fileRef = CECB06681708E3FF009D3412 /* Tutorial Layout.png */; };
+		CECB066D1708E3FF009D3412 /* Tutorial Objective.png in Resources */ = {isa = PBXBuildFile; fileRef = CECB06691708E3FF009D3412 /* Tutorial Objective.png */; };
+		CECB066E1708E3FF009D3412 /* Tutorial Goal.png in Resources */ = {isa = PBXBuildFile; fileRef = CECB066A1708E3FF009D3412 /* Tutorial Goal.png */; };
+		CECB066F1708E3FF009D3412 /* Tutorial Welcome.png in Resources */ = {isa = PBXBuildFile; fileRef = CECB066B1708E3FF009D3412 /* Tutorial Welcome.png */; };
+		CECB06781708E416009D3412 /* PauseLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = CECB06701708E416009D3412 /* PauseLayer.h */; };
+		CECB06791708E416009D3412 /* PauseLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = CECB06711708E416009D3412 /* PauseLayer.m */; };
+		CECB067A1708E416009D3412 /* PauseScene.h in Headers */ = {isa = PBXBuildFile; fileRef = CECB06721708E416009D3412 /* PauseScene.h */; };
+		CECB067B1708E416009D3412 /* PauseScene.m in Sources */ = {isa = PBXBuildFile; fileRef = CECB06731708E416009D3412 /* PauseScene.m */; };
+		CECB067C1708E416009D3412 /* TutorialLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = CECB06741708E416009D3412 /* TutorialLayer.h */; };
+		CECB067D1708E416009D3412 /* TutorialLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = CECB06751708E416009D3412 /* TutorialLayer.m */; };
+		CECB067E1708E416009D3412 /* tutorialScene.h in Headers */ = {isa = PBXBuildFile; fileRef = CECB06761708E416009D3412 /* tutorialScene.h */; };
+		CECB067F1708E416009D3412 /* tutorialScene.m in Sources */ = {isa = PBXBuildFile; fileRef = CECB06771708E416009D3412 /* tutorialScene.m */; };
 		CEEC906316D087F40020F89B /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC906216D087F30020F89B /* Player.m */; };
 		CEEECD7B17073F7700C9ECC0 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = CEEECD7917073F7700C9ECC0 /* background.png */; };
 		CEEECD7C17073F7700C9ECC0 /* background-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = CEEECD7A17073F7700C9ECC0 /* background-hd.png */; };
@@ -321,6 +333,18 @@
 		CEB3DFE916DAB5C400F57214 /* court-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "court-hd.png"; sourceTree = "<group>"; };
 		CEB3DFEA16DAB5C400F57214 /* ball-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ball-hd.png"; sourceTree = "<group>"; };
 		CEB3DFEB16DAB5C500F57214 /* ball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ball.png; sourceTree = "<group>"; };
+		CECB06681708E3FF009D3412 /* Tutorial Layout.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorial Layout.png"; sourceTree = "<group>"; };
+		CECB06691708E3FF009D3412 /* Tutorial Objective.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorial Objective.png"; sourceTree = "<group>"; };
+		CECB066A1708E3FF009D3412 /* Tutorial Goal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorial Goal.png"; sourceTree = "<group>"; };
+		CECB066B1708E3FF009D3412 /* Tutorial Welcome.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorial Welcome.png"; sourceTree = "<group>"; };
+		CECB06701708E416009D3412 /* PauseLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PauseLayer.h; sourceTree = "<group>"; };
+		CECB06711708E416009D3412 /* PauseLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PauseLayer.m; sourceTree = "<group>"; };
+		CECB06721708E416009D3412 /* PauseScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PauseScene.h; sourceTree = "<group>"; };
+		CECB06731708E416009D3412 /* PauseScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PauseScene.m; sourceTree = "<group>"; };
+		CECB06741708E416009D3412 /* TutorialLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialLayer.h; sourceTree = "<group>"; };
+		CECB06751708E416009D3412 /* TutorialLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialLayer.m; sourceTree = "<group>"; };
+		CECB06761708E416009D3412 /* tutorialScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tutorialScene.h; sourceTree = "<group>"; };
+		CECB06771708E416009D3412 /* tutorialScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tutorialScene.m; sourceTree = "<group>"; };
 		CEEC906116D087F30020F89B /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		CEEC906216D087F30020F89B /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
 		CEEECD7917073F7700C9ECC0 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
@@ -695,6 +719,10 @@
 		DC0C4A08154AB4DD00B4B727 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CECB06681708E3FF009D3412 /* Tutorial Layout.png */,
+				CECB06691708E3FF009D3412 /* Tutorial Objective.png */,
+				CECB066A1708E3FF009D3412 /* Tutorial Goal.png */,
+				CECB066B1708E3FF009D3412 /* Tutorial Welcome.png */,
 				CEEECD7917073F7700C9ECC0 /* background.png */,
 				CEEECD7A17073F7700C9ECC0 /* background-hd.png */,
 				CEB19A2E170638EB00403CB1 /* pausebutton.png */,
@@ -1072,6 +1100,14 @@
 		DC4C8DFF16D8584C00A40403 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				CECB06701708E416009D3412 /* PauseLayer.h */,
+				CECB06711708E416009D3412 /* PauseLayer.m */,
+				CECB06721708E416009D3412 /* PauseScene.h */,
+				CECB06731708E416009D3412 /* PauseScene.m */,
+				CECB06741708E416009D3412 /* TutorialLayer.h */,
+				CECB06751708E416009D3412 /* TutorialLayer.m */,
+				CECB06761708E416009D3412 /* tutorialScene.h */,
+				CECB06771708E416009D3412 /* tutorialScene.m */,
 				CE29F4F71701553600342259 /* Multiplayer */,
 				DCBD22B516DB415300711C30 /* Constants */,
 				DC4C8E0216D8586A00A40403 /* MainMenu */,
@@ -1272,6 +1308,10 @@
 				DC4C8DFB16D4984400A40403 /* MenuLayer.h in Headers */,
 				DC4C8DFD16D4984400A40403 /* MenuScene.h in Headers */,
 				CEB19A2D1705516300403CB1 /* NetworkPackets.h in Headers */,
+				CECB06781708E416009D3412 /* PauseLayer.h in Headers */,
+				CECB067A1708E416009D3412 /* PauseScene.h in Headers */,
+				CECB067C1708E416009D3412 /* TutorialLayer.h in Headers */,
+				CECB067E1708E416009D3412 /* tutorialScene.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1369,6 +1409,10 @@
 				CEB19A31170638EB00403CB1 /* pausebutton-hd.png in Resources */,
 				CEEECD7B17073F7700C9ECC0 /* background.png in Resources */,
 				CEEECD7C17073F7700C9ECC0 /* background-hd.png in Resources */,
+				CECB066C1708E3FF009D3412 /* Tutorial Layout.png in Resources */,
+				CECB066D1708E3FF009D3412 /* Tutorial Objective.png in Resources */,
+				CECB066E1708E3FF009D3412 /* Tutorial Goal.png in Resources */,
+				CECB066F1708E3FF009D3412 /* Tutorial Welcome.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1500,6 +1544,10 @@
 				DC4C8DF616D4981300A40403 /* OptionsScene.m in Sources */,
 				DC4C8DFC16D4984400A40403 /* MenuLayer.m in Sources */,
 				DC4C8DFE16D4984400A40403 /* MenuScene.m in Sources */,
+				CECB06791708E416009D3412 /* PauseLayer.m in Sources */,
+				CECB067B1708E416009D3412 /* PauseScene.m in Sources */,
+				CECB067D1708E416009D3412 /* TutorialLayer.m in Sources */,
+				CECB067F1708E416009D3412 /* tutorialScene.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

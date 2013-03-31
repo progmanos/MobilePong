@@ -17,6 +17,7 @@
 {
     if ((self = [super init]))
     {
+        times =0;
         multiplayer = FALSE;
         prefs = [NSUserDefaults standardUserDefaults];
         
@@ -76,6 +77,19 @@
         player1scoreLabel.color = ccBLACK;
         [self addChild:player1scoreLabel z:1];
         
+        
+        //sets label for score of AIplayer's round
+        AIroundLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:12];
+        AIroundLabel.position = ccp((screenSize.width)-75, ((screenSize.height)-45));
+        AIroundLabel.color = ccBLACK;
+        [self addChild:AIroundLabel z:1];
+        
+        //sets label for score of player1's round
+        player1roundLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:12];
+        player1roundLabel.position = ccp(35, ((screenSize.height)-45));
+        player1roundLabel.color = ccBLACK;
+        [self addChild:player1roundLabel z:1];
+        
         //sets label for time of gameplay
         timeLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:24];
         timeLabel.color = ccRED;
@@ -92,6 +106,12 @@
         highScoreLabel.position = ccp(35, 5);
         [self addChild:highScoreLabel z:0];
         [highScoreLabel setString:(highscore)];
+        
+        //Set AI round score
+        [AIroundLabel setString:[NSString stringWithFormat:@"Rounds: " @"%d", [AIplayer getRoundScore]]];
+        
+        //Set player1 round score
+        [player1roundLabel setString:[NSString stringWithFormat:@"Rounds: " @"%d", [player1 getRoundScore]]];
         
         
         //initialize player and AI velocity
@@ -270,6 +290,8 @@
 
 -(void) update:(ccTime)delta
 {
+    [AIroundLabel setString:[NSString stringWithFormat:@"Rounds: " @"%d", [AIplayer getRoundScore]]];
+    [player1roundLabel setString:[NSString stringWithFormat:@"Rounds: " @"%d", [player1 getRoundScore]]];
     //time in seconds
     totalTime += delta;
    // [self checkCollisionWithPlayer];
@@ -311,20 +333,48 @@
 //Displays "Sorry, you lose" in red for 3 seconds. Then starts a new game
 -(void) AIwinsGame
 {
+    [AIplayer updateRoundScore];
+    if([AIplayer getRoundScore]<3){
+        
+        
+        
+        
+        winner = @"Sorry, you lose round";
+        winnerLabel.color = ccRED;
+        [winnerLabel setString:(winner)];
+        [self performSelector:@selector(newGame) withObject:nil afterDelay:3.0];
+        
+        
+    }
+    else{
+        
+        
+        winner = @"Sorry, you lose the game";
+        winnerLabel.color = ccRED;
+        [winnerLabel setString:(winner)];
+        [self performSelector:@selector(newGame) withObject:nil afterDelay:3.0];
+        
+        
+    }
     
-    winner = @"Sorry, you lose";
-    winnerLabel.color = ccRED;
-    [winnerLabel setString:(winner)];
-    [self performSelector:@selector(newGame) withObject:nil afterDelay:3.0];
 }
+
 
 //Displays "Congratulations, you won" in red for 3 seconds. Then starts a new game
 -(void) player1WinsGame
 {
-    winner = @"Congratulations\n you won!";
-    winnerLabel.color = ccGREEN;
-    [winnerLabel setString:(winner)];
-    
+    [player1 updateRoundScore];
+    times =1;
+    if([player1 getRoundScore]<3){
+        winner = @"Congratulations\n you won the round!";
+        winnerLabel.color = ccGREEN;
+        [winnerLabel setString:(winner)];
+    }
+    else{
+        winner = @"Congratulations\n you won the game!";
+        winnerLabel.color = ccGREEN;
+        [winnerLabel setString:(winner)];
+    }
     
     currentscore = (NSInteger)totalTime;
     if(currentscore < currhighscore)
@@ -342,6 +392,7 @@
 
 -(void) newGame
 {
+    times = 0;
     //removes win/lose message
     winner = @" ";
     [winnerLabel setString:(winner)];
@@ -356,9 +407,29 @@
     currhighscore = [prefs integerForKey:@"highScore"];
     if(currhighscore == nil)
         currhighscore = 0;
+    //resets rounds after game is over
+    if([player1 getRoundScore]==3|| [AIplayer getRoundScore]==3){
+        [player1 resetRoundScore];
+        [AIplayer resetRoundScore];
+        //Set AI round score
+        [AIroundLabel setString:[NSString stringWithFormat:@"Rounds: " @"%d", [AIplayer getRoundScore]]];
+        
+        //Set player1 round score
+        [player1roundLabel setString:[NSString stringWithFormat:@"Rounds: " @"%d", [player1 getRoundScore]]];
+        
+        //need to implement to play again or main menu
+        
+    highscore = [NSString stringWithFormat:@"highScore: %d ", (int)currhighscore];
+    [highScoreLabel setString:(highscore)];
+    }
+    
+    currhighscore = [prefs integerForKey:@"highScore"];
+    if(currhighscore == nil)
+        currhighscore = 0;
     
     highscore = [NSString stringWithFormat:@"highScore: %d ", (int)currhighscore];
     [highScoreLabel setString:(highscore)];
+    
     
 }
 

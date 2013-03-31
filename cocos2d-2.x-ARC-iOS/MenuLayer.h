@@ -11,10 +11,13 @@
 #import "GameScene.h"
 #import "OptionsScene.h"
 #import "MultiplayerScene.h"
-
+#import "GameScene.h"
+#import "tutorialScene.h"
+#import <CoreFoundation/CoreFoundation.h> 
 
 @interface MenuLayer : CCLayer {
     CCMenu *mainMenu;
+    int playerNum;
 }
 
 -(void) displayMenu;

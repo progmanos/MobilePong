@@ -6,6 +6,7 @@
 //  Copyright 2013 __MyCompanyName__. All rights reserved.
 //
 
+
 #import "MenuLayer.h"
 
 
@@ -22,6 +23,13 @@
 {
     [[CCDirector sharedDirector] pushScene:[OptionsScene node]];
 }
+
+-(void) tutorial
+{
+    //push the game scene so we can easily pop it of the stack and return to the main menu
+    [[CCDirector sharedDirector] pushScene:[tutorialScene node]];
+}
+
 -(void)showMultiplayer
 {
     multiplayer = TRUE;
@@ -39,6 +47,9 @@
     
     CCMenuItemFont *optionsItemLabel = [CCMenuItemFont itemWithLabel:optionsLabel target:self selector:@selector(showOptions)];
     
+    CCLabelTTF *tutorialLabel = [CCLabelTTF labelWithString:@"Tutorial" fontName:@"Arial" fontSize:32];
+    tutorialLabel.color = ccYELLOW;
+    CCMenuItemFont *tutorialItemLabel  = [CCMenuItemFont itemWithLabel:tutorialLabel target:self selector:@selector(tutorial)];
     
     CCLabelTTF *multiplayerLabel = [CCLabelTTF labelWithString:@"Multiplayer" fontName:@"Arial" fontSize:32];
     optionsLabel.color = ccRED;
@@ -47,7 +58,7 @@
     
     
     mainMenu = [CCMenu
-                menuWithItems:playGameItemLabel,optionsItemLabel, multiplayerItemLabel, nil];
+                menuWithItems:playGameItemLabel,optionsItemLabel, multiplayerItemLabel,tutorialItemLabel, nil];
     
     [mainMenu alignItemsVerticallyWithPadding:screenSize.height * 0.059f];
     [mainMenu setPosition:

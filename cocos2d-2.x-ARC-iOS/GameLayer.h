@@ -15,9 +15,12 @@
 
 @interface GameLayer : CCLayer 
 {
+    int times;
     Ball *ball;
     Player *player1;
     Player *AIplayer;
+    CCLabelTTF *AIroundLabel;
+    CCLabelTTF *player1roundLabel;
     CCLabelTTF *AIscoreLabel;
     CCLabelTTF *player1scoreLabel;
     CCLabelTTF *timeLabel;
