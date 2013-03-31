@@ -87,40 +87,9 @@
 	// and add the scene to the stack. The director will run it when it automatically when the view is displayed.
     MenuScene *menu = [MenuScene node];
 	[director_ runWithScene:menu];
-    
-   	[self initializeNextpeer];
-    
+     
 	return YES;
 }
-- (void)initializeNextpeer
-{
-    CCLOG(@" into initializeNextpeer ");
-    
-    [Nextpeer initializeWithProductKey:@"5a33ed011e605447bed1b8e51749b3e0594b8509" andDelegates:[NPDelegatesContainer containerWithNextpeerDelegate:self]];
-    
-}
-
--(void)nextpeerDidTournamentStartWithDetails:(NPTournamentStartDataContainer *)tournamentContainer
-{
-    
-    [[CCDirector sharedDirector] pushScene:[GameScene node]];
-}
-
--(void)nextpeerDidTournamentEnd
-{
-    [[CCDirector sharedDirector] popScene];
-}
-
-- (void)nextpeerDashboardWillAppear
-{
-	[[CCDirector sharedDirector] pause];
-}
-
-- (void)nextpeerDashboardDidDisappear
-{
-	[[CCDirector sharedDirector] resume];
-}
-
 // Supported orientations: Landscape. Customize it for your own needs
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {

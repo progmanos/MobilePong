@@ -9,6 +9,7 @@
 #import "MenuLayer.h"
 
 
+
 @implementation MenuLayer
 
 -(void) playGame
@@ -17,7 +18,6 @@
     //push the game scene so we can easily pop it of the stack and return to the main menu
     [[CCDirector sharedDirector] pushScene:[GameScene node]];
 }
-
 -(void) showOptions
 {
     [[CCDirector sharedDirector] pushScene:[OptionsScene node]];
@@ -25,11 +25,11 @@
 -(void)showMultiplayer
 {
     multiplayer = TRUE;
-    [Nextpeer launchDashboard];
-    
+    [[CCDirector sharedDirector] pushScene:[MultiplayerScene node]];
 }
 -(void) displayMenu
 {
+    multiplayer = FALSE;
     CGSize screenSize = [CCDirector sharedDirector].winSize;
     CCLabelTTF *playlabel = [CCLabelTTF labelWithString:@"Play Pong" fontName:@"Arial" fontSize:32];
     CCMenuItemFont *playGameItemLabel = [CCMenuItemFont itemWithLabel:playlabel target:self selector:@selector(playGame)];
@@ -64,7 +64,7 @@
     if (self != nil) {
         CGSize screenSize = [CCDirector sharedDirector].winSize;
         CCSprite *background =
-        [CCSprite spriteWithFile:@"court.png"];
+        [CCSprite spriteWithFile:@"background.png"];
         [background setPosition:ccp(screenSize.width/2,
                                     screenSize.height/2)];
         [self addChild:background];

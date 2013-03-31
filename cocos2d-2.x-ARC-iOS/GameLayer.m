@@ -6,7 +6,9 @@
 //  Copyright 2013 __MyCompanyName__. All rights reserved.
 //
 #import "GameLayer.h"
-
+#import "SimpleAudioEngine.h"
+#import <GameKit/GameKit.h>
+#import "GameKitHelper.h"
 
 
 @implementation GameLayer
@@ -15,7 +17,7 @@
 {
     if ((self = [super init]))
     {
-        
+        multiplayer = FALSE;
         prefs = [NSUserDefaults standardUserDefaults];
         
         playerScored = FALSE;
@@ -40,10 +42,10 @@
         self.isTouchEnabled = YES;
         
         // move this to a header file for use in other classes
-        CGSize screenSize = [CCDirector sharedDirector].winSize;
+        screenSize = [CCDirector sharedDirector].winSize;
         
         //sets background to court image
-        CCSprite *background = [CCSprite spriteWithFile:@"court.png"];
+        CCSprite *background = [CCSprite spriteWithFile:@"background.png"];
         [self addChild:background z:0 tag:1];
         background.position = CGPointMake(screenSize.width/2, screenSize.height/2);
         
@@ -63,14 +65,14 @@
         [AIplayer setPosition:CGPointMake(screenSize.width/2, (screenSize.height - 20))];
         
         //sets label for score of AIplayer
-        AIscoreLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:24];
-        AIscoreLabel.position = ccp((screenSize.width/2), (screenSize.height - (screenSize.height/4)));
+        AIscoreLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:48];
+        AIscoreLabel.position = ccp((screenSize.width/2), (screenSize.height - (screenSize.height/6)));
         AIscoreLabel.color = ccBLACK;
         [self addChild:AIscoreLabel z:1];
         
         //sets label for score of AIplayer
-        player1scoreLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:24];
-        player1scoreLabel.position = ccp((screenSize.width/2), (screenSize.height/4));
+        player1scoreLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:48];
+        player1scoreLabel.position = ccp((screenSize.width/2), (screenSize.height/6));
         player1scoreLabel.color = ccBLACK;
         [self addChild:player1scoreLabel z:1];
         
@@ -161,15 +163,26 @@
     [self unschedule:@selector(movePlayerRight)];
 }
 
--(void) update:(ccTime)delta
+-(void)playGame
 {
-    //time in seconds
-    totalTime += delta;
+    [self checkCollisionWithPlayer];
+    [self checkCollisionWithOpponent];
+    [self checkOpponentScore];
+    [self checkPlayerScore];
+    [self updateScore];
+    [self checkWin];
+    [self moveAIPaddle];
     
+}
+
+
+-(void) checkCollisionWithPlayer
+{
     //Checks collison with player
     if([ball tipOfBall] <= [player1 tipOfPaddle] && [ball tipOfBall] >= [player1 tipOfPaddle]-5)
         if([ball rightOfBall] >= [player1 leftOfPaddle] && [ball leftOfBall] <= [player1 rightOfPaddle])
         {
+            [[SimpleAudioEngine sharedEngine] playEffect:@"bounce.wav"];
             //Checks segment A -- furthest left segment
             if([player1 inSegmentA:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball rightOfBall])])
                 [ball updateVelocityA];
@@ -191,12 +204,16 @@
                 [ball updateVelocityC];
             
         }
-    
+}
+
+-(void)checkCollisionWithOpponent
+{
     //Checks collision with AI
     if([ball opponentTipOfBall] >= [AIplayer OpponentTipOfPaddle] && [ball opponentTipOfBall] <= [AIplayer OpponentTipOfPaddle]+5)
         if([ball rightOfBall] >= [AIplayer leftOfPaddle] && [ball leftOfBall] <= [AIplayer rightOfPaddle])
             
         {
+            [[SimpleAudioEngine sharedEngine] playEffect:@"bounce.wav"];
             //Checks segment A -- furthest left segment
             if([AIplayer inSegmentA:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball     rightOfBall])])
                 [ball updateVelocityA];
@@ -217,43 +234,71 @@
             else
                 [ball updateVelocityC];
         }
+}
 
-    
-    //AI score
-    if([ball getYpos] <= -10 && !playerScored)
-    {
-        [AIplayer updateScore];
-        playerScored = TRUE;
-    }
-    
+-(void)checkPlayerScore
+{
     //Player score
     if([ball getYpos] >= 496 && !playerScored)
     {
+        [[SimpleAudioEngine sharedEngine] playEffect:@"correct.wav"];
         [player1 updateScore];
         playerScored = TRUE;
     }
+}
+
+-(void)checkOpponentScore
+{
+    //AI score
+    if([ball getYpos] <= -10 && !playerScored)
+    {
+        [[SimpleAudioEngine sharedEngine] playEffect:@"wrong.wav"];
+        [AIplayer updateScore];
+        playerScored = TRUE;
+    }
+}
+
+-(void)updateScore
+{
+    
+    //Updates player1score
+    [player1scoreLabel setString:[NSString stringWithFormat:@"%d", [player1 getScore]]];
+    
+    //Updates AIscore
+    [AIscoreLabel setString:[NSString stringWithFormat:@"%d", [AIplayer getScore]]];
+}
+
+-(void) update:(ccTime)delta
+{
+    //time in seconds
+    totalTime += delta;
+   // [self checkCollisionWithPlayer];
+    
+    [self playGame];
+    
     
     //prevents scoring from incrementing more than once
     if([ball getYpos] > 10 && [ball getYpos] < 400)
         playerScored = FALSE;
+
     
+    //updates time
+    [timeLabel setString:[NSString stringWithFormat:@"%d", (int)totalTime]];
+    
+}
+
+-(void)moveAIPaddle
+{
     //handles movement of AI paddle
     if ([AIplayer getXpos] > [ball getXpos] && [ball getYpos] > 200)
         [AIplayer moveLeft];
     
     if ([AIplayer getXpos] < [ball getXpos] && [ball getYpos]  > 200)
         [AIplayer moveRight];
-    
-    //Updates AIscore
-    [AIscoreLabel setString:[NSString stringWithFormat:@"%d", [AIplayer getScore]]];
-    
-    //Updates player1score
-    [player1scoreLabel setString:[NSString stringWithFormat:@"%d", [player1 getScore]]];
-    
-    //updates time
-    [timeLabel setString:[NSString stringWithFormat:@"%d", (int)totalTime]];
-    
-    
+}
+
+-(void) checkWin
+{
     //play to 11 to win
     if([AIplayer getScore] == 11)
         [self AIwinsGame];
@@ -261,9 +306,6 @@
     //play to 11 to win
     if([player1 getScore] == 11)
         [self player1WinsGame];
-    
-    
-    
 }
 
 //Displays "Sorry, you lose" in red for 3 seconds. Then starts a new game
@@ -335,19 +377,6 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
--(void) pushPaddlePos
-{
-    NSError* error;
-    NSNumber* paddleX = [NSNumber numberWithInt:[player1 position].x];
-    NSData* outData = [NSPropertyListSerialization dataWithPropertyList:paddleX format:NSPropertyListBinaryFormat_v1_0 options:0 error:&error];
-    
-    [Nextpeer pushDataToOtherPlayers:outData];
-}
-
--(void) sendBallPos
-{
-    
-}
 @end
 
 

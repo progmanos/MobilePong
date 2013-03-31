@@ -25,6 +25,7 @@
 -(void) moveRight;
 -(void) moveLeft;
 -(void) setPosition:(CGPoint)position;
+-(void) setXPosition:(CGFloat)xposition;
 -(float) getXpos;
 +(id)playerWithParentNode:(CCNode*)parentNode;
 -(id)initWithParentNode:(CCNode*)parentNode;

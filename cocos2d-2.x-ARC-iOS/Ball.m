@@ -24,6 +24,7 @@
     if((self = [super init]))
     {
         score = FALSE;
+        resumeMove = FALSE;
         [parentNode addChild:self];
         screenSize = [CCDirector sharedDirector].winSize;
         
@@ -34,9 +35,11 @@
         [self addChild:ballSprite];
         
         [self scheduleUpdate];
+            
         curVelocity = CGPointMake(4, 4);
         
         baseXVelocity = 4;
+//        [self player1serveBall];
     }
 
     
@@ -45,13 +48,13 @@
 
 -(void) update:(ccTime)delta
 {
-    
     ballSprite.position = position;
-    
-    if(!score)
-    {
+    if(!multiplayer && !score)
         [self moveBall];
-    }
+    //else if(!score && playerConnected)
+    //{
+        //[self moveBall];
+    //}
 }
 
 
@@ -84,7 +87,7 @@
     
     
     //Handles bouncing on walls
-    if(position.x < 0 || position.x >screenSize.width){
+    if(position.x < 5 || position.x >screenSize.width-5){
         curVelocity.x = -curVelocity.x;}
     
     //AI scores and serves ball
@@ -104,6 +107,10 @@
     if(position.y > 230 && position.y < 350)
         self.didCollide = FALSE;
     
+    if(resumeMove)
+        [self performSelector:@selector(resumeMove) withObject:nil afterDelay:2.0];
+
+    
 }
 
 //Freezes ball on players side of the screen for 5 seconds
@@ -116,8 +123,9 @@
     position = CGPointMake((arc4random()%300) + 1, (screenSize.height/4));
     curVelocity.x = 0;
     curVelocity.y = 0;
+    resumeMove = TRUE;
     
-    [self performSelector:@selector(resumeMove) withObject:nil afterDelay:2.0];
+    //[self performSelector:@selector(resumeMove) withObject:nil afterDelay:2.0];
 
 
 }
@@ -133,7 +141,8 @@
     position = CGPointMake((arc4random()%300) + 1, (screenSize.height - (screenSize.height/4)));
     curVelocity.x = 0;
     curVelocity.y = 0;
-    [self performSelector:@selector(resumeMove) withObject:nil afterDelay:2.0];
+    resumeMove = TRUE;
+    //[self performSelector:@selector(resumeMove) withObject:nil afterDelay:2.0];
 
 }
 
@@ -144,6 +153,7 @@
     score = FALSE;
     curVelocity = CGPointMake(tempVelocity.x, tempVelocity.y);
     tempVelocity = CGPointMake(0, 0);
+    resumeMove = FALSE;
 }
 
 
@@ -263,6 +273,11 @@
     }
     
     
+}
+-(void)setVelocity:(CGPoint)newVel
+{
+    curVelocity.x = newVel.x;
+    curVelocity.y = newVel.y;
 }
 
 

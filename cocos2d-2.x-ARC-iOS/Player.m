@@ -86,6 +86,10 @@
 {
     position = p;
 }
+-(void) setXPosition:(CGFloat)p
+{
+    position.x = p;
+}
 -(float) getXpos
 {
     return position.x;

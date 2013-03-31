@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
+#import "Constants.h"
 
 @interface Ball : CCNode
 
@@ -21,6 +22,7 @@
     CGPoint maxVelocity;
     CGPoint minVelocity;
     CGPoint position;
+    BOOL resumeMove;
 
     CGSize screenSize;
     BOOL score;
@@ -30,6 +32,7 @@
 
 @property (nonatomic) CCSprite* ballSprite;
 @property (nonatomic) BOOL didCollide;
+@property (nonatomic) BOOL resumeMove;
 -(void) setCurVel: (CGPoint) curVelocity;
 -(CGPoint) getVelocity;
 -(void) setPosition: (CGPoint) position;
@@ -42,6 +45,7 @@
 -(void) updateVelocityE;
 -(void) player1serveBall;
 -(void) AIserveBall;
+-(void) setVelocity:(CGPoint)newVel;
 -(float) getXpos;
 -(float) getYpos;
 

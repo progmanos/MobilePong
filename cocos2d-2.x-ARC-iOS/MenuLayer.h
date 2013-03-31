@@ -11,7 +11,7 @@
 #import "GameScene.h"
 #import "OptionsScene.h"
 #import "MultiplayerScene.h"
-#import "Nextpeer/Nextpeer.h"
+
 
 @interface MenuLayer : CCLayer {
     CCMenu *mainMenu;

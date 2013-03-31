@@ -7,29 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE0532B71707E85E00F5DE34 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0532B61707E85D00F5DE34 /* RootViewController.m */; };
 		CE29F4FA1701557500342259 /* MultiplayerLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = CE29F4F91701557500342259 /* MultiplayerLayer.m */; };
 		CE29F4FD170155CE00342259 /* MultiplayerScene.m in Sources */ = {isa = PBXBuildFile; fileRef = CE29F4FC170155CE00342259 /* MultiplayerScene.m */; };
-		CE29F4FF170157F000342259 /* Nextpeer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE29F4FE170157F000342259 /* Nextpeer.framework */; };
 		CE29F500170157F000342259 /* Nextpeer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE29F4FE170157F000342259 /* Nextpeer.framework */; };
 		CE29F5021701580400342259 /* NPResources_iPhone_Portrait.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CE29F5011701580400342259 /* NPResources_iPhone_Portrait.bundle */; };
-		CE29F5061701590100342259 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE29F503170158FF00342259 /* CFNetwork.framework */; };
-		CE29F5071701590100342259 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE29F5041701590000342259 /* MessageUI.framework */; };
-		CE29F5081701590100342259 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE29F5051701590000342259 /* SystemConfiguration.framework */; };
-		CE29F50D1701592500342259 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE29F5091701592500342259 /* CoreText.framework */; };
-		CE29F50E1701592500342259 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE29F50A1701592500342259 /* MobileCoreServices.framework */; };
-		CE29F50F1701592500342259 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE29F50B1701592500342259 /* Security.framework */; };
-		CE29F5101701592500342259 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE29F50C1701592500342259 /* StoreKit.framework */; };
-		CE29F5121701593F00342259 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CE29F5111701593F00342259 /* libz.dylib */; };
-		CE29F5141701594900342259 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CE29F5131701594900342259 /* libsqlite3.dylib */; };
 		CE3F842416C6E3460028F4DF /* Ball.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3F842316C6E3460028F4DF /* Ball.m */; };
 		CE60A2A316DC952600325F5D /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = CE60A2A216DC952600325F5D /* Default.png */; };
+		CE8829AB1706B24D00824780 /* libcocos2d-library.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC0C4B87154AB55A00B4B727 /* libcocos2d-library.a */; };
 		CE8AC44516C1ECCB00859F40 /* GameLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8AC44416C1ECCB00859F40 /* GameLayer.m */; };
+		CEB19A2417053BD400403CB1 /* bounce.wav in Resources */ = {isa = PBXBuildFile; fileRef = CEB19A2317053BD400403CB1 /* bounce.wav */; };
+		CEB19A2717053E7000403CB1 /* wrong.wav in Resources */ = {isa = PBXBuildFile; fileRef = CEB19A2517053E7000403CB1 /* wrong.wav */; };
+		CEB19A2817053E7000403CB1 /* correct.wav in Resources */ = {isa = PBXBuildFile; fileRef = CEB19A2617053E7000403CB1 /* correct.wav */; };
+		CEB19A2B1705490900403CB1 /* GameKitHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB19A2A1705490900403CB1 /* GameKitHelper.m */; };
+		CEB19A2D1705516300403CB1 /* NetworkPackets.h in Headers */ = {isa = PBXBuildFile; fileRef = CEB19A2C1705516200403CB1 /* NetworkPackets.h */; };
+		CEB19A30170638EB00403CB1 /* pausebutton.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB19A2E170638EB00403CB1 /* pausebutton.png */; };
+		CEB19A31170638EB00403CB1 /* pausebutton-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB19A2F170638EB00403CB1 /* pausebutton-hd.png */; };
 		CEB3DFE716DAB58100F57214 /* paddle-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB3DFE516DAB58000F57214 /* paddle-hd.png */; };
 		CEB3DFE816DAB58100F57214 /* paddle.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB3DFE616DAB58000F57214 /* paddle.png */; };
 		CEB3DFEC16DAB5C500F57214 /* court-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB3DFE916DAB5C400F57214 /* court-hd.png */; };
 		CEB3DFED16DAB5C500F57214 /* ball-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB3DFEA16DAB5C400F57214 /* ball-hd.png */; };
 		CEB3DFEE16DAB5C500F57214 /* ball.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB3DFEB16DAB5C500F57214 /* ball.png */; };
 		CEEC906316D087F40020F89B /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC906216D087F30020F89B /* Player.m */; };
+		CEEECD7B17073F7700C9ECC0 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = CEEECD7917073F7700C9ECC0 /* background.png */; };
+		CEEECD7C17073F7700C9ECC0 /* background-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = CEEECD7A17073F7700C9ECC0 /* background-hd.png */; };
 		DC0864B815BD8CE60044A820 /* CCNode+Debug.h in Headers */ = {isa = PBXBuildFile; fileRef = DC0864B515BD8CE60044A820 /* CCNode+Debug.h */; };
 		DC0864B915BD8CE60044A820 /* CCNode+Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = DC0864B615BD8CE60044A820 /* CCNode+Debug.m */; };
 		DC0864BA15BD8CE60044A820 /* ccCArray.m in Sources */ = {isa = PBXBuildFile; fileRef = DC0864B715BD8CE60044A820 /* ccCArray.m */; };
@@ -55,7 +56,6 @@
 		DC0C4B77154AB4DF00B4B727 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DC0C4B76154AB4DF00B4B727 /* main.m */; };
 		DC0C4B7A154AB4DF00B4B727 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DC0C4B79154AB4DF00B4B727 /* AppDelegate.m */; };
 		DC0C4B88154AB55A00B4B727 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC0C4A01154AB4DD00B4B727 /* Foundation.framework */; };
-		DC0C4B92154AB57C00B4B727 /* libcocos2d-library.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC0C4B87154AB55A00B4B727 /* libcocos2d-library.a */; };
 		DC0C4C84154AB59800B4B727 /* CCAction.h in Headers */ = {isa = PBXBuildFile; fileRef = DC0C4B95154AB59800B4B727 /* CCAction.h */; };
 		DC0C4C85154AB59800B4B727 /* CCAction.m in Sources */ = {isa = PBXBuildFile; fileRef = DC0C4B96154AB59800B4B727 /* CCAction.m */; };
 		DC0C4C86154AB59800B4B727 /* CCActionCamera.h in Headers */ = {isa = PBXBuildFile; fileRef = DC0C4B97154AB59800B4B727 /* CCActionCamera.h */; };
@@ -293,19 +293,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CE0532B51707E85D00F5DE34 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		CE0532B61707E85D00F5DE34 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		CE29F4F81701557500342259 /* MultiplayerLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiplayerLayer.h; sourceTree = "<group>"; };
 		CE29F4F91701557500342259 /* MultiplayerLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiplayerLayer.m; sourceTree = "<group>"; };
 		CE29F4FB170155CE00342259 /* MultiplayerScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiplayerScene.h; sourceTree = "<group>"; };
 		CE29F4FC170155CE00342259 /* MultiplayerScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiplayerScene.m; sourceTree = "<group>"; };
 		CE29F4FE170157F000342259 /* Nextpeer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Nextpeer.framework; sourceTree = "<group>"; };
 		CE29F5011701580400342259 /* NPResources_iPhone_Portrait.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = NPResources_iPhone_Portrait.bundle; sourceTree = "<group>"; };
-		CE29F503170158FF00342259 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
-		CE29F5041701590000342259 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		CE29F5051701590000342259 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		CE29F5091701592500342259 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
-		CE29F50A1701592500342259 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		CE29F50B1701592500342259 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		CE29F50C1701592500342259 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		CE29F5111701593F00342259 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		CE29F5131701594900342259 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		CE3F842216C6E3460028F4DF /* Ball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ball.h; sourceTree = "<group>"; };
@@ -313,6 +308,14 @@
 		CE60A2A216DC952600325F5D /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		CE8AC44316C1ECCB00859F40 /* GameLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameLayer.h; sourceTree = "<group>"; };
 		CE8AC44416C1ECCB00859F40 /* GameLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameLayer.m; sourceTree = "<group>"; };
+		CEB19A2317053BD400403CB1 /* bounce.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = bounce.wav; sourceTree = "<group>"; };
+		CEB19A2517053E7000403CB1 /* wrong.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = wrong.wav; sourceTree = "<group>"; };
+		CEB19A2617053E7000403CB1 /* correct.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = correct.wav; sourceTree = "<group>"; };
+		CEB19A291705490900403CB1 /* GameKitHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameKitHelper.h; sourceTree = "<group>"; };
+		CEB19A2A1705490900403CB1 /* GameKitHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameKitHelper.m; sourceTree = "<group>"; };
+		CEB19A2C1705516200403CB1 /* NetworkPackets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkPackets.h; sourceTree = "<group>"; };
+		CEB19A2E170638EB00403CB1 /* pausebutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pausebutton.png; sourceTree = "<group>"; };
+		CEB19A2F170638EB00403CB1 /* pausebutton-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pausebutton-hd.png"; sourceTree = "<group>"; };
 		CEB3DFE516DAB58000F57214 /* paddle-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "paddle-hd.png"; sourceTree = "<group>"; };
 		CEB3DFE616DAB58000F57214 /* paddle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = paddle.png; sourceTree = "<group>"; };
 		CEB3DFE916DAB5C400F57214 /* court-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "court-hd.png"; sourceTree = "<group>"; };
@@ -320,6 +323,8 @@
 		CEB3DFEB16DAB5C500F57214 /* ball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ball.png; sourceTree = "<group>"; };
 		CEEC906116D087F30020F89B /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		CEEC906216D087F30020F89B /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
+		CEEECD7917073F7700C9ECC0 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
+		CEEECD7A17073F7700C9ECC0 /* background-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-hd.png"; sourceTree = "<group>"; };
 		DC0864B515BD8CE60044A820 /* CCNode+Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCNode+Debug.h"; sourceTree = "<group>"; };
 		DC0864B615BD8CE60044A820 /* CCNode+Debug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCNode+Debug.m"; sourceTree = "<group>"; };
 		DC0864B715BD8CE60044A820 /* ccCArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ccCArray.m; sourceTree = "<group>"; };
@@ -596,16 +601,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE29F5141701594900342259 /* libsqlite3.dylib in Frameworks */,
-				CE29F5121701593F00342259 /* libz.dylib in Frameworks */,
-				CE29F50D1701592500342259 /* CoreText.framework in Frameworks */,
-				CE29F50E1701592500342259 /* MobileCoreServices.framework in Frameworks */,
-				CE29F50F1701592500342259 /* Security.framework in Frameworks */,
-				CE29F5101701592500342259 /* StoreKit.framework in Frameworks */,
-				CE29F5061701590100342259 /* CFNetwork.framework in Frameworks */,
-				CE29F5071701590100342259 /* MessageUI.framework in Frameworks */,
-				CE29F5081701590100342259 /* SystemConfiguration.framework in Frameworks */,
-				DC0C4B92154AB57C00B4B727 /* libcocos2d-library.a in Frameworks */,
+				CE8829AB1706B24D00824780 /* libcocos2d-library.a in Frameworks */,
 				DC0C49F6154AB4DD00B4B727 /* QuartzCore.framework in Frameworks */,
 				DC0C49F8154AB4DD00B4B727 /* OpenGLES.framework in Frameworks */,
 				DC0C49FA154AB4DD00B4B727 /* OpenAL.framework in Frameworks */,
@@ -615,7 +611,6 @@
 				DC0C4A02154AB4DD00B4B727 /* Foundation.framework in Frameworks */,
 				DC0C4A04154AB4DD00B4B727 /* CoreGraphics.framework in Frameworks */,
 				DC0C4A06154AB4DD00B4B727 /* GameKit.framework in Frameworks */,
-				CE29F4FF170157F000342259 /* Nextpeer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -647,13 +642,6 @@
 			children = (
 				CE29F5131701594900342259 /* libsqlite3.dylib */,
 				CE29F5111701593F00342259 /* libz.dylib */,
-				CE29F5091701592500342259 /* CoreText.framework */,
-				CE29F50A1701592500342259 /* MobileCoreServices.framework */,
-				CE29F50B1701592500342259 /* Security.framework */,
-				CE29F50C1701592500342259 /* StoreKit.framework */,
-				CE29F503170158FF00342259 /* CFNetwork.framework */,
-				CE29F5041701590000342259 /* MessageUI.framework */,
-				CE29F5051701590000342259 /* SystemConfiguration.framework */,
 				DC0C4A07154AB4DD00B4B727 /* cocos2d-2.x-ARC-iOS */,
 				DC0C49F4154AB4DD00B4B727 /* Frameworks */,
 				DC0C49F2154AB4DD00B4B727 /* Products */,
@@ -688,6 +676,11 @@
 		DC0C4A07154AB4DD00B4B727 /* cocos2d-2.x-ARC-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				CE0532B51707E85D00F5DE34 /* RootViewController.h */,
+				CE0532B61707E85D00F5DE34 /* RootViewController.m */,
+				CEB19A2C1705516200403CB1 /* NetworkPackets.h */,
+				CEB19A291705490900403CB1 /* GameKitHelper.h */,
+				CEB19A2A1705490900403CB1 /* GameKitHelper.m */,
 				DC4C8E0316D8587300A40403 /* Objects */,
 				DC4C8DFF16D8584C00A40403 /* Scenes */,
 				DC0C4B78154AB4DF00B4B727 /* AppDelegate.h */,
@@ -702,6 +695,13 @@
 		DC0C4A08154AB4DD00B4B727 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CEEECD7917073F7700C9ECC0 /* background.png */,
+				CEEECD7A17073F7700C9ECC0 /* background-hd.png */,
+				CEB19A2E170638EB00403CB1 /* pausebutton.png */,
+				CEB19A2F170638EB00403CB1 /* pausebutton-hd.png */,
+				CEB19A2517053E7000403CB1 /* wrong.wav */,
+				CEB19A2617053E7000403CB1 /* correct.wav */,
+				CEB19A2317053BD400403CB1 /* bounce.wav */,
 				CE60A2A216DC952600325F5D /* Default.png */,
 				CEB3DFE916DAB5C400F57214 /* court-hd.png */,
 				CEB3DFEA16DAB5C400F57214 /* ball-hd.png */,
@@ -1271,6 +1271,7 @@
 				DC4C8DF516D4981300A40403 /* OptionsScene.h in Headers */,
 				DC4C8DFB16D4984400A40403 /* MenuLayer.h in Headers */,
 				DC4C8DFD16D4984400A40403 /* MenuScene.h in Headers */,
+				CEB19A2D1705516300403CB1 /* NetworkPackets.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1317,7 +1318,7 @@
 		DC0C49E8154AB4DD00B4B727 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0460;
 			};
 			buildConfigurationList = DC0C49EB154AB4DD00B4B727 /* Build configuration list for PBXProject "PongT2" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1361,6 +1362,13 @@
 				CEB3DFEE16DAB5C500F57214 /* ball.png in Resources */,
 				CE60A2A316DC952600325F5D /* Default.png in Resources */,
 				CE29F5021701580400342259 /* NPResources_iPhone_Portrait.bundle in Resources */,
+				CEB19A2417053BD400403CB1 /* bounce.wav in Resources */,
+				CEB19A2717053E7000403CB1 /* wrong.wav in Resources */,
+				CEB19A2817053E7000403CB1 /* correct.wav in Resources */,
+				CEB19A30170638EB00403CB1 /* pausebutton.png in Resources */,
+				CEB19A31170638EB00403CB1 /* pausebutton-hd.png in Resources */,
+				CEEECD7B17073F7700C9ECC0 /* background.png in Resources */,
+				CEEECD7C17073F7700C9ECC0 /* background-hd.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1378,6 +1386,8 @@
 				CEEC906316D087F40020F89B /* Player.m in Sources */,
 				CE29F4FA1701557500342259 /* MultiplayerLayer.m in Sources */,
 				CE29F4FD170155CE00342259 /* MultiplayerScene.m in Sources */,
+				CEB19A2B1705490900403CB1 /* GameKitHelper.m in Sources */,
+				CE0532B71707E85E00F5DE34 /* RootViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1500,6 +1510,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1510,6 +1524,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				SDKROOT = iphoneos;
@@ -1521,6 +1536,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1529,6 +1548,7 @@
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				SDKROOT = iphoneos;
@@ -1561,6 +1581,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = PongT2;
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1589,6 +1610,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = PongT2;
+				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};

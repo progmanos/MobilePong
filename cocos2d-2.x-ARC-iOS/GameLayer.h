@@ -11,9 +11,9 @@
 #import "Ball.h"
 #import "Player.h"
 #import "Constants.h"
-#import "Nextpeer/Nextpeer.h"
 
-@interface GameLayer : CCLayer
+
+@interface GameLayer : CCLayer 
 {
     Ball *ball;
     Player *player1;
@@ -32,6 +32,8 @@
     BOOL playerScored;
     CCMenuItemImage* pauseButton;
     CCMenu* menu;
+    CGSize screenSize;
+    
     
     
 }

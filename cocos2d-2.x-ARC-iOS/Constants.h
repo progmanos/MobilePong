@@ -17,6 +17,9 @@ typedef enum {
 } GameLevel; 
 
 BOOL multiplayer;
+NSString* name;
+BOOL playerConnected;
+BOOL initialPosition;
 
 
 #endif

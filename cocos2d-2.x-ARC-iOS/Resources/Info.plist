@@ -20,13 +20,11 @@
 		<string>Icon-Small@2x.png</string>
 	</array>
 	<key>CFBundleIdentifier</key>
-	<string>edu.spsu.cse.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>edu.spsu.cse.PongT2</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>${PRODUCT_NAME}</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -37,6 +35,8 @@
 	<true/>
 	<key>UIRequiredDeviceCapabilities</key>
 	<dict>
+		<key>gamekit</key>
+		<true/>
 		<key>accelerometer</key>
 		<true/>
 		<key>opengles-2</key>

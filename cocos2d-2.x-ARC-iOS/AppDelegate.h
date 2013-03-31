@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <GameKit/GameKit.h>
 #import "cocos2d.h"
-#import "Nextpeer/Nextpeer.h"
 
 
 @interface AppController : NSObject <UIApplicationDelegate, CCDirectorDelegate>
