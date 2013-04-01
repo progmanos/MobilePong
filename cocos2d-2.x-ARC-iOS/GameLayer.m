@@ -9,6 +9,7 @@
 #import "SimpleAudioEngine.h"
 #import <GameKit/GameKit.h>
 #import "GameKitHelper.h"
+#import "PauseScene.h"
 
 
 @implementation GameLayer
@@ -150,7 +151,8 @@
 }
 
 - (void)pauseButtonTapped: (id)sender {
-    [[CCDirector sharedDirector] popScene];
+    [[CCDirector sharedDirector] pushScene:[PauseScene node]];
+
 }
 
 -(void) dealloc
