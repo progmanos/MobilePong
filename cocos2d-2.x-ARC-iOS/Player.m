@@ -13,6 +13,7 @@
 
 @synthesize paddleSprite;
 @synthesize initialPaddleWidth;
+@synthesize playerType;
 
 +(id)playerWithParentNode:(CCNode *)parentNode
 {
@@ -47,9 +48,9 @@
     paddleSprite = sp;
 }
 
--(void) setVelocity:(int)v
+-(void) setSpeed:(int)newSpeed
 {
-    velocity = v;
+    speed = newSpeed;
 }
 
 -(void) update:(ccTime)delta
@@ -72,7 +73,7 @@
 -(void) moveRight
 {
     if ((paddleSprite.position.x + ([self getPaddleWidth]/2)) <= screenSize.width) {
-        position.x += velocity;
+        position.x += speed;
     }
 }
 
@@ -80,7 +81,7 @@
 {
     int ScreenLeftEdgeXPos = 0;
     if ((paddleSprite.position.x - ([self getPaddleWidth]/2)) >= ScreenLeftEdgeXPos) {
-        position.x -= velocity;
+        position.x -= speed;
     }
 }
 -(void) setPosition:(CGPoint)p
@@ -134,88 +135,50 @@
     paddleSprite.scaleX = width / paddleSprite.contentSize.width;
 }
 
-//first point to the left of center (end of section C)
--(CGFloat) first{
-    return (position.x - ((paddleSprite.contentSize.width * paddleSprite.scaleX*.25)/2.0));
-}
-
-//first point to the right of center (end of section C)
--(CGFloat) second{
-    return (position.x + ((paddleSprite.contentSize.width * paddleSprite.scaleX*.25)/2.0));
-}
-
-//second point to the left of center (end of section B)
--(CGFloat) third{
-    return (position.x - ((paddleSprite.contentSize.width * paddleSprite.scaleX*.375)/2.0));
-}
-
-//second point to the right of center (end of section D)
--(CGFloat) fourth{
-    return (position.x + ((paddleSprite.contentSize.width * paddleSprite.scaleX*.375)/2.0));
-}
-
-//third point to the left of center (end of section A)
--(CGFloat) fifth
-{
-    return (position.x - ((paddleSprite.contentSize.width * paddleSprite.scaleX)/2.0));
-}
-
-//third point to the right of center (end of section E)
--(CGFloat) sixth
-{
-    return (position.x + ((paddleSprite.contentSize.width * paddleSprite.scaleX)/2.0));
-}
 
 // adds half of height to user paddle to get the top of paddle
+// adds half of height to the player's paddle to get the tip center point of the paddle
 -(CGFloat) tipOfPaddle{
-    return(position.y + (paddleSprite.contentSize.height/* * paddleSprite.scaleY*/)/2);
+    CGFloat tip;
+    if (playerType == User)
+        tip = position.y + (paddleSprite.contentSize.height/* * paddleSprite.scaleY*/)/2;
+    else
+        tip = position.y - (paddleSprite.contentSize.height/* * paddleSprite.scaleY*/)/2;
+    return tip;
 }
 
-// adds half of width to user paddle to get the right side of paddle
--(CGFloat) rightOfPaddle{
+// adds half of width to player's paddle to get the right half of the paddle
+-(CGFloat) rightHalfOfPaddle{
     return(position.x + (paddleSprite.contentSize.width/* * paddleSprite.scaleY*/)/2);
 }
 
-// subtracts half of width to user paddle to get the left side of paddle
--(CGFloat) leftOfPaddle{
+// subtracts half of width to player's paddle to get the left half of the paddle
+-(CGFloat) leftHalfOfPaddle{
     return(position.x - (paddleSprite.contentSize.width/* * paddleSprite.scaleY*/)/2);
 }
 
-// subtracts half of height to opponents paddle to get the top of paddle
--(CGFloat) OpponentTipOfPaddle{
-    return(position.y - (paddleSprite.contentSize.height/* * paddleSprite.scaleY*/)/2);
+
+-(int) GetCollisionSegment:(CGFloat)ballCtrTip leftPos:(CGFloat)ballposLeft rightPos:(CGFloat)ballRightPos
+{
+    //define paddle segments ranges
+    CGFloat segALeftEdge = paddleSprite.position.x - (paddleSprite.contentSize.width)/2;
+    CGFloat segARightEdge = segALeftEdge + 20;
+    CGFloat segA[] = {segALeftEdge, segARightEdge};
+    CGFloat segB[] = {segARightEdge, segARightEdge + 20};
+    CGFloat segC[] = {segB[1], segB[1]+20};
     
-}
-
-
-
--(BOOL) inSegmentA: (CGFloat) ballposCtr leftPos: (CGFloat) ballposL rightPos: (CGFloat) ballposR
-{
-    if(ballposR >= [self leftOfPaddle] && ballposCtr < [self third])
-        return TRUE;
-    else
-        return  FALSE;
-}
-
--(BOOL) inSegmentE: (CGFloat) ballposCtr leftPos: (CGFloat) ballposL rightPos: (CGFloat) ballposR
-{
-    if(ballposL <= [self rightOfPaddle] && ballposCtr > [self fourth])
-        return TRUE;
-    else
-        return FALSE;
-}
--(BOOL) inSegmentB: (CGFloat) ballposCtr leftPos: (CGFloat) ballposL rightPos: (CGFloat) ballposR
-{
-    if(ballposCtr >= [self third] && ballposCtr <= [self first])
-        return TRUE;
-    else
-        return FALSE;
-}
--(BOOL) inSegmentD: (CGFloat) ballposCtr leftPos: (CGFloat) ballposL rightPos: (CGFloat) ballposR
-{
-    if(ballposL <= [self fourth] && ballposCtr >= [self second])
-        return TRUE;
-    else
-        return FALSE;
+    if(ballRightPos < segA[1] && ballRightPos >= segA[0]) {
+        return SegmentA;
+    }
+    else if( (ballposLeft >= segB[0] && ballRightPos < segB[1]) ||
+            (ballRightPos < segB[1] && ballRightPos >= segB[0] && ballposLeft >= segA[0])) {
+        return SegmentB;
+    }
+    else if((ballposLeft <= segC[1] && ballRightPos >= segC[0]) ||
+            (ballRightPos < segC[1] && ballRightPos >= segC[0] && ballposLeft >= segB[0])){
+        return SegmentC;
+    }
+    
+    return -1;
 }
 @end

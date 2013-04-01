@@ -103,7 +103,9 @@
         //creates ball, player, and AI player
         ball = [Ball ballWithParentNode:self];
         player1 = [Player playerWithParentNode:self];
+        player1.playerType = User;
         AIplayer = [Player playerWithParentNode:self];
+        AIplayer.playerType = Opponent;
         
         //sets initial position of player1 & AIplayer
         [player1 setPosition:CGPointMake(screenSize.width / 2, 20.0)];
@@ -117,7 +119,7 @@
         
         
         //initialize player and AI velocity
-        [player1 setVelocity:(5)];
+        [player1 setSpeed:(6)];
         
         //rudimentary AI
         //shrink the paddle by 20 pixels for level 1 and 10 for level two
@@ -125,15 +127,15 @@
         // increase the velocity per level
         switch (level) {
             case Level_One:
-                [AIplayer setVelocity:(3)];
+                [AIplayer setSpeed:(3)];
                 [AIplayer resizePaddleWidth:([AIplayer initialPaddleWidth] - 20)];
                 break;
             case Level_Two:
-                [AIplayer setVelocity:(4)];
+                [AIplayer setSpeed:(4)];
                 [AIplayer resizePaddleWidth:([AIplayer initialPaddleWidth] - 10)];
                 break;
             case Level_Three:
-                [AIplayer setVelocity:(5)];
+                [AIplayer setSpeed:(5)];
                 break;
             default:
                 break;
@@ -185,78 +187,54 @@
     [self unschedule:@selector(movePlayerRight)];
 }
 
--(void)playGame
+
+
+
+-(void) update:(ccTime)delta
 {
-    [self checkCollisionWithPlayer];
-    [self checkCollisionWithOpponent];
-    [self checkOpponentScore];
+    
+    //time in seconds
+    totalTime += delta;
+    
+    [AIroundLabel setString:[NSString stringWithFormat:@"Rounds Won: " @"%d", [AIplayer getRoundScore]]];
+    [player1roundLabel setString:[NSString stringWithFormat:@"Rounds Won: " @"%d", [player1 getRoundScore]]];
+    
+    [self checkCollision];
+    [self checkAIScore];
     [self checkPlayerScore];
     [self updateScore];
     [self checkWin];
     [self moveAIPaddle];
     
+    
+    //prevents scoring from incrementing more than once
+    if([ball getYpos] > 10 && [ball getYpos] < 400)
+        playerScored = FALSE;
+
+    
+    //updates time
+    [timeLabel setString:[NSString stringWithFormat:@"%d", (int)totalTime]];
+    
 }
-
-
--(void) checkCollisionWithPlayer
+-(void) checkCollision
 {
     //Checks collison with player
-    if([ball tipOfBall] <= [player1 tipOfPaddle] && [ball tipOfBall] >= [player1 tipOfPaddle]-5)
-        if([ball rightOfBall] >= [player1 leftOfPaddle] && [ball leftOfBall] <= [player1 rightOfPaddle])
-        {
-            [[SimpleAudioEngine sharedEngine] playEffect:@"bounce.wav"];
-            //Checks segment A -- furthest left segment
-            if([player1 inSegmentA:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball rightOfBall])])
-                [ball updateVelocityA];
-            
-            //Checks segment B -- second left segment
-            else if([player1 inSegmentB:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball rightOfBall])])
-                [ball updateVelocityB];
-            
-            //Checks segment D -- second right segment
-            else if([player1 inSegmentD:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball rightOfBall])])
-                [ball updateVelocityD];
-            
-            //Checks segment E -- second right segment
-            else if([player1 inSegmentE:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball rightOfBall])])
-                [ball updateVelocityE];
-            
-            //Center segment
-            else
-                [ball updateVelocityC];
-            
+    int player1CollisionSeg = [player1 GetCollisionSegment:[ball tipOfBallX] leftPos:[ball leftOfBall] rightPos:[ball rightOfBall]];
+    
+    if (player1CollisionSeg >= SegmentA && player1CollisionSeg <= SegmentC && [ball tipOfBall] >= ([player1 tipOfPaddle]-5) && [ball tipOfBall] <= ([player1 tipOfPaddle]) && ball.didCollide == FALSE) {
+        ball.velocity = [ball reflectStraight:CGPointMake(0,1)];
+        ball.didCollide = TRUE;
+    }
+    else {
+        int opponentCollisionSeg = [AIplayer GetCollisionSegment:[ball tipOfBallX] leftPos:[ball leftOfBall] rightPos:[ball rightOfBall]];
+        if (opponentCollisionSeg >= SegmentA && opponentCollisionSeg <= SegmentC && [ball opponentTipOfBall] <= ([AIplayer tipOfPaddle]+5) && [ball opponentTipOfBall] >= ([AIplayer tipOfPaddle])) {
+            ball.velocity = [ball reflectStraight:CGPointMake(0,-1)];
+            ball.didCollide = TRUE;
         }
+    }
 }
 
--(void)checkCollisionWithOpponent
-{
-    //Checks collision with AI
-    if([ball opponentTipOfBall] >= [AIplayer OpponentTipOfPaddle] && [ball opponentTipOfBall] <= [AIplayer OpponentTipOfPaddle]+5)
-        if([ball rightOfBall] >= [AIplayer leftOfPaddle] && [ball leftOfBall] <= [AIplayer rightOfPaddle])
-            
-        {
-            [[SimpleAudioEngine sharedEngine] playEffect:@"bounce.wav"];
-            //Checks segment A -- furthest left segment
-            if([AIplayer inSegmentA:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball     rightOfBall])])
-                [ball updateVelocityA];
-            
-            //Checks segment B -- second left segment
-            else if([AIplayer inSegmentB:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball rightOfBall])])
-                [ball updateVelocityB];
-            
-            //Checks segment C -- second right segment
-            else if([AIplayer inSegmentD:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball rightOfBall])])
-                [ball updateVelocityD];
-            
-            //Checks segment E -- furthest right segment
-            else if([AIplayer inSegmentE:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball    rightOfBall])])
-                [ball updateVelocityE];
-            
-            //Checks segment C -- center segment
-            else
-                [ball updateVelocityC];
-        }
-}
+
 
 -(void)checkPlayerScore
 {
@@ -269,7 +247,7 @@
     }
 }
 
--(void)checkOpponentScore
+-(void)checkAIScore
 {
     //AI score
     if([ball getYpos] <= -10 && !playerScored)
@@ -288,27 +266,6 @@
     
     //Updates AIscore
     [AIscoreLabel setString:[NSString stringWithFormat:@"%d", [AIplayer getScore]]];
-}
-
--(void) update:(ccTime)delta
-{
-    [AIroundLabel setString:[NSString stringWithFormat:@"Rounds Won: " @"%d", [AIplayer getRoundScore]]];
-    [player1roundLabel setString:[NSString stringWithFormat:@"Rounds Won: " @"%d", [player1 getRoundScore]]];
-    //time in seconds
-    totalTime += delta;
-   // [self checkCollisionWithPlayer];
-    
-    [self playGame];
-    
-    
-    //prevents scoring from incrementing more than once
-    if([ball getYpos] > 10 && [ball getYpos] < 400)
-        playerScored = FALSE;
-
-    
-    //updates time
-    [timeLabel setString:[NSString stringWithFormat:@"%d", (int)totalTime]];
-    
 }
 
 -(void)moveAIPaddle
@@ -336,10 +293,7 @@
 -(void) AIwinsGame
 {
     [AIplayer updateRoundScore];
-    if([AIplayer getRoundScore]<3){
-        
-        
-        
+    if([AIplayer getRoundScore]< 3){
         
         winner = @"Sorry, you lose round";
         winnerLabel.color = ccRED;
@@ -349,8 +303,7 @@
         
     }
     else{
-        
-        
+       
         winner = @"Sorry, you lose the game";
         winnerLabel.color = ccRED;
         [winnerLabel setString:(winner)];
@@ -381,7 +334,7 @@
     currentscore = (NSInteger)totalTime;
     if(currentscore < currhighscore)
     {
-        [prefs setInteger:currentscore forKey:@"highScore"];
+        [prefs setInteger:*(currentscore) forKey:@"highScore"];
         [prefs synchronize];
         
     }

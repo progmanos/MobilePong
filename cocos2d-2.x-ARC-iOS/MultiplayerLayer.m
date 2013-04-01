@@ -95,14 +95,16 @@
         //creates ball, player, and AI player
         ball = [Ball ballWithParentNode:self];
         player = [Player playerWithParentNode:self];
+        player.playerType = User;
         opponent = [Player playerWithParentNode:self];
+        opponent.playerType = Opponent;
         
         //sets initial position of player & Opponent
         [player setPosition:CGPointMake(screenSize.width / 2, 20.0)];
         [opponent setPosition:CGPointMake(screenSize.width/2, (screenSize.height - 20))];
         
         //initialize player velocity
-        [player setVelocity:(5)];
+        [player setSpeed:5];
         
         [self scheduleUpdate];
         
@@ -162,64 +164,23 @@
 
 
 
--(void) checkCollisionWithPlayer
+-(void) checkCollision
 {
     //Checks collison with player
-    if([ball tipOfBall] <= [player tipOfPaddle] && [ball tipOfBall] >= [player tipOfPaddle]-5)
-        if([ball rightOfBall] >= [player leftOfPaddle] && [ball leftOfBall] <= [player rightOfPaddle])
-        {
-            [[SimpleAudioEngine sharedEngine] playEffect:@"bounce.wav"];
-            //Checks segment A -- furthest left segment
-            if([player inSegmentA:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball rightOfBall])])
-                [ball updateVelocityA];
-            
-            //Checks segment B -- second left segment
-            else if([player inSegmentB:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball rightOfBall])])
-                [ball updateVelocityB];
-            
-            //Checks segment D -- second right segment
-            else if([player inSegmentD:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball rightOfBall])])
-                [ball updateVelocityD];
-            
-            //Checks segment E -- second right segment
-            else if([player inSegmentE:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball rightOfBall])])
-                [ball updateVelocityE];
-            
-            //Center segment
-            else
-                [ball updateVelocityC];        }
-}
-
--(void)checkCollisionWithOpponent
-{
-    //Checks collision with AI
-    if([ball opponentTipOfBall] >= [opponent OpponentTipOfPaddle] && [ball opponentTipOfBall] <= [opponent OpponentTipOfPaddle]+5)
-        if([ball rightOfBall] >= [opponent leftOfPaddle] && [ball leftOfBall] <= [opponent rightOfPaddle])
-            
-        {
-            [[SimpleAudioEngine sharedEngine] playEffect:@"bounce.wav"];
-            //Checks segment A -- furthest left segment
-            if([opponent inSegmentA:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball     rightOfBall])])
-                [ball updateVelocityA];
-            
-            //Checks segment B -- second left segment
-            else if([opponent inSegmentB:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball rightOfBall])])
-                [ball updateVelocityB];
-            
-            //Checks segment C -- second right segment
-            else if([opponent inSegmentD:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball rightOfBall])])
-                [ball updateVelocityD];
-            
-            //Checks segment E -- furthest right segment
-            else if([opponent inSegmentE:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball    rightOfBall])])
-                [ball updateVelocityE];
-            
-            //Checks segment C -- center segment
-            else
-                [ball updateVelocityC];
+    int playerCollisionSeg = [player GetCollisionSegment:[ball tipOfBallX] leftPos:[ball leftOfBall] rightPos:[ball rightOfBall]];
+    
+    if (playerCollisionSeg >= SegmentA && playerCollisionSeg <= SegmentC && [ball tipOfBall] >= ([player tipOfPaddle]-5) && [ball tipOfBall] <= ([player tipOfPaddle]) && ball.didCollide == FALSE) {
+        ball.velocity = [ball reflectStraight:CGPointMake(0,1)];
+        ball.didCollide = TRUE;
+    }
+    else {
+        int opponentCollisionSeg = [opponent GetCollisionSegment:[ball tipOfBallX] leftPos:[ball leftOfBall] rightPos:[ball rightOfBall]];
+        if (opponentCollisionSeg >= SegmentA && opponentCollisionSeg <= SegmentC && [ball opponentTipOfBall] <= ([opponent tipOfPaddle]+5) && [ball opponentTipOfBall] >= ([opponent tipOfPaddle])) {
+            ball.velocity = [ball reflectStraight:CGPointMake(0,-1)];
+            ball.didCollide = TRUE;
         }
+    }
 }
-
 -(void)checkPlayerScore
 {
     //Player score
@@ -323,8 +284,7 @@
     //time in seconds
     totalTime += delta;
     
-    [self checkCollisionWithOpponent];
-    [self checkCollisionWithPlayer];
+    [self checkCollision];
     [self checkPlayerScore];
     [self checkOpponentScore];
     [self updateScore];
@@ -381,11 +341,6 @@
   //  [self performSelector:@selector(newGame) withObject:nil afterDelay:3.0];
     
 }
-
-
-
-
-
 
 
 

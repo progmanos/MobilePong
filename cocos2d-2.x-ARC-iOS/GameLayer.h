@@ -43,8 +43,5 @@
 
 
 -(id) init;
--(void)singlePlayerGame;
--(void)multiPlayerGame;
--(void) checkCollisionWithPlayer;
--(void)checkCollisionWithOpponent;
+-(void) checkCollision;
 @end
