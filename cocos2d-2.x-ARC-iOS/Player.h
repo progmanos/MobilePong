@@ -8,20 +8,33 @@
 
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
+#import "Constants.h"
+
+typedef enum  {
+    SegmentA = 0,
+    SegmentB,
+    SegmentC
+} CollionSegment;
+
+
 
 @interface Player : CCNode
 {
     int score;
-    int velocity;
+    int speed;
     CGPoint position;
     CGSize screenSize;
+    CollionSegment collisionSeg;
 }
 
 @property (nonatomic,assign) CCSprite* paddleSprite;
+@property (nonatomic, assign) TypeofPlayer playerType;
+
+/* Used for adjusting AI paddle width in different levels */
 @property (nonatomic, readonly) CGFloat initialPaddleWidth;
 
 -(void) setSprite: (CCSprite*) paddleSprite;
--(void) setVelocity: (int) velocity;
+-(void) setSpeed: (int) newSpeed;
 -(void) moveRight;
 -(void) moveLeft;
 -(void) setPosition:(CGPoint)position;
@@ -39,19 +52,13 @@
 -(float) getRightCornerX;
 -(void) resizePaddleWidth:(float)width;
 
--(CGFloat) first;
--(CGFloat) second;
--(CGFloat) third;
--(CGFloat) fourth;
--(CGFloat) fifth;
--(CGFloat) sixth;
+
 -(CGFloat) tipOfPaddle;
--(CGFloat) rightOfPaddle;
--(CGFloat) leftOfPaddle;
--(CGFloat) OpponentTipOfPaddle;
+-(CGFloat) rightHalfOfPaddle;
+-(CGFloat) leftHalfOfPaddle;
+
 -(BOOL) inSegmentA: (CGFloat) ballposCtr leftPos: (CGFloat) ballposL rightPos: (CGFloat) ballposR;
--(BOOL) inSegmentE: (CGFloat) ballposCtr leftPos: (CGFloat) ballposL rightPos: (CGFloat) ballposR;
 -(BOOL) inSegmentB: (CGFloat) ballposCtr leftPos: (CGFloat) ballposL rightPos: (CGFloat) ballposR;
--(BOOL) inSegmentD: (CGFloat) ballposCtr leftPos: (CGFloat) ballposL rightPos: (CGFloat) ballposR;
+-(int) GetCollisionSegment: (CGFloat) ballCtrTip leftPos: (CGFloat) ballposLeft rightPos: (CGFloat) ballRightPos;
 
 @end

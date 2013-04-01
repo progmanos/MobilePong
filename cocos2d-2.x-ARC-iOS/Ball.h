@@ -8,42 +8,74 @@
 
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
+#import "Constants.h"
 
 @interface Ball : CCNode
 
 {
     
-    double curAngle;
-    double minAngle;
-    double maxAngle;
-    CGPoint curVelocity;
-    CGPoint tempVelocity;
-    CGPoint maxVelocity;
-    CGPoint minVelocity;
     CGPoint position;
-
+    CGPoint tempVelocity;
     CGSize screenSize;
     BOOL score;
-    CGFloat lastPosition;
-    CGFloat baseXVelocity;
 }
 
-@property (nonatomic) CCSprite* ballSprite;
+@property (nonatomic, assign) CCSprite* ballSprite;
 @property (nonatomic) BOOL didCollide;
--(void) setCurVel: (CGPoint) curVelocity;
--(CGPoint) getVelocity;
+@property (nonatomic) CGPoint velocity;
+@property (nonatomic) CGPoint prevPosition;
+
+/* 
+ typdef function used for defining the blunt function
+ */
+typedef CGFloat (^BluntFuncBlock)(CGFloat x);
+
 -(void) setPosition: (CGPoint) position;
 -(CGPoint) getPosition;
 -(void) moveBall;
--(void) updateVelocityA;
--(void) updateVelocityB;
--(void) updateVelocityC;
--(void) updateVelocityD;
--(void) updateVelocityE;
 -(void) player1serveBall;
 -(void) AIserveBall;
 -(float) getXpos;
 -(float) getYpos;
+
+/* 
+ Since velocity.x = speed * cos(angle),
+ we simply use arccos(velocity.x/speed) to find the angle
+ 
+ Returns ball angle in radians
+*/
+-(CGFloat) getAngle;
+
+/*
+ @velocityVector: CGPoint representation of a velocity vector
+ Returns the vector's angle in radians
+ */
+-(CGFloat) getAngle: (CGPoint) velocityVector;
+
+/* 
+ speed = magnitude of velocity 
+ speed = sqrt( velocity.x^2 + velocity.y^2)
+ Returns ball speed
+ */
+-(CGFloat) getSpeed;
+
+/*
+ @velocityVector: CGPoint representation of a velocity vector
+ Returns the scalar valued speed of the vector
+ */
+-(CGFloat) getSpeed: (CGPoint) velocityVector;
+
+/*
+ @speed: scalar valued speed of the ball, magnitude of velocity
+ @angle: angle of movement of the ball
+ 
+ This functions calculates the velocity vector using physics functions
+ velocity.x = speed * cos(angle)
+ velocity.y = speed * sin(angle)
+ 
+ Returns a velocity vector as a CGPoint
+ */
+-(CGPoint) calcVelocity: (CGFloat) speed withAngle: (CGFloat) angle;
 
 // for the bottom and top collision we only need to calculate the y value
 // bottom: position.y (center of ball) - radius
@@ -60,14 +92,29 @@
 
 +(id)ballWithParentNode:(CCNode*)parentNode;
 -(id)initWithParentNode:(CCNode*)parentNode;
+
 -(CGFloat) tipOfBall;
 -(CGFloat) rightOfBall;
 -(CGFloat) leftOfBall;
 -(CGFloat) tipOfBallX;
+
 -(float) getBallWidth;
--(BOOL) movingRight;
+
 -(CGFloat) opponentTipOfBall;
 
+/* 
+ returns the regular (straight) reflection vector
+ Reflection formula: ResultVector = V - 2 * CrossProduct(DotProduct(V, N),n)
+ */
+-(CGPoint) reflectStraight:(CGPoint) normVect;
 
+/*
+ @normVect: vector normal to the collision point
+ @bluntfunc: a linear function, coded as an Objective-C block that increases or decreases the angle of              
+             reflection
+ 
+ Returns the reflection vector with a blunt
+ */
+-(CGPoint) reflect: (CGPoint) normVect withBlunt:  (BluntFuncBlock) bluntfunc;
 
 @end

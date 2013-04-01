@@ -276,7 +276,22 @@
 		DC4C8DFD16D4984400A40403 /* MenuScene.h in Headers */ = {isa = PBXBuildFile; fileRef = DC4C8DF916D4984400A40403 /* MenuScene.h */; };
 		DC4C8DFE16D4984400A40403 /* MenuScene.m in Sources */ = {isa = PBXBuildFile; fileRef = DC4C8DFA16D4984400A40403 /* MenuScene.m */; };
 		DC6B433916D86558002B5BB5 /* court.png in Resources */ = {isa = PBXBuildFile; fileRef = DC6B433816D86558002B5BB5 /* court.png */; };
+		DCB89DDB16F962E6000F6F45 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB89DC016F962A9000F6F45 /* SenTestingKit.framework */; };
+		DCB89DDC16F962E6000F6F45 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC0C49FF154AB4DD00B4B727 /* UIKit.framework */; };
+		DCB89DDD16F962E6000F6F45 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC0C4A01154AB4DD00B4B727 /* Foundation.framework */; };
+		DCB89DE316F962E6000F6F45 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DCB89DE116F962E6000F6F45 /* InfoPlist.strings */; };
+		DCB89DE616F962E6000F6F45 /* MobilePongTwoUnitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB89DE516F962E6000F6F45 /* MobilePongTwoUnitTests.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DCB89DEB16F9630E000F6F45 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DC0C49E8154AB4DD00B4B727 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DC0C49F0154AB4DD00B4B727;
+			remoteInfo = PongT2;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		CE3F842216C6E3460028F4DF /* Ball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ball.h; sourceTree = "<group>"; };
@@ -559,6 +574,17 @@
 		DC4C8DF916D4984400A40403 /* MenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuScene.h; sourceTree = "<group>"; };
 		DC4C8DFA16D4984400A40403 /* MenuScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuScene.m; sourceTree = "<group>"; };
 		DC6B433816D86558002B5BB5 /* court.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = court.png; sourceTree = "<group>"; };
+		DCB89DC016F962A9000F6F45 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		DCB89DC216F962A9000F6F45 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		DCB89DC516F962A9000F6F45 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		DCB89DC616F962A9000F6F45 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		DCB89DC716F962A9000F6F45 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		DCB89DDA16F962E6000F6F45 /* MobilePongTwoUnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MobilePongTwoUnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCB89DE016F962E6000F6F45 /* MobilePongTwoUnitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MobilePongTwoUnitTests-Info.plist"; sourceTree = "<group>"; };
+		DCB89DE216F962E6000F6F45 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		DCB89DE416F962E6000F6F45 /* MobilePongTwoUnitTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MobilePongTwoUnitTests.h; sourceTree = "<group>"; };
+		DCB89DE516F962E6000F6F45 /* MobilePongTwoUnitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MobilePongTwoUnitTests.m; sourceTree = "<group>"; };
+		DCB89DE716F962E6000F6F45 /* MobilePongTwoUnitTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MobilePongTwoUnitTests-Prefix.pch"; sourceTree = "<group>"; };
 		DCBD22B616DB419B00711C30 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -588,6 +614,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DCB89DD616F962E6000F6F45 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCB89DDB16F962E6000F6F45 /* SenTestingKit.framework in Frameworks */,
+				DCB89DDC16F962E6000F6F45 /* UIKit.framework in Frameworks */,
+				DCB89DDD16F962E6000F6F45 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -595,6 +631,7 @@
 			isa = PBXGroup;
 			children = (
 				DC0C4A07154AB4DD00B4B727 /* cocos2d-2.x-ARC-iOS */,
+				DCB89DDE16F962E6000F6F45 /* MobilePongTwoUnitTests */,
 				DC0C49F4154AB4DD00B4B727 /* Frameworks */,
 				DC0C49F2154AB4DD00B4B727 /* Products */,
 			);
@@ -605,6 +642,7 @@
 			children = (
 				DC0C49F1154AB4DD00B4B727 /* PongT2.app */,
 				DC0C4B87154AB55A00B4B727 /* libcocos2d-library.a */,
+				DCB89DDA16F962E6000F6F45 /* MobilePongTwoUnitTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -621,6 +659,9 @@
 				DC0C4A01154AB4DD00B4B727 /* Foundation.framework */,
 				DC0C4A03154AB4DD00B4B727 /* CoreGraphics.framework */,
 				DC0C4A05154AB4DD00B4B727 /* GameKit.framework */,
+				DCB89DC016F962A9000F6F45 /* SenTestingKit.framework */,
+				DCB89DC216F962A9000F6F45 /* Cocoa.framework */,
+				DCB89DC416F962A9000F6F45 /* Other Frameworks */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1062,6 +1103,36 @@
 			name = Objects;
 			sourceTree = "<group>";
 		};
+		DCB89DC416F962A9000F6F45 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DCB89DC516F962A9000F6F45 /* AppKit.framework */,
+				DCB89DC616F962A9000F6F45 /* CoreData.framework */,
+				DCB89DC716F962A9000F6F45 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		DCB89DDE16F962E6000F6F45 /* MobilePongTwoUnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				DCB89DE416F962E6000F6F45 /* MobilePongTwoUnitTests.h */,
+				DCB89DE516F962E6000F6F45 /* MobilePongTwoUnitTests.m */,
+				DCB89DDF16F962E6000F6F45 /* Supporting Files */,
+			);
+			path = MobilePongTwoUnitTests;
+			sourceTree = "<group>";
+		};
+		DCB89DDF16F962E6000F6F45 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				DCB89DE016F962E6000F6F45 /* MobilePongTwoUnitTests-Info.plist */,
+				DCB89DE116F962E6000F6F45 /* InfoPlist.strings */,
+				DCB89DE716F962E6000F6F45 /* MobilePongTwoUnitTests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		DCBD22B516DB415300711C30 /* Constants */ = {
 			isa = PBXGroup;
 			children = (
@@ -1248,6 +1319,25 @@
 			productReference = DC0C4B87154AB55A00B4B727 /* libcocos2d-library.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		DCB89DD916F962E6000F6F45 /* MobilePongTwoUnitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DCB89DE816F962E6000F6F45 /* Build configuration list for PBXNativeTarget "MobilePongTwoUnitTests" */;
+			buildPhases = (
+				DCB89DD516F962E6000F6F45 /* Sources */,
+				DCB89DD616F962E6000F6F45 /* Frameworks */,
+				DCB89DD716F962E6000F6F45 /* Resources */,
+				DCB89DD816F962E6000F6F45 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DCB89DEC16F9630E000F6F45 /* PBXTargetDependency */,
+			);
+			name = MobilePongTwoUnitTests;
+			productName = MobilePongTwoUnitTests;
+			productReference = DCB89DDA16F962E6000F6F45 /* MobilePongTwoUnitTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1271,6 +1361,7 @@
 			targets = (
 				DC0C49F0154AB4DD00B4B727 /* PongT2 */,
 				DC0C4B86154AB55A00B4B727 /* cocos2d-library */,
+				DCB89DD916F962E6000F6F45 /* MobilePongTwoUnitTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1300,7 +1391,31 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DCB89DD716F962E6000F6F45 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCB89DE316F962E6000F6F45 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		DCB89DD816F962E6000F6F45 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		DC0C49ED154AB4DD00B4B727 /* Sources */ = {
@@ -1427,7 +1542,34 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DCB89DD516F962E6000F6F45 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCB89DE616F962E6000F6F45 /* MobilePongTwoUnitTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DCB89DEC16F9630E000F6F45 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DC0C49F0154AB4DD00B4B727 /* PongT2 */;
+			targetProxy = DCB89DEB16F9630E000F6F45 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		DCB89DE116F962E6000F6F45 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DCB89DE216F962E6000F6F45 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		DC0C4B7E154AB4DF00B4B727 /* Debug */ = {
@@ -1479,6 +1621,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "cocos2d-2.x-ARC-iOS/Prefix.pch";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "\"cocos2d-2.x-ARC-iOS/libs/kazmath/include\"";
 				INFOPLIST_FILE = "cocos2d-2.x-ARC-iOS/Resources/Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -1503,6 +1646,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "cocos2d-2.x-ARC-iOS/Prefix.pch";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "\"cocos2d-2.x-ARC-iOS/libs/kazmath/include\"";
 				INFOPLIST_FILE = "cocos2d-2.x-ARC-iOS/Resources/Info.plist";
 				LIBRARY_SEARCH_PATHS = (
@@ -1556,6 +1700,71 @@
 			};
 			name = Release;
 		};
+		DCB89DE916F962E6000F6F45 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/PongT2.app/PongT2";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MobilePongTwoUnitTests/MobilePongTwoUnitTests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				INFOPLIST_FILE = "MobilePongTwoUnitTests/MobilePongTwoUnitTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		DCB89DEA16F962E6000F6F45 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/PongT2.app/PongT2";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MobilePongTwoUnitTests/MobilePongTwoUnitTests-Prefix.pch";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				INFOPLIST_FILE = "MobilePongTwoUnitTests/MobilePongTwoUnitTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				VALIDATE_PRODUCT = YES;
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1582,6 +1791,15 @@
 			buildConfigurations = (
 				DC0C4B90154AB55A00B4B727 /* Debug */,
 				DC0C4B91154AB55A00B4B727 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DCB89DE816F962E6000F6F45 /* Build configuration list for PBXNativeTarget "MobilePongTwoUnitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DCB89DE916F962E6000F6F45 /* Debug */,
+				DCB89DEA16F962E6000F6F45 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

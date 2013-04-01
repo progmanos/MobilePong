@@ -13,6 +13,8 @@
 
 @synthesize didCollide;
 @synthesize ballSprite;
+@synthesize velocity;
+@synthesize prevPosition;
 
 +(id)ballWithParentNode:(CCNode *)parentNode
 {
@@ -34,9 +36,22 @@
         [self addChild:ballSprite];
         
         [self scheduleUpdate];
-        curVelocity = CGPointMake(4, 4);
+        srandom(time(NULL));
         
-        baseXVelocity = 4;
+        /* generate inital random angles */
+        CGFloat randSelect = random() % 10;
+        CGFloat randangle1 = random()%150+30;
+        CGFloat randangle2 = random()%330+210;
+        CGFloat randangle;
+        
+        if(randSelect >= 5)
+            randangle = randangle1;
+        else
+            randangle = randangle2;
+        
+        CGPoint initialvel = [self calcVelocity:MIN_BALL_SPEED withAngle: CC_DEGREES_TO_RADIANS(randangle)];
+        velocity.x = initialvel.x;
+        velocity.y = initialvel.y;
     }
 
     
@@ -57,14 +72,11 @@
 
 -(void) setCurVel: (CGPoint) crV
 {
-    curVelocity = crV;
+   // curVelocity = crV;
 }
 
 
--(CGPoint) getVelocity
-{
-    return curVelocity;
-}
+
 -(void) setPosition: (CGPoint) p
 {
     position = p;
@@ -79,13 +91,13 @@
 -(void) moveBall
 {
     
-    position.x += curVelocity.x;
-    position.y += curVelocity.y;
+    position.x += velocity.x;
+    position.y += velocity.y;
     
     
     //Handles bouncing on walls
     if(position.x < 0 || position.x >screenSize.width){
-        curVelocity.x = -curVelocity.x;}
+        velocity.x = -velocity.x;}
     
     //AI scores and serves ball
     if(position.y < -16)
@@ -110,12 +122,12 @@
 -(void) player1serveBall
 {
     
-    tempVelocity = curVelocity;
+    tempVelocity = velocity;
     
     screenSize = [CCDirector sharedDirector].winSize;
     position = CGPointMake((arc4random()%300) + 1, (screenSize.height/4));
-    curVelocity.x = 0;
-    curVelocity.y = 0;
+    velocity.x = 0;
+    velocity.y = 0;
     
     [self performSelector:@selector(resumeMove) withObject:nil afterDelay:2.0];
 
@@ -127,12 +139,12 @@
 -(void) AIserveBall
 {
     
-    tempVelocity = curVelocity;
+    tempVelocity = velocity;
     
     screenSize = [CCDirector sharedDirector].winSize;
     position = CGPointMake((arc4random()%300) + 1, (screenSize.height - (screenSize.height/4)));
-    curVelocity.x = 0;
-    curVelocity.y = 0;
+    velocity.x = 0;
+    velocity.y = 0;
     [self performSelector:@selector(resumeMove) withObject:nil afterDelay:2.0];
 
 }
@@ -142,51 +154,13 @@
 -(void) resumeMove
 {
     score = FALSE;
-    curVelocity = CGPointMake(tempVelocity.x, tempVelocity.y);
+    CGPoint newvel = CGPointMake(tempVelocity.x, tempVelocity.y);
+    velocity.x = newvel.x;
+    velocity.y = newvel.y;
     tempVelocity = CGPointMake(0, 0);
 }
 
 
-//changes x velocity by 30%
--(void) updateVelocityA
-{
-    curVelocity.y = - curVelocity.y;
-    curVelocity.x = -baseXVelocity*1.3;
-    
-}
-
-//changes x velocity by 15%
--(void) updateVelocityB
-{
-    curVelocity.y = - curVelocity.y;
-    curVelocity.x = -baseXVelocity*1.15;
-}
-
-
--(void) updateVelocityC
-{
-    curVelocity.y = - curVelocity.y;
-    if(curVelocity.x > 0)
-        curVelocity.x = baseXVelocity;
-    else
-        curVelocity.x = -baseXVelocity;
-}
-
-//changes x velocity by 15%
--(void) updateVelocityD
-{
-    curVelocity.y = - curVelocity.y;
-    
-    curVelocity.x = baseXVelocity*1.15;
-}
-
-//changes x velocity by 30%
--(void) updateVelocityE
-{
-    curVelocity.y = - curVelocity.y;
-    
-    curVelocity.x = baseXVelocity*1.3;
-}
 
 
 -(float) getXpos
@@ -222,7 +196,7 @@
 
 //adds half of ball to get right of ball to get right tip
 -(CGFloat) rightOfBall{
-    return(position.x + (ballSprite.contentSize.height /* ballSprite.scaleY*/)/2);
+    return(position.x + (ballSprite.contentSize.width)/2);
 }
 
 -(float) getBottomTipY
@@ -232,7 +206,8 @@
 }
 
 //subtracts half of ball to get left of ball to get right tip
--(CGFloat) leftOfBall{
+-(CGFloat) leftOfBall
+{
     return(position.x - (ballSprite.contentSize.height /* ballSprite.scaleY*/)/2);
 }
 
@@ -243,7 +218,8 @@
 }
 
 //gets x position of the ball when looking at the top or bottom
--(CGFloat) tipOfBallX{
+-(CGFloat) tipOfBallX
+{
     return  position.x;
 }
 
@@ -253,18 +229,48 @@
     return (ballSprite.position.x + (diameter/2.0));
 }
 
-//method not working trying to figure out a way to track directions of ball but it changes when it is headed toward user so this does not work... i think
--(BOOL) movingRight{
-    if (lastPosition<position.x){
-        return true;
-    }
-    else{
-        return false;
-    }
-    
-    
+-(CGPoint) calcVelocity: (CGFloat) speed withAngle: (CGFloat) angle
+{
+    return CGPointMake(speed*cosf(speed), speed*sinf(angle));
 }
 
+-(CGFloat) getSpeed
+{
+    return [self getSpeed:velocity];
+}
+
+-(CGFloat) getAngle
+{
+    return [self getAngle:velocity];
+}
+
+-(CGFloat) getSpeed: (CGPoint) velocityVector
+{
+    return sqrtf(powf(velocityVector.x,2) + powf(velocityVector.y,2));
+}
+
+-(CGFloat) getAngle: (CGPoint) velocityVector
+{
+    return acosf(velocityVector.x / [self getSpeed:velocityVector]);
+}
+
+-(CGPoint) reflectStraight: (CGPoint) normVect
+{
+  //  CGPoint curVector = CGPointMake(position.x - prevPosition.x, position.y - prevPosition.y);
+    CGFloat dotproduct = ccpDot(velocity,normVect);
+    CGFloat reflectionVectX = velocity.x - 2*normVect.x*dotproduct;
+    CGFloat reflectionVectY = velocity.y - 2*normVect.y*dotproduct;
+    CGPoint newVelocity = CGPointMake(reflectionVectX, reflectionVectY);
+    return newVelocity;
+}
+
+-(CGPoint) reflect: (CGPoint) normVect withBlunt:  (BluntFuncBlock) bluntfunc
+{
+    CGPoint reflectionVect = [self reflectStraight:normVect];
+    CGFloat newAngle = [self getAngle:reflectionVect] + bluntfunc(normVect.x);
+    CGPoint newVelocity = [self calcVelocity:[self getSpeed:reflectionVect] withAngle:newAngle];
+    return newVelocity;
+}
 
 
 @end
