@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		CE0532B71707E85E00F5DE34 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0532B61707E85D00F5DE34 /* RootViewController.m */; };
+		CE1E25CF1709E37500C89AC9 /* background2.png in Resources */ = {isa = PBXBuildFile; fileRef = CE1E25CD1709E37500C89AC9 /* background2.png */; };
+		CE1E25D11709E3CC00C89AC9 /* background2-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = CE1E25D01709E3CC00C89AC9 /* background2-hd.png */; };
 		CE29F4FA1701557500342259 /* MultiplayerLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = CE29F4F91701557500342259 /* MultiplayerLayer.m */; };
 		CE29F4FD170155CE00342259 /* MultiplayerScene.m in Sources */ = {isa = PBXBuildFile; fileRef = CE29F4FC170155CE00342259 /* MultiplayerScene.m */; };
 		CE29F500170157F000342259 /* Nextpeer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE29F4FE170157F000342259 /* Nextpeer.framework */; };
@@ -307,6 +309,8 @@
 /* Begin PBXFileReference section */
 		CE0532B51707E85D00F5DE34 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		CE0532B61707E85D00F5DE34 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		CE1E25CD1709E37500C89AC9 /* background2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background2.png; sourceTree = "<group>"; };
+		CE1E25D01709E3CC00C89AC9 /* background2-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background2-hd.png"; sourceTree = "<group>"; };
 		CE29F4F81701557500342259 /* MultiplayerLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiplayerLayer.h; sourceTree = "<group>"; };
 		CE29F4F91701557500342259 /* MultiplayerLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiplayerLayer.m; sourceTree = "<group>"; };
 		CE29F4FB170155CE00342259 /* MultiplayerScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiplayerScene.h; sourceTree = "<group>"; };
@@ -719,6 +723,8 @@
 		DC0C4A08154AB4DD00B4B727 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CE1E25D01709E3CC00C89AC9 /* background2-hd.png */,
+				CE1E25CD1709E37500C89AC9 /* background2.png */,
 				CECB06681708E3FF009D3412 /* Tutorial Layout.png */,
 				CECB06691708E3FF009D3412 /* Tutorial Objective.png */,
 				CECB066A1708E3FF009D3412 /* Tutorial Goal.png */,
@@ -1413,6 +1419,8 @@
 				CECB066D1708E3FF009D3412 /* Tutorial Objective.png in Resources */,
 				CECB066E1708E3FF009D3412 /* Tutorial Goal.png in Resources */,
 				CECB066F1708E3FF009D3412 /* Tutorial Welcome.png in Resources */,
+				CE1E25CF1709E37500C89AC9 /* background2.png in Resources */,
+				CE1E25D11709E3CC00C89AC9 /* background2-hd.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

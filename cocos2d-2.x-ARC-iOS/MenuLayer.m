@@ -58,7 +58,7 @@
     
     
     mainMenu = [CCMenu
-                menuWithItems:playGameItemLabel,optionsItemLabel, multiplayerItemLabel,tutorialItemLabel, nil];
+                menuWithItems:playGameItemLabel, multiplayerItemLabel, optionsItemLabel, tutorialItemLabel, nil];
     
     [mainMenu alignItemsVerticallyWithPadding:screenSize.height * 0.059f];
     [mainMenu setPosition:
@@ -75,7 +75,7 @@
     if (self != nil) {
         CGSize screenSize = [CCDirector sharedDirector].winSize;
         CCSprite *background =
-        [CCSprite spriteWithFile:@"background.png"];
+        [CCSprite spriteWithFile:@"background2.png"];
         [background setPosition:ccp(screenSize.width/2,
                                     screenSize.height/2)];
         [self addChild:background];

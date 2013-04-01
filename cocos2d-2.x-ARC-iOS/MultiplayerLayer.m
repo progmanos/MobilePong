@@ -57,13 +57,13 @@
         
         //sets label for score of Opponent
         OpponentScoreLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:48];
-        OpponentScoreLabel.position = ccp((screenSize.width/2), (screenSize.height - (screenSize.height/4)));
+        OpponentScoreLabel.position = ccp((screenSize.width/2), (screenSize.height - (screenSize.height/6)));
         OpponentScoreLabel.color = ccBLACK;
         [self addChild:OpponentScoreLabel z:0];
         
         //sets label for score of Opponent
         playerscoreLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:48];
-        playerscoreLabel.position = ccp((screenSize.width/2), (screenSize.height/4));
+        playerscoreLabel.position = ccp((screenSize.width/2), (screenSize.height/6));
         playerscoreLabel.color = ccBLACK;
         [self addChild:playerscoreLabel z:0];
         

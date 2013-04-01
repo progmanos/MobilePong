@@ -56,45 +56,37 @@
         menu.position = CGPointMake(screenSize.width/2, screenSize.height/2);
         [self addChild:menu z:0];
         
-        //creates ball, player, and AI player
-        ball = [Ball ballWithParentNode:self];
-        player1 = [Player playerWithParentNode:self];
-        AIplayer = [Player playerWithParentNode:self];
-        
-        //sets initial position of player1 & AIplayer
-        [player1 setPosition:CGPointMake(screenSize.width / 2, 20.0)];
-        [AIplayer setPosition:CGPointMake(screenSize.width/2, (screenSize.height - 20))];
         
         //sets label for score of AIplayer
         AIscoreLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:48];
         AIscoreLabel.position = ccp((screenSize.width/2), (screenSize.height - (screenSize.height/6)));
         AIscoreLabel.color = ccBLACK;
-        [self addChild:AIscoreLabel z:1];
+        [self addChild:AIscoreLabel z:0];
         
         //sets label for score of AIplayer
         player1scoreLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:48];
         player1scoreLabel.position = ccp((screenSize.width/2), (screenSize.height/6));
         player1scoreLabel.color = ccBLACK;
-        [self addChild:player1scoreLabel z:1];
+        [self addChild:player1scoreLabel z:0];
         
         
         //sets label for score of AIplayer's round
         AIroundLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:12];
-        AIroundLabel.position = ccp((screenSize.width)-75, ((screenSize.height)-45));
+        AIroundLabel.position = ccp((screenSize.width)/2, ((screenSize.height)-45));
         AIroundLabel.color = ccBLACK;
-        [self addChild:AIroundLabel z:1];
+        [self addChild:AIroundLabel z:0];
         
         //sets label for score of player1's round
         player1roundLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:12];
-        player1roundLabel.position = ccp(35, ((screenSize.height)-45));
+        player1roundLabel.position = ccp((screenSize.width)/2, 45);
         player1roundLabel.color = ccBLACK;
-        [self addChild:player1roundLabel z:1];
+        [self addChild:player1roundLabel z:0];
         
         //sets label for time of gameplay
         timeLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:24];
         timeLabel.color = ccRED;
         timeLabel.position = ccp(30, 30);
-        [self addChild:timeLabel z:1];
+        [self addChild:timeLabel z:0];
         
         //sets label for winner of the game
         winnerLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:48];
@@ -107,11 +99,21 @@
         [self addChild:highScoreLabel z:0];
         [highScoreLabel setString:(highscore)];
         
+        
+        //creates ball, player, and AI player
+        ball = [Ball ballWithParentNode:self];
+        player1 = [Player playerWithParentNode:self];
+        AIplayer = [Player playerWithParentNode:self];
+        
+        //sets initial position of player1 & AIplayer
+        [player1 setPosition:CGPointMake(screenSize.width / 2, 20.0)];
+        [AIplayer setPosition:CGPointMake(screenSize.width/2, (screenSize.height - 20))];
+        
         //Set AI round score
-        [AIroundLabel setString:[NSString stringWithFormat:@"Rounds: " @"%d", [AIplayer getRoundScore]]];
+        [AIroundLabel setString:[NSString stringWithFormat:@"Rounds Won: " @"%d", [AIplayer getRoundScore]]];
         
         //Set player1 round score
-        [player1roundLabel setString:[NSString stringWithFormat:@"Rounds: " @"%d", [player1 getRoundScore]]];
+        [player1roundLabel setString:[NSString stringWithFormat:@"Rounds Won: " @"%d", [player1 getRoundScore]]];
         
         
         //initialize player and AI velocity
@@ -290,8 +292,8 @@
 
 -(void) update:(ccTime)delta
 {
-    [AIroundLabel setString:[NSString stringWithFormat:@"Rounds: " @"%d", [AIplayer getRoundScore]]];
-    [player1roundLabel setString:[NSString stringWithFormat:@"Rounds: " @"%d", [player1 getRoundScore]]];
+    [AIroundLabel setString:[NSString stringWithFormat:@"Rounds Won: " @"%d", [AIplayer getRoundScore]]];
+    [player1roundLabel setString:[NSString stringWithFormat:@"Rounds Won: " @"%d", [player1 getRoundScore]]];
     //time in seconds
     totalTime += delta;
    // [self checkCollisionWithPlayer];
