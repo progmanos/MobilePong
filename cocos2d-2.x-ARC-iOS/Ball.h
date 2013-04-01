@@ -22,7 +22,6 @@
     CGPoint maxVelocity;
     CGPoint minVelocity;
     CGPoint position;
-    BOOL resumeMove;
 
     CGSize screenSize;
     BOOL score;
@@ -31,8 +30,7 @@
 }
 
 @property (nonatomic) CCSprite* ballSprite;
-@property (nonatomic) BOOL didCollide;
-@property (nonatomic) BOOL resumeMove;
+@property (nonatomic) BOOL didCollide; 
 -(void) setCurVel: (CGPoint) curVelocity;
 -(CGPoint) getVelocity;
 -(void) setPosition: (CGPoint) position;

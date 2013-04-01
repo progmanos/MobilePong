@@ -14,27 +14,30 @@
 #import "RootViewController.h"
 #import "MultiplayerLayer.h"
 
+
 @implementation MultiplayerLayer
+
+
 -(id) init
 {
     if ((self = [super init]))
     {
         countdowntostart = 5;
         opponentnumber = 0;
-        ournumber = 0;
+        ournumber = arc4random()%100;
+        opponentRecRandNum = FALSE;
         player1=FALSE;
         player2=FALSE;
         playerDetermined=FALSE;
         initialPosition=FALSE;
         playerConnected=FALSE;
         playerScored=FALSE;
-        randNumberReceived = FALSE;
         gkHelper = [GameKitHelper sharedGameKitHelper];
 		gkHelper.delegate = self;
         [gkHelper authenticateLocalPlayer];
         [self onAchievementsViewDismissed];
         
-        countdown = [NSString stringWithFormat:@"TIME TO START: %d ", (int)countdowntostart];
+        //countdown = [NSString stringWithFormat:@"TIME TO START: %d ", (int)countdowntostart];
         CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
         self.isTouchEnabled = YES;
         
@@ -76,14 +79,14 @@
         [self addChild:winnerLabel z:2];
         
         //sets label for countdown
-        countdownLabel = [CCLabelTTF labelWithString:@"8" fontName:@"Marker Felt" fontSize:12];
+        countdownLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:12];
         countdownLabel.position = ccp(35, 5);
         [self addChild:countdownLabel z:0];
-        [countdownLabel setString:(countdown)];
+        //[countdownLabel setString:(countdown)];
        
         
         //sets label for which player
-        whichPlayerLabel = [CCLabelTTF labelWithString:@"8" fontName:@"Marker Felt" fontSize:12];
+        whichPlayerLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:12];
         whichPlayerLabel.position = ccp(200, 5);
         [self addChild:whichPlayerLabel z:0];
         [whichPlayerLabel setString:(@"undetermined")];
@@ -110,8 +113,10 @@
 }
 
 
+
 //returns to main menu..still need to implement actual pause button
 - (void)pauseButtonTapped: (id)sender {
+    [gkHelper disconnectCurrentMatch];
     [[CCDirector sharedDirector] popScene];
 }
 
@@ -257,13 +262,6 @@
 
 }
 
--(void)pickAndSendRandomNumber
-{
-    CCLOG(@"pick and send random number");
-    ournumber = arc4random()%100;
-    [self sendRandomNumber:ournumber];
-    CCLOG(@"Sending number.... %i", ournumber);
-}
 
 
 //set initial position of each player
@@ -272,7 +270,6 @@
     //before game starts, player one send their ball position to player
     if(player1)
     {
-        //(!positionReceived)
         [self sendBallPosition:[ball getPosition]];
         initialPosition = TRUE;
     }
@@ -288,32 +285,28 @@
 -(void) update:(ccTime)delta
 {
     
-    //Update countdown
-    [countdownLabel setString:[NSString stringWithFormat:@"%d", (int)countdowntostart]];
 
-    
+    if([gkHelper matchStarted])
+        CCLOG(@"match started");
     //check that a match has been made
     if([gkHelper currentMatch]!=nil)
     {
         
         //determine which player is which
-        if(!playerDetermined)
-           [self pickAndSendRandomNumber];
+        if(!opponentRecRandNum)
+        {
+            [self sendRandomNumber:ournumber];
+            usleep(10000);
+        }
         
         //set initial position of each player after players are decided
-        if(!initialPosition && playerDetermined)
+        if(!initialPosition && playerDetermined && opponentRecRandNum)
             [self initialize];
         
-        //player one sends countdown to player 2
-        if(countdowntostart>-1 && playerDetermined)
-           if(player1)
-            {
-                [self sendCountdown:countdowntostart];
-                usleep(100000);
-            }
+        
         
         //if countdown has ended and initial position has been set, game begins
-        if(initialPosition && countdowntostart <= 0)
+        if(initialPosition)
         {
             [self playGame:delta];
         }
@@ -333,18 +326,14 @@
     [self checkCollisionWithOpponent];
     [self checkCollisionWithPlayer];
     [self checkPlayerScore];
-    [self updateScore];
     [self checkOpponentScore];
+    [self updateScore];
+    [self checkWin];
     
     if(player1)
     {
         [self sendBallPosition:[ball getPosition]];
         [ball moveBall];
-    }
-    if([ball getPosition].y <= screenSize.height/2)
-    {
-        
-        
     }
   
     //prevents scoring from incrementing more than once
@@ -376,7 +365,8 @@
     winner = @"Sorry, you lose";
     winnerLabel.color = ccRED;
     [winnerLabel setString:(winner)];
-    [self performSelector:@selector(newGame) withObject:nil afterDelay:3.0];
+    [gkHelper disconnectCurrentMatch];
+   // [self performSelector:@selector(newGame) withObject:nil afterDelay:3.0];
 }
 
 //Displays "Congratulations, you won" in red for 3 seconds. Then starts a new game
@@ -385,9 +375,10 @@
     winner = @"Congratulations\n you won!";
     winnerLabel.color = ccGREEN;
     [winnerLabel setString:(winner)];
+    [gkHelper disconnectCurrentMatch];
     
    
-    [self performSelector:@selector(newGame) withObject:nil afterDelay:3.0];
+  //  [self performSelector:@selector(newGame) withObject:nil afterDelay:3.0];
     
 }
 
@@ -474,10 +465,10 @@
 			CCLOG(@"\tscore = %i", scorePacket->score);
 			break;
 		}
-        case kPacketTypePosReceived:
+        case kPacketTypeRanNumReceived:
 		{
-			SPosReceivedPacket* posRecPacket = (SPosReceivedPacket*)basePacket;
-            positionReceived = TRUE;
+			SRanNumReceivedPacket* posRecPacket = (SRanNumReceivedPacket*)basePacket;
+            opponentRecRandNum = TRUE;
 			break;
 		}
 		case kPacketTypeBallPosition:
@@ -485,12 +476,6 @@
 			SBallPositionPacket* positionPacket = (SBallPositionPacket*)basePacket;
 			CCLOG(@"\tposition = (%.1f, %.1f)", positionPacket->position.x, positionPacket->position.y);
             CGPoint temp = CGPointMake((screenSize.width - positionPacket->position.x), (screenSize.height - positionPacket->position.y));
-            if(!player1)
-            {
-                //
-                //positionReceived = TRUE;
-                //[self sendPosReceived:positionReceived];
-            }
             [ball setPosition:temp];
             
 			if (playerID != [GKLocalPlayer localPlayer].playerID)
@@ -516,7 +501,7 @@
 		{
 			SPaddlePositionPacket* ppositionPacket = (SPaddlePositionPacket*)basePacket;
 			CCLOG(@"\tPADDLEPOS = %i", ppositionPacket->paddleposition);
-            [opponent setXPosition: ppositionPacket->paddleposition];
+            [opponent setXPosition: (screenSize.width - ppositionPacket->paddleposition)];
 			
 			if (playerID != [GKLocalPlayer localPlayer].playerID)
 			{
@@ -541,6 +526,7 @@
                 player2 = FALSE;
                 playerDetermined = TRUE;
                 CCLOG(@"Player1");
+                [self sendRandNumReceived];
             }
             else if(ournumber<opponentnumber)
             {
@@ -549,6 +535,12 @@
                 player1 = FALSE;
                 playerDetermined = TRUE;
                 CCLOG(@"Player2");
+                [self sendRandNumReceived];
+            }
+            else
+            {
+                ournumber = arc4random()%100;
+                [self sendRandomNumber:ournumber];
             }
 			break;
 		}
@@ -557,8 +549,6 @@
 			SCountdownPacket* ctdownPacket = (SCountdownPacket*)basePacket;
 			CCLOG(@"\tCountdown = %i", ctdownPacket->countdown);
 			countdowntostart = ctdownPacket->countdown;
-            if(player1)
-                countdowntostart--;
 			if (playerID != [GKLocalPlayer localPlayer].playerID)
 			{
                 
@@ -632,16 +622,18 @@
 		SRandomNumberPacket packet;
 		packet.type = kPacketTypeRandomNumber;
         packet.randomNumber = ranNumber;
-		
 		[[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
+        
 	}
+    
+    
 }
 
 -(void) sendCountdown:(int)ctdown
 {
 	if ([GameKitHelper sharedGameKitHelper].currentMatch != nil)
 	{
-        countdowntostart--;
+        //countdowntostart--;
         SCountdownPacket packet;
         packet.type = kPacketTypeCountdown;
         packet.countdown = ctdown;
@@ -650,17 +642,18 @@
 	}
 }
 
--(void) sendPosReceived:(BOOL)posRec
+-(void) sendRandNumReceived
 {
 	if ([GameKitHelper sharedGameKitHelper].currentMatch != nil)
 	{
-        SPosReceivedPacket packet;
-        packet.type = kPacketTypePosReceived;
-        packet.didReceivePos = posRec;
+        SRanNumReceivedPacket packet;
+        packet.type = kPacketTypeRanNumReceived;
         
 		[[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
 	}
 }
+
+
 @end
 
 

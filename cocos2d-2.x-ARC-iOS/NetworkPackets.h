@@ -16,7 +16,7 @@ typedef enum
     kPacketTypeRandomNumber,
     kPacketTypeCountdown,
     kPacketTypeVelocity,
-    kPacketTypePosReceived,
+    kPacketTypeRanNumReceived,
     
 } EPacketTypes;
 
@@ -80,8 +80,7 @@ typedef struct
 {
 	EPacketTypes type;
     
-	BOOL didReceivePos;
-} SPosReceivedPacket;
+} SRanNumReceivedPacket;
 
 
 // TODO for you: add more packets as needed. 

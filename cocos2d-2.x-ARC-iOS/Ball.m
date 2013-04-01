@@ -24,7 +24,6 @@
     if((self = [super init]))
     {
         score = FALSE;
-        resumeMove = FALSE;
         [parentNode addChild:self];
         screenSize = [CCDirector sharedDirector].winSize;
         
@@ -39,7 +38,6 @@
         curVelocity = CGPointMake(4, 4);
         
         baseXVelocity = 4;
-//        [self player1serveBall];
     }
 
     
@@ -106,9 +104,6 @@
     
     if(position.y > 230 && position.y < 350)
         self.didCollide = FALSE;
-    
-    if(resumeMove)
-        [self performSelector:@selector(resumeMove) withObject:nil afterDelay:2.0];
 
     
 }
@@ -123,9 +118,8 @@
     position = CGPointMake((arc4random()%300) + 1, (screenSize.height/4));
     curVelocity.x = 0;
     curVelocity.y = 0;
-    resumeMove = TRUE;
     
-    //[self performSelector:@selector(resumeMove) withObject:nil afterDelay:2.0];
+    [self performSelector:@selector(resumeMove) withObject:nil afterDelay:2.0];
 
 
 }
@@ -141,8 +135,7 @@
     position = CGPointMake((arc4random()%300) + 1, (screenSize.height - (screenSize.height/4)));
     curVelocity.x = 0;
     curVelocity.y = 0;
-    resumeMove = TRUE;
-    //[self performSelector:@selector(resumeMove) withObject:nil afterDelay:2.0];
+    [self performSelector:@selector(resumeMove) withObject:nil afterDelay:2.0];
 
 }
 
@@ -153,7 +146,6 @@
     score = FALSE;
     curVelocity = CGPointMake(tempVelocity.x, tempVelocity.y);
     tempVelocity = CGPointMake(0, 0);
-    resumeMove = FALSE;
 }
 
 

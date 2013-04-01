@@ -13,14 +13,6 @@
 #import "Constants.h"
 #import "GameKitHelper.h"
 
-//////sample data//////sample data//////sample data//////sample data//////sample data
-typedef enum {
-    kGameStateWaitingForMatch = 0,
-    kGameStateWaitingForRandomNumber,
-    kGameStateWaitingForStart,
-    kGameStateActive,
-    kGameStateDone
-} GameState;
 
 @interface MultiplayerLayer : CCLayer<GameKitHelperProtocol>{
     Ball *ball;
@@ -47,20 +39,13 @@ typedef enum {
     BOOL player1;
     BOOL player2;
     BOOL playerDetermined;
-    BOOL positionReceived;
-    BOOL randNumberReceived;
+    BOOL opponentRecRandNum;
     int ournumber;
     int opponentnumber;
     int countdowntostart;
     
     CCLabelTTF *whichPlayerLabel;
     
-    
-//////sample data//////sample data//////sample data//////sample data//////sample data
-    GameState gameState;
-    uint32_t ourRandom;
-    BOOL receivedRandom;
-    NSString *otherPlayerID;
 }
 
 
