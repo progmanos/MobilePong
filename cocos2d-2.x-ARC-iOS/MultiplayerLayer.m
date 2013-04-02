@@ -22,6 +22,7 @@
 {
     if ((self = [super init]))
     {
+        times = 0;
         countdowntostart = 5;
         opponentnumber = 0;
         ournumber = arc4random()%100;
@@ -118,9 +119,12 @@
 
 //returns to main menu..still need to implement actual pause button
 - (void)pauseButtonTapped: (id)sender {
-    [gkHelper disconnectCurrentMatch];
-    [[CCDirector sharedDirector] popScene];
-}
+    pausePressed = true;
+    //[gkHelper disconnectCurrentMatch];
+    
+    [[CCDirector sharedDirector] pushScene:[PauseScene node]];
+    [self pauseReceived:pausePressed];
+     }
 
 -(void) dealloc
 {
@@ -246,7 +250,7 @@
 -(void) update:(ccTime)delta
 {
     
-
+    
     if([gkHelper matchStarted])
         CCLOG(@"match started");
     //check that a match has been made
@@ -510,6 +514,12 @@
 			}
 			break;
 		}
+        case kPacketTypePause:
+		{
+			SPausePacket* pausePacket = (SPausePacket*)basePacket;
+            pausePressed = pausePacket->Pause;
+			break;
+		}
 		default:
 			CCLOG(@"unknown packet type %i", basePacket->type);
 			break;
@@ -608,6 +618,17 @@
 	}
 }
 
+-(void) pauseReceived:(BOOL)paused
+{
+	if ([GameKitHelper sharedGameKitHelper].currentMatch != nil)
+	{
+        SPausePacket packet;
+        packet.type = kPacketTypePause;
+        packet.Pause = paused;
+        
+		[[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
+	}
+}
 
 @end
 

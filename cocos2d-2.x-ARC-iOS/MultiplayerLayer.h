@@ -12,9 +12,11 @@
 #import "Player.h"
 #import "Constants.h"
 #import "GameKitHelper.h"
+#import "PauseScene.h"
 
 
 @interface MultiplayerLayer : CCLayer<GameKitHelperProtocol>{
+    int times;
     Ball *ball;
     Player *player;
     Player *opponent;
@@ -38,6 +40,7 @@
     
     BOOL player1;
     BOOL player2;
+    BOOL pausePressed;
     BOOL playerDetermined;
     BOOL opponentRecRandNum;
     int ournumber;

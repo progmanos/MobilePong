@@ -389,10 +389,11 @@
         //Set player1 round score
         [player1roundLabel setString:[NSString stringWithFormat:@"Rounds: " @"%d", [player1 getRoundScore]]];
         
-        //need to implement to play again or main menu
+        [[CCDirector sharedDirector] pushScene:[EndGameScene node]];
         
     highscore = [NSString stringWithFormat:@"highScore: %d ", (int)currhighscore];
     [highScoreLabel setString:(highscore)];
+        
     }
     
     currhighscore = [prefs integerForKey:@"highScore"];
@@ -401,7 +402,7 @@
     
     highscore = [NSString stringWithFormat:@"highScore: %d ", (int)currhighscore];
     [highScoreLabel setString:(highscore)];
-    [[CCDirector sharedDirector] pushScene:[EndGameScene node]];
+    
     
 }
 

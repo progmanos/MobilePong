@@ -9,7 +9,7 @@
 #import "CCLayer.h"
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
-#import "GameScene.h"
+//#import "GameScene.h"
 #import "tutorialScene.h"
 #import "OptionsScene.h"
 #import <CoreFoundation/CoreFoundation.h>

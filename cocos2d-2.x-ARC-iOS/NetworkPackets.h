@@ -17,6 +17,7 @@ typedef enum
     kPacketTypeCountdown,
     kPacketTypeVelocity,
     kPacketTypeRanNumReceived,
+    kPacketTypePause,
     
 } EPacketTypes;
 
@@ -81,6 +82,14 @@ typedef struct
 	EPacketTypes type;
     
 } SRanNumReceivedPacket;
+
+//packet for pause
+typedef struct
+{
+	EPacketTypes type;
+    BOOL Pause;
+    
+} SPausePacket;
 
 
 // TODO for you: add more packets as needed. 
