@@ -92,10 +92,10 @@
         whichPlayerLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:12];
         whichPlayerLabel.position = ccp(200, 5);
         [self addChild:whichPlayerLabel z:0];
-        [whichPlayerLabel setString:(@"undetermined")];
+        [whichPlayerLabel setString:(@" ")];
         
-        playerPauseLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:28];
-        playerPauseLabel.position = ccp(screenSize.width/2, screenSize.height/2);
+        playerPauseLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:24];
+        playerPauseLabel.position = ccp(screenSize.width/2, screenSize.height/2 + 40);
         playerPauseLabel.color = ccWHITE;
         [self addChild:playerPauseLabel z:2];
         
