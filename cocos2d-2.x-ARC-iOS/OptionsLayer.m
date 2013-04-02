@@ -49,32 +49,32 @@
 	if (self != nil) {
         
         CGSize screenSize = [CCDirector sharedDirector].winSize;
-        CCLabelTTF *levelOneLabel = [CCLabelTTF labelWithString:@"Beginner" fontName:@"Arial" fontSize:32];
+        CCLabelTTF *levelOneLabel = [CCLabelTTF labelWithString:@"Beginner" fontName:@"Arial" fontSize:24];
         CCMenuItemFont *levelOne = [CCMenuItemFont itemWithLabel:levelOneLabel target:self selector:nil];
         
-        CCLabelTTF *levelTwoLabel = [CCLabelTTF labelWithString:@"Intermediate" fontName:@"Arial" fontSize:32];
+        CCLabelTTF *levelTwoLabel = [CCLabelTTF labelWithString:@"Intermediate" fontName:@"Arial" fontSize:24];
         CCMenuItemFont *levelTwo = [CCMenuItemFont itemWithLabel:levelTwoLabel target:self selector:nil];
         
-        CCLabelTTF *levelThreeLabel = [CCLabelTTF labelWithString:@"Advanced" fontName:@"Arial" fontSize:32];
+        CCLabelTTF *levelThreeLabel = [CCLabelTTF labelWithString:@"Advanced" fontName:@"Arial" fontSize:24];
         CCMenuItemFont *levelThree = [CCMenuItemFont itemWithLabel:levelThreeLabel target:self selector:nil];
-        CCLabelTTF *backLabel = [CCLabelTTF labelWithString:@"Back to Main Menu" fontName:@"Arial" fontSize:32];
+        CCLabelTTF *backLabel = [CCLabelTTF labelWithString:@"Back to Main Menu" fontName:@"Arial" fontSize:24];
         CCMenuItemLabel *backItem = [CCMenuItemLabel itemWithLabel:backLabel target:self selector:@selector(returnToMainMenu)];
         
         
         //set number of match
-        CCLabelTTF *levelChoicesLabel = [CCLabelTTF labelWithString:@"Select points to win match:" fontName:@"Arial" fontSize:32];
+        CCLabelTTF *levelChoicesLabel = [CCLabelTTF labelWithString:@"Select points to win match:" fontName:@"Arial" fontSize:24];
         CCMenuItemFont *levelChoicesItemLabel = [CCMenuItemFont itemWithLabel:levelChoicesLabel target:self selector:@selector(setMatchNum)];
         levelChoicesLabel.color = ccRED;
         
-        levelChoiceOnelabel = [CCLabelTTF labelWithString:@"    5" fontName:@"Arial" fontSize:24];
+        levelChoiceOnelabel = [CCLabelTTF labelWithString:@"    5" fontName:@"Arial" fontSize:16];
         CCMenuItemFont *levelChoiceOneItemLabel = [CCMenuItemFont itemWithLabel:levelChoiceOnelabel target:self selector:@selector(setMatchNum1)];
         levelChoiceOnelabel.color = ccYELLOW ;
         
-        levelChoiceTwolabel = [CCLabelTTF labelWithString:@"    11" fontName:@"Arial" fontSize:24];
+        levelChoiceTwolabel = [CCLabelTTF labelWithString:@"    11" fontName:@"Arial" fontSize:16];
         CCMenuItemFont *levelChoiceTwoItemLabel = [CCMenuItemFont itemWithLabel:levelChoiceTwolabel target:self selector:@selector(setMatchNum2)];
         levelChoiceTwolabel.color = ccYELLOW ;
         
-        levelChoiceThreelabel = [CCLabelTTF labelWithString:@"  15" fontName:@"Arial" fontSize:24];
+        levelChoiceThreelabel = [CCLabelTTF labelWithString:@"  15" fontName:@"Arial" fontSize:16];
         CCMenuItemFont *levelChoiceThreeItemLabel = [CCMenuItemFont itemWithLabel:levelChoiceThreelabel target:self selector:@selector(setMatchNum3)];
         levelChoiceThreelabel.color = ccYELLOW ;
 

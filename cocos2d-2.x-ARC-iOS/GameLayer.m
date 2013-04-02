@@ -95,7 +95,7 @@
         [self addChild:timeLabel z:0];
         
         //sets label for winner of the game
-        winnerLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:48];
+        winnerLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:28];
         winnerLabel.position = ccp(screenSize.width/2, screenSize.height/2);
         [self addChild:winnerLabel z:2];
         
@@ -309,7 +309,7 @@
     
     if([AIplayer getRoundScore]< 3){
         
-        winner = @"Sorry, you lose round";
+        winner = @"Sorry, you lose the round";
         winnerLabel.color = ccRED;
         [winnerLabel setString:(winner)];
         [self performSelector:@selector(newGame) withObject:nil afterDelay:3.0];
