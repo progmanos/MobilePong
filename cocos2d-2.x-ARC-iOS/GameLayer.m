@@ -23,6 +23,8 @@
         prefs = [NSUserDefaults standardUserDefaults];
         
         playerScored = FALSE;
+       
+       
         
         currhighscore = [prefs integerForKey:@"highScore"];
         if(currhighscore == nil)
@@ -39,6 +41,8 @@
             level = defaultLevel;
             [self SetLevel:defaultLevel];
         }
+        
+      
         
         CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
         self.isTouchEnabled = YES;
@@ -141,6 +145,9 @@
             default:
                 break;
         }
+        
+        
+       
         
         [self scheduleUpdate];
         
@@ -283,11 +290,11 @@
 -(void) checkWin
 {
     //play to 11 to win
-    if([AIplayer getScore] == 11)
+    if([AIplayer getScore] == pointsToWin)
         [self AIwinsGame];
     
     //play to 11 to win
-    if([player1 getScore] == 11)
+    if([player1 getScore] == pointsToWin)
         [self player1WinsGame];
 }
 
@@ -400,6 +407,21 @@
 {
     // set level value
     [[NSUserDefaults standardUserDefaults] setInteger:level forKey:@"level"];
+    
+    // save the data
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+-(NSInteger) GetMatchLevel
+{
+    NSInteger matchLevel = [[NSUserDefaults standardUserDefaults] integerForKey:@"level"];
+    return matchLevel;
+}
+
+-(void) SetMatchLevel:(NSInteger) matchLevel
+{
+    // set level value
+    [[NSUserDefaults standardUserDefaults] setInteger:matchLevel forKey:@"matchLevel"];
     
     // save the data
     [[NSUserDefaults standardUserDefaults] synchronize];

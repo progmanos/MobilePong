@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0173E62A170A3243002EFCAF /* PauseScene.h in Headers */ = {isa = PBXBuildFile; fileRef = CECB06721708E416009D3412 /* PauseScene.h */; };
+		0173E633170A33B2002EFCAF /* MultiplayerOptionScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 0173E632170A33B2002EFCAF /* MultiplayerOptionScene.m */; };
+		0173E636170A33DA002EFCAF /* MultiplayerOptionLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0173E635170A33DA002EFCAF /* MultiplayerOptionLayer.m */; };
 		CE0532B71707E85E00F5DE34 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE0532B61707E85D00F5DE34 /* RootViewController.m */; };
 		CE1E25CF1709E37500C89AC9 /* background2.png in Resources */ = {isa = PBXBuildFile; fileRef = CE1E25CD1709E37500C89AC9 /* background2.png */; };
 		CE1E25D11709E3CC00C89AC9 /* background2-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = CE1E25D01709E3CC00C89AC9 /* background2-hd.png */; };
@@ -36,7 +39,6 @@
 		CECB066F1708E3FF009D3412 /* Tutorial Welcome.png in Resources */ = {isa = PBXBuildFile; fileRef = CECB066B1708E3FF009D3412 /* Tutorial Welcome.png */; };
 		CECB06781708E416009D3412 /* PauseLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = CECB06701708E416009D3412 /* PauseLayer.h */; };
 		CECB06791708E416009D3412 /* PauseLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = CECB06711708E416009D3412 /* PauseLayer.m */; };
-		CECB067A1708E416009D3412 /* PauseScene.h in Headers */ = {isa = PBXBuildFile; fileRef = CECB06721708E416009D3412 /* PauseScene.h */; };
 		CECB067B1708E416009D3412 /* PauseScene.m in Sources */ = {isa = PBXBuildFile; fileRef = CECB06731708E416009D3412 /* PauseScene.m */; };
 		CECB067C1708E416009D3412 /* TutorialLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = CECB06741708E416009D3412 /* TutorialLayer.h */; };
 		CECB067D1708E416009D3412 /* TutorialLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = CECB06751708E416009D3412 /* TutorialLayer.m */; };
@@ -307,6 +309,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0173E631170A33B2002EFCAF /* MultiplayerOptionScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiplayerOptionScene.h; sourceTree = "<group>"; };
+		0173E632170A33B2002EFCAF /* MultiplayerOptionScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiplayerOptionScene.m; sourceTree = "<group>"; };
+		0173E634170A33DA002EFCAF /* MultiplayerOptionLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiplayerOptionLayer.h; sourceTree = "<group>"; };
+		0173E635170A33DA002EFCAF /* MultiplayerOptionLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiplayerOptionLayer.m; sourceTree = "<group>"; };
 		CE0532B51707E85D00F5DE34 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		CE0532B61707E85D00F5DE34 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		CE1E25CD1709E37500C89AC9 /* background2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background2.png; sourceTree = "<group>"; };
@@ -1106,6 +1112,10 @@
 		DC4C8DFF16D8584C00A40403 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				0173E634170A33DA002EFCAF /* MultiplayerOptionLayer.h */,
+				0173E635170A33DA002EFCAF /* MultiplayerOptionLayer.m */,
+				0173E631170A33B2002EFCAF /* MultiplayerOptionScene.h */,
+				0173E632170A33B2002EFCAF /* MultiplayerOptionScene.m */,
 				CECB06701708E416009D3412 /* PauseLayer.h */,
 				CECB06711708E416009D3412 /* PauseLayer.m */,
 				CECB06721708E416009D3412 /* PauseScene.h */,
@@ -1315,9 +1325,9 @@
 				DC4C8DFD16D4984400A40403 /* MenuScene.h in Headers */,
 				CEB19A2D1705516300403CB1 /* NetworkPackets.h in Headers */,
 				CECB06781708E416009D3412 /* PauseLayer.h in Headers */,
-				CECB067A1708E416009D3412 /* PauseScene.h in Headers */,
 				CECB067C1708E416009D3412 /* TutorialLayer.h in Headers */,
 				CECB067E1708E416009D3412 /* tutorialScene.h in Headers */,
+				0173E62A170A3243002EFCAF /* PauseScene.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1440,6 +1450,8 @@
 				CE29F4FD170155CE00342259 /* MultiplayerScene.m in Sources */,
 				CEB19A2B1705490900403CB1 /* GameKitHelper.m in Sources */,
 				CE0532B71707E85E00F5DE34 /* RootViewController.m in Sources */,
+				0173E633170A33B2002EFCAF /* MultiplayerOptionScene.m in Sources */,
+				0173E636170A33DA002EFCAF /* MultiplayerOptionLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

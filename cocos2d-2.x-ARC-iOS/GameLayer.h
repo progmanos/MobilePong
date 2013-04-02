@@ -16,6 +16,7 @@
 @interface GameLayer : CCLayer 
 {
     int times;
+    
     Ball *ball;
     Player *player1;
     Player *AIplayer;
@@ -41,7 +42,9 @@
     
 }
 
-
+-(void) setMatchNum1;
+-(void) setMatchNum2;
+-(void) setMatchNum3;
 -(id) init;
 -(void) checkCollision;
 @end

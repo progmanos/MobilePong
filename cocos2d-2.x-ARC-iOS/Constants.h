@@ -14,6 +14,7 @@
 #define PADDLE_COLLISION_DIVIDER 21
 
 typedef enum {
+    
     Level_One = 1,
     Level_Two = 2,
     Level_Three = 3
@@ -23,10 +24,12 @@ typedef enum  {
     User = 0,
     Opponent
 }TypeofPlayer;
+
 BOOL multiplayer;
 NSString* name;
 BOOL playerConnected;
 BOOL initialPosition;
+int pointsToWin;
 
 
 #endif

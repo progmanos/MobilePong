@@ -37,6 +37,7 @@
 }
 -(void) displayMenu
 {
+    pointsToWin = 11;
     multiplayer = FALSE;
     CGSize screenSize = [CCDirector sharedDirector].winSize;
     CCLabelTTF *playlabel = [CCLabelTTF labelWithString:@"Play Pong" fontName:@"Arial" fontSize:32];
