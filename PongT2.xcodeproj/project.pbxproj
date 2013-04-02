@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0171D918170A6D31001AF171 /* EndGameLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0171D917170A6D31001AF171 /* EndGameLayer.m */; };
+		0171D91B170A6D5D001AF171 /* EndGameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 0171D91A170A6D5D001AF171 /* EndGameScene.m */; };
 		0173E62A170A3243002EFCAF /* PauseScene.h in Headers */ = {isa = PBXBuildFile; fileRef = CECB06721708E416009D3412 /* PauseScene.h */; };
 		0173E633170A33B2002EFCAF /* MultiplayerOptionScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 0173E632170A33B2002EFCAF /* MultiplayerOptionScene.m */; };
 		0173E636170A33DA002EFCAF /* MultiplayerOptionLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0173E635170A33DA002EFCAF /* MultiplayerOptionLayer.m */; };
@@ -309,6 +311,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0171D916170A6D30001AF171 /* EndGameLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EndGameLayer.h; sourceTree = "<group>"; };
+		0171D917170A6D31001AF171 /* EndGameLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EndGameLayer.m; sourceTree = "<group>"; };
+		0171D919170A6D5D001AF171 /* EndGameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EndGameScene.h; sourceTree = "<group>"; };
+		0171D91A170A6D5D001AF171 /* EndGameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EndGameScene.m; sourceTree = "<group>"; };
 		0173E631170A33B2002EFCAF /* MultiplayerOptionScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiplayerOptionScene.h; sourceTree = "<group>"; };
 		0173E632170A33B2002EFCAF /* MultiplayerOptionScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiplayerOptionScene.m; sourceTree = "<group>"; };
 		0173E634170A33DA002EFCAF /* MultiplayerOptionLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiplayerOptionLayer.h; sourceTree = "<group>"; };
@@ -1129,6 +1135,10 @@
 				DC4C8E0216D8586A00A40403 /* MainMenu */,
 				DC4C8E0116D8586000A40403 /* Options */,
 				DC4C8E0016D8585600A40403 /* Game */,
+				0171D916170A6D30001AF171 /* EndGameLayer.h */,
+				0171D917170A6D31001AF171 /* EndGameLayer.m */,
+				0171D919170A6D5D001AF171 /* EndGameScene.h */,
+				0171D91A170A6D5D001AF171 /* EndGameScene.m */,
 			);
 			name = Scenes;
 			sourceTree = "<group>";
@@ -1452,6 +1462,8 @@
 				CE0532B71707E85E00F5DE34 /* RootViewController.m in Sources */,
 				0173E633170A33B2002EFCAF /* MultiplayerOptionScene.m in Sources */,
 				0173E636170A33DA002EFCAF /* MultiplayerOptionLayer.m in Sources */,
+				0171D918170A6D31001AF171 /* EndGameLayer.m in Sources */,
+				0171D91B170A6D5D001AF171 /* EndGameScene.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

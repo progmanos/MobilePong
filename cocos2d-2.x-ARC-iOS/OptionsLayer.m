@@ -139,15 +139,15 @@
         pointsToWin =11;
     }
     else{
-        if(lastSelction==2){
-            levelChoiceTwolabel.color = ccYELLOW ;
-            levelChoiceThreelabel.color = ccGREEN ;
-            pointsToWin =5;
+        if(lastSelction==3){
+            levelChoiceThreelabel.color = ccYELLOW ;
+            levelChoiceTwolabel.color = ccGREEN ;
+            pointsToWin =11;
             lastSelction=2;
         }
         else if(lastSelction==1){
             levelChoiceOnelabel.color = ccYELLOW ;
-            levelChoiceThreelabel.color = ccGREEN ;
+            levelChoiceTwolabel.color = ccGREEN ;
             pointsToWin =11;
             lastSelction=2;
         }

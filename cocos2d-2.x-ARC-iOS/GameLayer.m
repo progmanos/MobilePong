@@ -23,7 +23,8 @@
         prefs = [NSUserDefaults standardUserDefaults];
         
         playerScored = FALSE;
-       
+        [player1 resetScore];
+        [AIplayer resetScore];
        
         
         currhighscore = [prefs integerForKey:@"highScore"];
@@ -301,7 +302,11 @@
 //Displays "Sorry, you lose" in red for 3 seconds. Then starts a new game
 -(void) AIwinsGame
 {
-    [AIplayer updateRoundScore];
+    if(times==0){
+        [AIplayer updateRoundScore];
+        times =1;
+    }
+    
     if([AIplayer getRoundScore]< 3){
         
         winner = @"Sorry, you lose round";
@@ -327,8 +332,11 @@
 //Displays "Congratulations, you won" in red for 3 seconds. Then starts a new game
 -(void) player1WinsGame
 {
-    [player1 updateRoundScore];
+    if(times==0){
+       [player1 updateRoundScore];
     times =1;
+    }
+    
     if([player1 getRoundScore]<3){
         winner = @"Congratulations\n you won the round!";
         winnerLabel.color = ccGREEN;
@@ -393,7 +401,7 @@
     
     highscore = [NSString stringWithFormat:@"highScore: %d ", (int)currhighscore];
     [highScoreLabel setString:(highscore)];
-    
+    [[CCDirector sharedDirector] pushScene:[EndGameScene node]];
     
 }
 

@@ -11,6 +11,7 @@
 #import "Ball.h"
 #import "Player.h"
 #import "Constants.h"
+#import "EndGameScene.h"
 
 
 @interface GameLayer : CCLayer 
