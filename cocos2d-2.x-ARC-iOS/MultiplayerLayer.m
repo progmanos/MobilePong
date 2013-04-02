@@ -22,6 +22,8 @@
 {
     if ((self = [super init]))
     {
+        endMultiPlayer = FALSE;
+        gamePaused = FALSE;
         times = 0;
         countdowntostart = 5;
         opponentnumber = 0;
@@ -92,6 +94,10 @@
         [self addChild:whichPlayerLabel z:0];
         [whichPlayerLabel setString:(@"undetermined")];
         
+        playerPauseLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:28];
+        playerPauseLabel.position = ccp(screenSize.width/2, screenSize.height/2);
+        playerPauseLabel.color = ccWHITE;
+        [self addChild:playerPauseLabel z:2];
         
         //creates ball, player, and AI player
         ball = [Ball ballWithParentNode:self];
@@ -117,13 +123,11 @@
 
 
 
-//returns to main menu..still need to implement actual pause button
 - (void)pauseButtonTapped: (id)sender {
-    pausePressed = true;
-    //[gkHelper disconnectCurrentMatch];
     
+    gamePaused = TRUE;
     [[CCDirector sharedDirector] pushScene:[PauseScene node]];
-    [self pauseReceived:pausePressed];
+    [self pauseReceived:TRUE];
      }
 
 -(void) dealloc
@@ -188,7 +192,7 @@
 -(void)checkPlayerScore
 {
     //Player score
-    if([ball getYpos] >= 496 && !playerScored)
+    if([ball getYpos] >= 490 && !playerScored)
     {
         //play sound
         [[SimpleAudioEngine sharedEngine] playEffect:@"correct.wav"];
@@ -249,7 +253,9 @@
 
 -(void) update:(ccTime)delta
 {
-    
+    [playerPauseLabel setString:(@" ")];
+    if(endMultiPlayer)
+        [gkHelper disconnectCurrentMatch];
     
     if([gkHelper matchStarted])
         CCLOG(@"match started");
@@ -306,6 +312,8 @@
     
     //updates time
     [timeLabel setString:[NSString stringWithFormat:@"%d", (int)totalTime]];
+    if(!gamePaused)
+        [self pauseReceived:FALSE];
 
 }
 
@@ -517,7 +525,20 @@
         case kPacketTypePause:
 		{
 			SPausePacket* pausePacket = (SPausePacket*)basePacket;
-            pausePressed = pausePacket->Pause;
+            if(pausePacket->Pause)
+            {
+                if(player1)
+                    [playerPauseLabel setString:(@"Player 2 has paused the game")];
+                if(!player1)
+                    [playerPauseLabel setString:(@"Player 1 has paused the game")];
+                [[CCDirector sharedDirector] pause];
+            }
+                
+            else
+            {
+                [playerPauseLabel setString:(@" ")];
+                [[CCDirector sharedDirector] resume];
+            }
 			break;
 		}
 		default:

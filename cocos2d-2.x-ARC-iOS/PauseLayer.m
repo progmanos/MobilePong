@@ -57,6 +57,7 @@
 
 -(void) returnToMainMenu
 {
+    endMultiPlayer = TRUE;
     // pop the options scene from the CCDirector and return to the menu scene
     [[CCDirector sharedDirector] popScene];
     [[CCDirector sharedDirector] popScene];
@@ -66,6 +67,7 @@
 {
     // pop the options scene from the CCDirector and return to the menu scene
     [[CCDirector sharedDirector] popScene];
+    gamePaused = FALSE;
   
 }
 

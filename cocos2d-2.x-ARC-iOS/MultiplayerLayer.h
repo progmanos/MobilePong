@@ -25,6 +25,7 @@
     CCLabelTTF *timeLabel;
     CCLabelTTF *countdownLabel;
     CCLabelTTF *winnerLabel;
+    CCLabelTTF *playerPauseLabel;
     ccTime totalTime;
     NSString *countdown;
     NSString *winner;
@@ -40,7 +41,6 @@
     
     BOOL player1;
     BOOL player2;
-    BOOL pausePressed;
     BOOL playerDetermined;
     BOOL opponentRecRandNum;
     int ournumber;

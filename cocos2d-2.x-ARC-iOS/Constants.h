@@ -26,9 +26,11 @@ typedef enum  {
 }TypeofPlayer;
 
 BOOL multiplayer;
+BOOL gamePaused;
 NSString* name;
 BOOL playerConnected;
 BOOL initialPosition;
+BOOL endMultiPlayer;
 int pointsToWin;
 
 

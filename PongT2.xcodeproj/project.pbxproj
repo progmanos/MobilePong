@@ -35,10 +35,6 @@
 		CEB3DFEC16DAB5C500F57214 /* court-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB3DFE916DAB5C400F57214 /* court-hd.png */; };
 		CEB3DFED16DAB5C500F57214 /* ball-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB3DFEA16DAB5C400F57214 /* ball-hd.png */; };
 		CEB3DFEE16DAB5C500F57214 /* ball.png in Resources */ = {isa = PBXBuildFile; fileRef = CEB3DFEB16DAB5C500F57214 /* ball.png */; };
-		CECB066C1708E3FF009D3412 /* Tutorial Layout.png in Resources */ = {isa = PBXBuildFile; fileRef = CECB06681708E3FF009D3412 /* Tutorial Layout.png */; };
-		CECB066D1708E3FF009D3412 /* Tutorial Objective.png in Resources */ = {isa = PBXBuildFile; fileRef = CECB06691708E3FF009D3412 /* Tutorial Objective.png */; };
-		CECB066E1708E3FF009D3412 /* Tutorial Goal.png in Resources */ = {isa = PBXBuildFile; fileRef = CECB066A1708E3FF009D3412 /* Tutorial Goal.png */; };
-		CECB066F1708E3FF009D3412 /* Tutorial Welcome.png in Resources */ = {isa = PBXBuildFile; fileRef = CECB066B1708E3FF009D3412 /* Tutorial Welcome.png */; };
 		CECB06781708E416009D3412 /* PauseLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = CECB06701708E416009D3412 /* PauseLayer.h */; };
 		CECB06791708E416009D3412 /* PauseLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = CECB06711708E416009D3412 /* PauseLayer.m */; };
 		CECB067B1708E416009D3412 /* PauseScene.m in Sources */ = {isa = PBXBuildFile; fileRef = CECB06731708E416009D3412 /* PauseScene.m */; };
@@ -46,6 +42,14 @@
 		CECB067D1708E416009D3412 /* TutorialLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = CECB06751708E416009D3412 /* TutorialLayer.m */; };
 		CECB067E1708E416009D3412 /* tutorialScene.h in Headers */ = {isa = PBXBuildFile; fileRef = CECB06761708E416009D3412 /* tutorialScene.h */; };
 		CECB067F1708E416009D3412 /* tutorialScene.m in Sources */ = {isa = PBXBuildFile; fileRef = CECB06771708E416009D3412 /* tutorialScene.m */; };
+		CECB66DB170B173500D53C2C /* Tutorials Goal-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = CECB66D3170B173500D53C2C /* Tutorials Goal-hd.png */; };
+		CECB66DC170B173500D53C2C /* Tutorials Goal.png in Resources */ = {isa = PBXBuildFile; fileRef = CECB66D4170B173500D53C2C /* Tutorials Goal.png */; };
+		CECB66DD170B173500D53C2C /* Tutorials Layout-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = CECB66D5170B173500D53C2C /* Tutorials Layout-hd.png */; };
+		CECB66DE170B173500D53C2C /* Tutorials Layout.png in Resources */ = {isa = PBXBuildFile; fileRef = CECB66D6170B173500D53C2C /* Tutorials Layout.png */; };
+		CECB66DF170B173500D53C2C /* Tutorials Objective-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = CECB66D7170B173500D53C2C /* Tutorials Objective-hd.png */; };
+		CECB66E0170B173500D53C2C /* Tutorials Objective.png in Resources */ = {isa = PBXBuildFile; fileRef = CECB66D8170B173500D53C2C /* Tutorials Objective.png */; };
+		CECB66E1170B173500D53C2C /* Tutorials Welcome-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = CECB66D9170B173500D53C2C /* Tutorials Welcome-hd.png */; };
+		CECB66E2170B173500D53C2C /* Tutorials Welcome.png in Resources */ = {isa = PBXBuildFile; fileRef = CECB66DA170B173500D53C2C /* Tutorials Welcome.png */; };
 		CEEC906316D087F40020F89B /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC906216D087F30020F89B /* Player.m */; };
 		CEEECD7B17073F7700C9ECC0 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = CEEECD7917073F7700C9ECC0 /* background.png */; };
 		CEEECD7C17073F7700C9ECC0 /* background-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = CEEECD7A17073F7700C9ECC0 /* background-hd.png */; };
@@ -349,10 +353,6 @@
 		CEB3DFE916DAB5C400F57214 /* court-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "court-hd.png"; sourceTree = "<group>"; };
 		CEB3DFEA16DAB5C400F57214 /* ball-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ball-hd.png"; sourceTree = "<group>"; };
 		CEB3DFEB16DAB5C500F57214 /* ball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ball.png; sourceTree = "<group>"; };
-		CECB06681708E3FF009D3412 /* Tutorial Layout.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorial Layout.png"; sourceTree = "<group>"; };
-		CECB06691708E3FF009D3412 /* Tutorial Objective.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorial Objective.png"; sourceTree = "<group>"; };
-		CECB066A1708E3FF009D3412 /* Tutorial Goal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorial Goal.png"; sourceTree = "<group>"; };
-		CECB066B1708E3FF009D3412 /* Tutorial Welcome.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorial Welcome.png"; sourceTree = "<group>"; };
 		CECB06701708E416009D3412 /* PauseLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PauseLayer.h; sourceTree = "<group>"; };
 		CECB06711708E416009D3412 /* PauseLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PauseLayer.m; sourceTree = "<group>"; };
 		CECB06721708E416009D3412 /* PauseScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PauseScene.h; sourceTree = "<group>"; };
@@ -361,6 +361,14 @@
 		CECB06751708E416009D3412 /* TutorialLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialLayer.m; sourceTree = "<group>"; };
 		CECB06761708E416009D3412 /* tutorialScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tutorialScene.h; sourceTree = "<group>"; };
 		CECB06771708E416009D3412 /* tutorialScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tutorialScene.m; sourceTree = "<group>"; };
+		CECB66D3170B173500D53C2C /* Tutorials Goal-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorials Goal-hd.png"; sourceTree = "<group>"; };
+		CECB66D4170B173500D53C2C /* Tutorials Goal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorials Goal.png"; sourceTree = "<group>"; };
+		CECB66D5170B173500D53C2C /* Tutorials Layout-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorials Layout-hd.png"; sourceTree = "<group>"; };
+		CECB66D6170B173500D53C2C /* Tutorials Layout.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorials Layout.png"; sourceTree = "<group>"; };
+		CECB66D7170B173500D53C2C /* Tutorials Objective-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorials Objective-hd.png"; sourceTree = "<group>"; };
+		CECB66D8170B173500D53C2C /* Tutorials Objective.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorials Objective.png"; sourceTree = "<group>"; };
+		CECB66D9170B173500D53C2C /* Tutorials Welcome-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorials Welcome-hd.png"; sourceTree = "<group>"; };
+		CECB66DA170B173500D53C2C /* Tutorials Welcome.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Tutorials Welcome.png"; sourceTree = "<group>"; };
 		CEEC906116D087F30020F89B /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		CEEC906216D087F30020F89B /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
 		CEEECD7917073F7700C9ECC0 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
@@ -735,12 +743,16 @@
 		DC0C4A08154AB4DD00B4B727 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CECB66D3170B173500D53C2C /* Tutorials Goal-hd.png */,
+				CECB66D4170B173500D53C2C /* Tutorials Goal.png */,
+				CECB66D5170B173500D53C2C /* Tutorials Layout-hd.png */,
+				CECB66D6170B173500D53C2C /* Tutorials Layout.png */,
+				CECB66D7170B173500D53C2C /* Tutorials Objective-hd.png */,
+				CECB66D8170B173500D53C2C /* Tutorials Objective.png */,
+				CECB66D9170B173500D53C2C /* Tutorials Welcome-hd.png */,
+				CECB66DA170B173500D53C2C /* Tutorials Welcome.png */,
 				CE1E25D01709E3CC00C89AC9 /* background2-hd.png */,
 				CE1E25CD1709E37500C89AC9 /* background2.png */,
-				CECB06681708E3FF009D3412 /* Tutorial Layout.png */,
-				CECB06691708E3FF009D3412 /* Tutorial Objective.png */,
-				CECB066A1708E3FF009D3412 /* Tutorial Goal.png */,
-				CECB066B1708E3FF009D3412 /* Tutorial Welcome.png */,
 				CEEECD7917073F7700C9ECC0 /* background.png */,
 				CEEECD7A17073F7700C9ECC0 /* background-hd.png */,
 				CEB19A2E170638EB00403CB1 /* pausebutton.png */,
@@ -1435,12 +1447,16 @@
 				CEB19A31170638EB00403CB1 /* pausebutton-hd.png in Resources */,
 				CEEECD7B17073F7700C9ECC0 /* background.png in Resources */,
 				CEEECD7C17073F7700C9ECC0 /* background-hd.png in Resources */,
-				CECB066C1708E3FF009D3412 /* Tutorial Layout.png in Resources */,
-				CECB066D1708E3FF009D3412 /* Tutorial Objective.png in Resources */,
-				CECB066E1708E3FF009D3412 /* Tutorial Goal.png in Resources */,
-				CECB066F1708E3FF009D3412 /* Tutorial Welcome.png in Resources */,
 				CE1E25CF1709E37500C89AC9 /* background2.png in Resources */,
 				CE1E25D11709E3CC00C89AC9 /* background2-hd.png in Resources */,
+				CECB66DB170B173500D53C2C /* Tutorials Goal-hd.png in Resources */,
+				CECB66DC170B173500D53C2C /* Tutorials Goal.png in Resources */,
+				CECB66DD170B173500D53C2C /* Tutorials Layout-hd.png in Resources */,
+				CECB66DE170B173500D53C2C /* Tutorials Layout.png in Resources */,
+				CECB66DF170B173500D53C2C /* Tutorials Objective-hd.png in Resources */,
+				CECB66E0170B173500D53C2C /* Tutorials Objective.png in Resources */,
+				CECB66E1170B173500D53C2C /* Tutorials Welcome-hd.png in Resources */,
+				CECB66E2170B173500D53C2C /* Tutorials Welcome.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

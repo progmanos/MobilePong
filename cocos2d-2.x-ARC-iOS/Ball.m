@@ -68,6 +68,18 @@
     //{
         //[self moveBall];
     //}
+    if(position.y < -16)
+    {
+        score = TRUE;
+    }
+    
+    //pplayer scores and serves ball
+    else if(position.y >500)
+    {
+        score = TRUE;
+    }
+    else
+        score = FALSE;
 }
 
 
