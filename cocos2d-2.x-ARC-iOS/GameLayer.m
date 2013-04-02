@@ -229,15 +229,23 @@
 -(void) checkCollision
 {
     //Checks collison with player
+        //Checks collison with player
     int player1CollisionSeg = [player1 GetCollisionSegment:[ball tipOfBallX] leftPos:[ball leftOfBall] rightPos:[ball rightOfBall]];
     
-    if (player1CollisionSeg >= SegmentA && player1CollisionSeg <= SegmentC && [ball tipOfBall] >= ([player1 tipOfPaddle]-5) && [ball tipOfBall] <= ([player1 tipOfPaddle]) && ball.didCollide == FALSE) {
+    CGRect ballbox = CGRectMake(ball.ballSprite.position.x, ball.ballSprite.position.y, ball.ballSprite.contentSize.width, ball.ballSprite.contentSize.height);
+    
+    CGRect playerPaddleBox = CGRectMake(player1.paddleSprite.position.x, player1.paddleSprite.position.y, player1.paddleSprite.contentSize.width, player1.paddleSprite.contentSize.height);
+    
+    CGRect opponentPaddleBox = CGRectMake(AIplayer.paddleSprite.position.x, AIplayer.paddleSprite.position.y, AIplayer.paddleSprite.contentSize.width, AIplayer.paddleSprite.contentSize.height);
+    
+    if (CGRectIntersectsRect(ballbox, playerPaddleBox) && ball.didCollide == FALSE) {
         ball.velocity = [ball reflectStraight:CGPointMake(0,1)];
         ball.didCollide = TRUE;
     }
     else {
         int opponentCollisionSeg = [AIplayer GetCollisionSegment:[ball tipOfBallX] leftPos:[ball leftOfBall] rightPos:[ball rightOfBall]];
-        if (opponentCollisionSeg >= SegmentA && opponentCollisionSeg <= SegmentC && [ball opponentTipOfBall] <= ([AIplayer tipOfPaddle]+5) && [ball opponentTipOfBall] >= ([AIplayer tipOfPaddle])) {
+        
+        if (CGRectIntersectsRect(ballbox, opponentPaddleBox) && ball.didCollide == FALSE) {
             ball.velocity = [ball reflectStraight:CGPointMake(0,-1)];
             ball.didCollide = TRUE;
         }
