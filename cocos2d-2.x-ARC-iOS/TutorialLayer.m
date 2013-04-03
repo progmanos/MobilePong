@@ -19,7 +19,7 @@
         CGSize screenSize = [CCDirector sharedDirector].winSize;
         
         //sets background to court image
-        CCSprite *background = [CCSprite spriteWithFile:@"Tutorial Welcome.png"];
+        CCSprite *background = [CCSprite spriteWithFile:@"Tutorials Welcome.png"];
         [self addChild:background z:0 tag:1];
             background.position = CGPointMake(screenSize.width/2, screenSize.height/2);
         }
@@ -33,7 +33,7 @@
         CGSize screenSize = [CCDirector sharedDirector].winSize;
         
         //sets background to court image
-        CCSprite *background = [CCSprite spriteWithFile:@"Tutorial Layout.png"];
+        CCSprite *background = [CCSprite spriteWithFile:@"Tutorials Layout.png"];
         [self addChild:background z:0 tag:1];
         background.position = CGPointMake(screenSize.width/2, screenSize.height/2);
         touchHappened ++;
@@ -43,7 +43,7 @@
         CGSize screenSize = [CCDirector sharedDirector].winSize;
         
         //sets background to court image
-        CCSprite *background = [CCSprite spriteWithFile:@"Tutorial Objective.png"];
+        CCSprite *background = [CCSprite spriteWithFile:@"Tutorials Objective.png"];
         [self addChild:background z:0 tag:1];
         background.position = CGPointMake(screenSize.width/2, screenSize.height/2);
         touchHappened ++;
@@ -53,7 +53,7 @@
         CGSize screenSize = [CCDirector sharedDirector].winSize;
         
         //sets background to court image
-        CCSprite *background = [CCSprite spriteWithFile:@"Tutorial Goal.png"];
+        CCSprite *background = [CCSprite spriteWithFile:@"Tutorials Goal.png"];
         [self addChild:background z:0 tag:1];
         background.position = CGPointMake(screenSize.width/2, screenSize.height/2);
         touchHappened ++;
