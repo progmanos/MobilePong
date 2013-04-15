@@ -261,7 +261,7 @@
 {
     CGFloat vectAngle = atan2f(-velocityVector.y,-velocityVector.x);
     vectAngle = CC_DEGREES_TO_RADIANS(vectAngle/M_PI*180 + 180);
-    return fmodf(vectAngle, (2*M_PI));
+    return vectAngle;
 }
 
 -(CGPoint) reflectStraight: (CGPoint) normVect
