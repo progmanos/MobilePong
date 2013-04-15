@@ -7,13 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <GameKit/GameKit.h>
 #import "cocos2d.h"
+
 
 @interface AppController : NSObject <UIApplicationDelegate, CCDirectorDelegate>
 {
 	UIWindow *window_;
 	UINavigationController *navController_;
-
+    
 	CCDirectorIOS	*__unsafe_unretained director_;							// weak ref
 }
 

@@ -6,7 +6,10 @@
 //  Copyright 2013 __MyCompanyName__. All rights reserved.
 //
 #import "GameLayer.h"
-
+#import "SimpleAudioEngine.h"
+#import <GameKit/GameKit.h>
+#import "GameKitHelper.h"
+#import "PauseScene.h"
 
 
 @implementation GameLayer
@@ -15,10 +18,14 @@
 {
     if ((self = [super init]))
     {
-        
+        times =0;
+        multiplayer = FALSE;
         prefs = [NSUserDefaults standardUserDefaults];
         
         playerScored = FALSE;
+        [player1 resetScore];
+        [AIplayer resetScore];
+       
         
         currhighscore = [prefs integerForKey:@"highScore"];
         if(currhighscore == nil)
@@ -35,47 +42,60 @@
             level = defaultLevel;
             [self SetLevel:defaultLevel];
         }
-    
+        
+      
+        
         CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
         self.isTouchEnabled = YES;
         
         // move this to a header file for use in other classes
-        CGSize screenSize = [CCDirector sharedDirector].winSize;
+        screenSize = [CCDirector sharedDirector].winSize;
         
         //sets background to court image
-        CCSprite *background = [CCSprite spriteWithFile:@"court.png"];
+        CCSprite *background = [CCSprite spriteWithFile:@"background.png"];
         [self addChild:background z:0 tag:1];
         background.position = CGPointMake(screenSize.width/2, screenSize.height/2);
         
-        //creates ball, player, and AI player
-        ball = [Ball ballWithParentNode:self];
-        player1 = [Player playerWithParentNode:self];
-        AIplayer = [Player playerWithParentNode:self];
+        pauseButton = [CCMenuItemImage itemFromNormalImage:@"pausebutton.png" selectedImage:@"pausebutton.png" target:self selector:@selector(pauseButtonTapped:)];
         
-        //sets initial position of player1 & AIplayer
-        [player1 setPosition:CGPointMake(screenSize.width / 2, 20.0)];
-        [AIplayer setPosition:CGPointMake(screenSize.width/2, (screenSize.height - 20))];
+        menu = [CCMenu menuWithItems:pauseButton, nil];
+        menu.position = CGPointMake(screenSize.width/2, screenSize.height/2);
+        [self addChild:menu z:0];
+        
         
         //sets label for score of AIplayer
-        AIscoreLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:24];
-        AIscoreLabel.position = ccp((screenSize.width/2), (screenSize.height - (screenSize.height/4)));
+        AIscoreLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:48];
+        AIscoreLabel.position = ccp((screenSize.width/2), (screenSize.height - (screenSize.height/6)));
         AIscoreLabel.color = ccBLACK;
-        [self addChild:AIscoreLabel z:1];
+        [self addChild:AIscoreLabel z:0];
         
         //sets label for score of AIplayer
-        player1scoreLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:24];
-        player1scoreLabel.position = ccp((screenSize.width/2), (screenSize.height/4));
+        player1scoreLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:48];
+        player1scoreLabel.position = ccp((screenSize.width/2), (screenSize.height/6));
         player1scoreLabel.color = ccBLACK;
-        [self addChild:player1scoreLabel z:1];
+        [self addChild:player1scoreLabel z:0];
+        
+        
+        //sets label for score of AIplayer's round
+        AIroundLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:12];
+        AIroundLabel.position = ccp((screenSize.width)/2, ((screenSize.height)-45));
+        AIroundLabel.color = ccBLACK;
+        [self addChild:AIroundLabel z:0];
+        
+        //sets label for score of player1's round
+        player1roundLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:12];
+        player1roundLabel.position = ccp((screenSize.width)/2, 45);
+        player1roundLabel.color = ccBLACK;
+        [self addChild:player1roundLabel z:0];
         
         //sets label for time of gameplay
         timeLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:24];
         timeLabel.color = ccRED;
         timeLabel.position = ccp(30, 30);
-        [self addChild:timeLabel z:1];
+        [self addChild:timeLabel z:0];
         
         //sets label for winner of the game
-        winnerLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:48];
+        winnerLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:28];
         winnerLabel.position = ccp(screenSize.width/2, screenSize.height/2);
         [self addChild:winnerLabel z:2];
         
@@ -86,8 +106,26 @@
         [highScoreLabel setString:(highscore)];
         
         
+        //creates ball, player, and AI player
+        ball = [Ball ballWithParentNode:self];
+        player1 = [Player playerWithParentNode:self];
+        player1.playerType = User;
+        AIplayer = [Player playerWithParentNode:self];
+        AIplayer.playerType = Opponent;
+        
+        //sets initial position of player1 & AIplayer
+        [player1 setPosition:CGPointMake(screenSize.width / 2, 20.0)];
+        [AIplayer setPosition:CGPointMake(screenSize.width/2, (screenSize.height - 20))];
+        
+        //Set AI round score
+        [AIroundLabel setString:[NSString stringWithFormat:@"Rounds Won: " @"%d", [AIplayer getRoundScore]]];
+        
+        //Set player1 round score
+        [player1roundLabel setString:[NSString stringWithFormat:@"Rounds Won: " @"%d", [player1 getRoundScore]]];
+        
+        
         //initialize player and AI velocity
-        [player1 setVelocity:(5)];
+        [player1 setSpeed:(6)];
         
         //rudimentary AI
         //shrink the paddle by 20 pixels for level 1 and 10 for level two
@@ -95,26 +133,34 @@
         // increase the velocity per level
         switch (level) {
             case Level_One:
-                [AIplayer setVelocity:(3)];
+                [AIplayer setSpeed:(3)];
                 [AIplayer resizePaddleWidth:([AIplayer initialPaddleWidth] - 20)];
                 break;
             case Level_Two:
-                [AIplayer setVelocity:(4)];
+                [AIplayer setSpeed:(4)];
                 [AIplayer resizePaddleWidth:([AIplayer initialPaddleWidth] - 10)];
                 break;
             case Level_Three:
-                [AIplayer setVelocity:(5)];
+                [AIplayer setSpeed:(5)];
                 break;
             default:
                 break;
         }
-                
+        
+        
+       
+        
         [self scheduleUpdate];
         
         
     }
 	
     return self;
+}
+
+- (void)pauseButtonTapped: (id)sender {
+    [[CCDirector sharedDirector] pushScene:[PauseScene node]];
+
 }
 
 -(void) dealloc
@@ -151,157 +197,169 @@
     [self unschedule:@selector(movePlayerRight)];
 }
 
+
+
+
 -(void) update:(ccTime)delta
 {
+    
     //time in seconds
     totalTime += delta;
     
-    //Checks collison with player
-    if([ball tipOfBall] <= [player1 tipOfPaddle] && [ball tipOfBall] >= [player1 tipOfPaddle]-5)
-        if([ball rightOfBall] >= [player1 leftOfPaddle] && [ball leftOfBall] <= [player1 rightOfPaddle])
-        {
-            //Checks segment A -- furthest left segment
-            if([player1 inSegmentA:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball rightOfBall])])
-                [ball updateVelocityA];
-            
-            //Checks segment B -- second left segment
-            else if([player1 inSegmentB:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball rightOfBall])])
-                [ball updateVelocityB];
-            
-            //Checks segment D -- second right segment
-            else if([player1 inSegmentD:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball rightOfBall])])
-                [ball updateVelocityD];
-            
-            //Checks segment E -- second right segment
-            else if([player1 inSegmentE:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball rightOfBall])])
-                [ball updateVelocityE];
-            
-            //Center segment
-            else
-                [ball updateVelocityC];
-            
-        }
+    [AIroundLabel setString:[NSString stringWithFormat:@"Rounds Won: " @"%d", [AIplayer getRoundScore]]];
+    [player1roundLabel setString:[NSString stringWithFormat:@"Rounds Won: " @"%d", [player1 getRoundScore]]];
     
-    //Checks collision with AI
-    if([ball opponentTipOfBall] >= [AIplayer OpponentTipOfPaddle] && [ball opponentTipOfBall] <= [AIplayer OpponentTipOfPaddle]+5)
-        if([ball rightOfBall] >= [AIplayer leftOfPaddle] && [ball leftOfBall] <= [AIplayer rightOfPaddle])
-            
-        {
-            //Checks segment A -- furthest left segment
-            if([AIplayer inSegmentA:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball     rightOfBall])])
-                [ball updateVelocityA];
-            
-            //Checks segment B -- second left segment
-            else if([AIplayer inSegmentB:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball rightOfBall])])
-                [ball updateVelocityB];
-            
-            //Checks segment C -- second right segment
-            else if([AIplayer inSegmentD:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball rightOfBall])])
-                [ball updateVelocityD];
-            
-            //Checks segment E -- furthest right segment
-            else if([AIplayer inSegmentE:([ball tipOfBallX]) leftPos:([ball leftOfBall]) rightPos:([ball    rightOfBall])])
-                [ball updateVelocityE];
-            
-            //Checks segment C -- center segment
-            else
-                [ball updateVelocityC];
-        }
-
+    [self checkCollision];
+    [self checkAIScore];
+    [self checkPlayerScore];
+    [self updateScore];
+    [self checkWin];
+    [self moveAIPaddle];
     
-    
-    /*
-    if(([ball getYpos]+9) >= 459 && ([ball getYpos]+9) <= 469) {
-        NSLog(@"ball getTopTipY value: %f", [ball getTopTipY]);
-        NSLog(@"ball getYPos: %f", [ball getYpos]);
-        NSLog(@"AI player position: %f", [[AIplayer paddleSprite] position].y);
-    }
-    //NSLog(@"")
-    
-    //collision for player paddle
-    if(([ball getBottomTipY] >= [[player1 paddleSprite] position].y)
-        && ([ball getBottomTipY] <= 30)
-       && ([ball getXpos] >= [player1 getLeftCornerX]) &&
-       ([ball getXpos] <= [player1 getRightCornerX]))
-    {
-        [ball switchVel];
-    }
-    else if(([ball getTopTipY] <= [[AIplayer paddleSprite] position].y)
-            && ([ball getTopTipY] >= 455)
-            && ([ball getXpos] >= [AIplayer getLeftCornerX]) && ([ball getXpos] <= [AIplayer getRightCornerX]))
-    {
-        [ball switchVel];
-    }*/
-    
-    //AI score
-    if([ball getYpos] <= -10 && !playerScored)
-    {
-        [AIplayer updateScore];
-        playerScored = TRUE;
-    }
-    
-    //Player score
-    if([ball getYpos] >= 496 && !playerScored)
-    {
-        [player1 updateScore];
-        playerScored = TRUE;
-    }
     
     //prevents scoring from incrementing more than once
     if([ball getYpos] > 10 && [ball getYpos] < 400)
         playerScored = FALSE;
 
+    
+    //updates time
+    [timeLabel setString:[NSString stringWithFormat:@"%d", (int)totalTime]];
+    
+}
+-(void) checkCollision
+{
+    //Checks collison with player
+        //Checks collison with player
+    int player1CollisionSeg = [player1 GetCollisionSegment:[ball tipOfBallX] leftPos:[ball leftOfBall] rightPos:[ball rightOfBall]];
+    
+    CGRect ballbox = CGRectMake(ball.ballSprite.position.x, ball.ballSprite.position.y, ball.ballSprite.contentSize.width, ball.ballSprite.contentSize.height);
+    
+    CGRect playerPaddleBox = CGRectMake(player1.paddleSprite.position.x, player1.paddleSprite.position.y, player1.paddleSprite.contentSize.width, player1.paddleSprite.contentSize.height);
+    
+    CGRect opponentPaddleBox = CGRectMake(AIplayer.paddleSprite.position.x, AIplayer.paddleSprite.position.y, AIplayer.paddleSprite.contentSize.width, AIplayer.paddleSprite.contentSize.height);
+    
+    if (CGRectIntersectsRect(ballbox, playerPaddleBox) && ball.didCollide == FALSE) {
+        ball.velocity = [ball reflectStraight:CGPointMake(0,1)];
+        ball.didCollide = TRUE;
+    }
+    else {
+        int opponentCollisionSeg = [AIplayer GetCollisionSegment:[ball tipOfBallX] leftPos:[ball leftOfBall] rightPos:[ball rightOfBall]];
+        
+        if (CGRectIntersectsRect(ballbox, opponentPaddleBox) && ball.didCollide == FALSE) {
+            ball.velocity = [ball reflectStraight:CGPointMake(0,-1)];
+            ball.didCollide = TRUE;
+        }
+    }
+}
+
+
+
+-(void)checkPlayerScore
+{
+    //Player score
+    if([ball getYpos] >= 496 && !playerScored)
+    {
+        [[SimpleAudioEngine sharedEngine] playEffect:@"correct.wav"];
+        [player1 updateScore];
+        playerScored = TRUE;
+    }
+}
+
+-(void)checkAIScore
+{
+    //AI score
+    if([ball getYpos] <= -10 && !playerScored)
+    {
+        [[SimpleAudioEngine sharedEngine] playEffect:@"wrong.wav"];
+        [AIplayer updateScore];
+        playerScored = TRUE;
+    }
+}
+
+-(void)updateScore
+{
+    
+    //Updates player1score
+    [player1scoreLabel setString:[NSString stringWithFormat:@"%d", [player1 getScore]]];
+    
+    //Updates AIscore
+    [AIscoreLabel setString:[NSString stringWithFormat:@"%d", [AIplayer getScore]]];
+}
+
+-(void)moveAIPaddle
+{
     //handles movement of AI paddle
     if ([AIplayer getXpos] > [ball getXpos] && [ball getYpos] > 200)
         [AIplayer moveLeft];
     
     if ([AIplayer getXpos] < [ball getXpos] && [ball getYpos]  > 200)
         [AIplayer moveRight];
-    
-    //Updates AIscore
-    [AIscoreLabel setString:[NSString stringWithFormat:@"%d", [AIplayer getScore]]];
-    
-    //Updates player1score
-    [player1scoreLabel setString:[NSString stringWithFormat:@"%d", [player1 getScore]]];
-    
-    //updates time
-    [timeLabel setString:[NSString stringWithFormat:@"%d", (int)totalTime]];
-    
-    
+}
+
+-(void) checkWin
+{
     //play to 11 to win
-    if([AIplayer getScore] == 11)
+    if([AIplayer getScore] == pointsToWin)
         [self AIwinsGame];
     
     //play to 11 to win
-    if([player1 getScore] == 11)
+    if([player1 getScore] == pointsToWin)
         [self player1WinsGame];
-    
-
-
 }
 
 //Displays "Sorry, you lose" in red for 3 seconds. Then starts a new game
 -(void) AIwinsGame
 {
+    if(times==0){
+        [AIplayer updateRoundScore];
+        times =1;
+    }
     
-    winner = @"Sorry, you lose";
-    winnerLabel.color = ccRED;
-    [winnerLabel setString:(winner)];
-    [self performSelector:@selector(newGame) withObject:nil afterDelay:3.0];
+    if([AIplayer getRoundScore]< 3){
+        
+        winner = @"Sorry, you lose the round";
+        winnerLabel.color = ccRED;
+        [winnerLabel setString:(winner)];
+        [self performSelector:@selector(newGame) withObject:nil afterDelay:3.0];
+        
+        
+    }
+    else{
+       
+        winner = @"Sorry, you lose the game";
+        winnerLabel.color = ccRED;
+        [winnerLabel setString:(winner)];
+        [self performSelector:@selector(newGame) withObject:nil afterDelay:3.0];
+        
+        
+    }
+    
 }
+
 
 //Displays "Congratulations, you won" in red for 3 seconds. Then starts a new game
 -(void) player1WinsGame
 {
-    winner = @"Congratulations\n you won!";
-    winnerLabel.color = ccGREEN;
-    [winnerLabel setString:(winner)];
+    if(times==0){
+       [player1 updateRoundScore];
+    times =1;
+    }
     
+    if([player1 getRoundScore]<3){
+        winner = @"Congratulations\n you won the round!";
+        winnerLabel.color = ccGREEN;
+        [winnerLabel setString:(winner)];
+    }
+    else{
+        winner = @"Congratulations\n you won the game!";
+        winnerLabel.color = ccGREEN;
+        [winnerLabel setString:(winner)];
+    }
     
     currentscore = (NSInteger)totalTime;
     if(currentscore < currhighscore)
     {
-        [prefs setInteger:currentscore forKey:@"highScore"];
+        [prefs setInteger:*(currentscore) forKey:@"highScore"];
         [prefs synchronize];
         
     }
@@ -314,6 +372,7 @@
 
 -(void) newGame
 {
+    times = 0;
     //removes win/lose message
     winner = @" ";
     [winnerLabel setString:(winner)];
@@ -328,9 +387,30 @@
     currhighscore = [prefs integerForKey:@"highScore"];
     if(currhighscore == nil)
         currhighscore = 0;
+    //resets rounds after game is over
+    if([player1 getRoundScore]==3|| [AIplayer getRoundScore]==3){
+        [player1 resetRoundScore];
+        [AIplayer resetRoundScore];
+        //Set AI round score
+        [AIroundLabel setString:[NSString stringWithFormat:@"Rounds: " @"%d", [AIplayer getRoundScore]]];
+        
+        //Set player1 round score
+        [player1roundLabel setString:[NSString stringWithFormat:@"Rounds: " @"%d", [player1 getRoundScore]]];
+        
+        [[CCDirector sharedDirector] pushScene:[EndGameScene node]];
+        
+    highscore = [NSString stringWithFormat:@"highScore: %d ", (int)currhighscore];
+    [highScoreLabel setString:(highscore)];
+        
+    }
+    
+    currhighscore = [prefs integerForKey:@"highScore"];
+    if(currhighscore == nil)
+        currhighscore = 0;
     
     highscore = [NSString stringWithFormat:@"highScore: %d ", (int)currhighscore];
     [highScoreLabel setString:(highscore)];
+    
     
 }
 
@@ -348,6 +428,22 @@
     // save the data
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
+
+-(NSInteger) GetMatchLevel
+{
+    NSInteger matchLevel = [[NSUserDefaults standardUserDefaults] integerForKey:@"level"];
+    return matchLevel;
+}
+
+-(void) SetMatchLevel:(NSInteger) matchLevel
+{
+    // set level value
+    [[NSUserDefaults standardUserDefaults] setInteger:matchLevel forKey:@"matchLevel"];
+    
+    // save the data
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 @end
 
 

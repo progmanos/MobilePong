@@ -11,12 +11,18 @@
 #import "Ball.h"
 #import "Player.h"
 #import "Constants.h"
+#import "EndGameScene.h"
 
-@interface GameLayer : CCLayer
+
+@interface GameLayer : CCLayer 
 {
+    int times;
+    
     Ball *ball;
     Player *player1;
     Player *AIplayer;
+    CCLabelTTF *AIroundLabel;
+    CCLabelTTF *player1roundLabel;
     CCLabelTTF *AIscoreLabel;
     CCLabelTTF *player1scoreLabel;
     CCLabelTTF *timeLabel;
@@ -29,8 +35,17 @@
     NSInteger *currhighscore;
     NSInteger *currentscore;
     BOOL playerScored;
+    CCMenuItemImage* pauseButton;
+    CCMenu* menu;
+    CGSize screenSize;
+    
+    
+    
 }
 
-
+-(void) setMatchNum1;
+-(void) setMatchNum2;
+-(void) setMatchNum3;
 -(id) init;
+-(void) checkCollision;
 @end

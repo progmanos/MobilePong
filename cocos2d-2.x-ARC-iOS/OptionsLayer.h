@@ -11,7 +11,12 @@
 #import "Constants.h"
 
 @interface OptionsLayer : CCLayer {
+    int selections;
+    int lastSelction;
     CCMenu *optionsMenu;
+    CCLabelTTF *levelChoiceOnelabel;
+    CCLabelTTF *levelChoiceTwolabel;
+    CCLabelTTF *levelChoiceThreelabel;
 }
 
 -(void) returnToMainMenu;
