@@ -15,13 +15,48 @@
 #import "MultiplayerLayer.h"
 
 
+//
+// various states the game can get into
+//
+typedef enum {
+    kStateStartGame,
+    kStatePicker,
+    kStateMultiplayer,
+    kStateMultiplayerCointoss,
+    kStateMultiplayerReconnect
+} gameStates;
+
+// GameKit Session ID for app
+#define kSessionID @"PONG"
+
+#pragma mark -
+
+@interface MultiplayerLayer(Private)
+-(void) setLastError:(NSError*)error;
+@end
+
 @implementation MultiplayerLayer
 
+@synthesize gameState, peerStatus, gameSession, gamePeerId, connectionAlert, lastError;
 
 -(id) init
 {
     if ((self = [super init]))
     {
+        bluetooth = TRUE;
+        gameSession = nil;
+        gamePeerId = nil;
+        
+        NSString *uid = [[UIDevice currentDevice] uniqueIdentifier];
+        
+        gameUniqueID = [uid hash];
+        
+        
+        self.gameState = kStateStartGame; // Setting to kStateStartGame does a reset of players, scores, etc.
+        [self startPicker];
+ 
+        
+        
         endMultiPlayer = FALSE;
         gamePaused = FALSE;
         times = 0;
@@ -35,10 +70,6 @@
         initialPosition=FALSE;
         playerConnected=FALSE;
         playerScored=FALSE;
-        gkHelper = [GameKitHelper sharedGameKitHelper];
-		gkHelper.delegate = self;
-        [gkHelper authenticateLocalPlayer];
-        [self onAchievementsViewDismissed];
         
         //countdown = [NSString stringWithFormat:@"TIME TO START: %d ", (int)countdowntostart];
         CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
@@ -52,7 +83,7 @@
         [self addChild:background z:0 tag:1];
         background.position = CGPointMake(screenSize.width/2, screenSize.height/2);
         
-        pauseButton = [CCMenuItemImage itemFromNormalImage:@"pausebutton.png" selectedImage:@"pause.png" target:self selector:@selector(pauseButtonTapped:)];
+        pauseButton = [CCMenuItemImage itemFromNormalImage:@"pausebutton.png" selectedImage:@"pausebutton.png" target:self selector:@selector(pauseButtonTapped:)];
         
         menu = [CCMenu menuWithItems:pauseButton, nil];
         menu.position = CGPointMake(screenSize.width/2, screenSize.height/2);
@@ -120,7 +151,6 @@
 	
     return self;
 }
-
 
 
 - (void)pauseButtonTapped: (id)sender {
@@ -251,16 +281,25 @@
     usleep(100000);
 }
 
+-(BOOL) currentMatch
+{
+    if(!bluetooth)
+        if([gkHelper currentMatch] != nil)
+            return TRUE;
+    if(bluetooth)
+        if(gameSession.available)
+            return TRUE;
+    return FALSE;
+}
+
 -(void) update:(ccTime)delta
 {
     [playerPauseLabel setString:(@" ")];
-    if(endMultiPlayer)
+    if(endMultiPlayer && !bluetooth)
         [gkHelper disconnectCurrentMatch];
     
-    if([gkHelper matchStarted])
-        CCLOG(@"match started");
     //check that a match has been made
-    if([gkHelper currentMatch]!=nil)
+    if([self currentMatch])
     {
         
         //determine which player is which
@@ -426,6 +465,7 @@
 	
 	switch (basePacket->type)
 	{
+
 		case kPacketTypeScore:
 		{
 			SScorePacket* scorePacket = (SScorePacket*)basePacket;
@@ -467,7 +507,7 @@
         case kPacketTypePaddlePosition:
 		{
 			SPaddlePositionPacket* ppositionPacket = (SPaddlePositionPacket*)basePacket;
-			CCLOG(@"\tPADDLEPOS = %i", ppositionPacket->paddleposition);
+			CCLOG(@"\tPADDLEPOS = %i", (int)ppositionPacket->paddleposition);
             [opponent setXPosition: (screenSize.width - ppositionPacket->paddleposition)];
 			
 			if (playerID != [GKLocalPlayer localPlayer].playerID)
@@ -550,106 +590,289 @@
 // send score
 -(void) sendScore
 {
-	if ([GameKitHelper sharedGameKitHelper].currentMatch != nil)
-	{
-		//bogusScore++;
-		
-		SScorePacket packet;
-		packet.type = kPacketTypeScore;
-		//packet.score = bogusScore;
-		
-		[[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
-	}
+    CCLOG(@"Send Score Method");
+    
+    SScorePacket packet;
+    packet.type = kPacketTypeScore;
+    
+    if(bluetooth)
+      [self sendNetworkPacket:gameSession :&packet sizeInBytes:sizeof(packet)];
+
+    
+	if(!bluetooth)
+        if ([GameKitHelper sharedGameKitHelper].currentMatch != nil)
+            [[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
 }
 
 //send ball position
 -(void) sendBallPosition:(CGPoint)ballPos
 {
-	if ([GameKitHelper sharedGameKitHelper].currentMatch != nil)
-	{
-		SBallPositionPacket packet;
-		packet.type = kPacketTypeBallPosition;
-		packet.position = ballPos;
-		
-		[[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
-	}
+    CCLOG(@"Send Ball Position Method");
+    
+    SBallPositionPacket packet;
+    packet.type = kPacketTypeBallPosition;
+    packet.position = ballPos;
+    
+    if(bluetooth)
+        [self sendNetworkPacket:gameSession :&packet sizeInBytes:sizeof(packet)];
+
+    
+	if(!bluetooth)
+        if ([GameKitHelper sharedGameKitHelper].currentMatch != nil)
+            [[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
 }
+
+
 
 //send velocity
 -(void) sendVelocity:(CGPoint)ballVel
 {
-	if ([GameKitHelper sharedGameKitHelper].currentMatch != nil)
-	{
-		SVelocityPacket packet;
-		packet.type = kPacketTypeVelocity;
-		packet.velocity = ballVel;
-		
-		[[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
-	}
+    CCLOG(@"Send Velocity Method");
+    
+    SVelocityPacket packet;
+    packet.type = kPacketTypeVelocity;
+    packet.velocity = ballVel;
+    
+    if(bluetooth)
+           [self sendNetworkPacket:gameSession :&packet sizeInBytes:sizeof(packet)];
+    
+	if(!bluetooth)
+       if ([GameKitHelper sharedGameKitHelper].currentMatch != nil)
+           [[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
 }
 
 -(void) sendPaddlePosition:(CGFloat)paddleX
 {
-	if ([GameKitHelper sharedGameKitHelper].currentMatch != nil)
-	{
-		SPaddlePositionPacket packet;
-		packet.type = kPacketTypePaddlePosition;
-        packet.paddleposition = paddleX;
-		
-		[[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
-	}
+    CCLOG(@"Send Paddle Position Method");
+    SPaddlePositionPacket packet;
+    packet.type = kPacketTypePaddlePosition;
+    packet.paddleposition = paddleX;
+    
+	if(bluetooth)
+           [self sendNetworkPacket:gameSession :&packet sizeInBytes:sizeof(packet)];
+
+    if(!bluetooth)
+          if ([GameKitHelper sharedGameKitHelper].currentMatch != nil)
+              [[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
 }
 
 -(void) sendRandomNumber:(int)ranNumber
 {
+    CCLOG(@"Send Rand Num");
+    SRandomNumberPacket packet;
+    packet.type = kPacketTypeRandomNumber;
+    packet.randomNumber = ranNumber;
     CCLOG(@"sending number...");
-	if ([GameKitHelper sharedGameKitHelper].currentMatch != nil)
-	{
-		SRandomNumberPacket packet;
-		packet.type = kPacketTypeRandomNumber;
-        packet.randomNumber = ranNumber;
-		[[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
-        
-	}
+    
+    if(bluetooth)
+        [self sendNetworkPacket:gameSession :&packet sizeInBytes:sizeof(packet)];
+
+    if(!bluetooth)
+        if ([GameKitHelper sharedGameKitHelper].currentMatch != nil)
+            [[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
     
     
 }
 
 -(void) sendCountdown:(int)ctdown
 {
-	if ([GameKitHelper sharedGameKitHelper].currentMatch != nil)
-	{
-        //countdowntostart--;
-        SCountdownPacket packet;
-        packet.type = kPacketTypeCountdown;
-        packet.countdown = ctdown;
-		
-		[[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
-	}
+    CCLOG(@"Send Countdown Method");
+    
+    SCountdownPacket packet;
+    packet.type = kPacketTypeCountdown;
+    packet.countdown = ctdown;
+    
+    if(bluetooth)
+        [self sendNetworkPacket:gameSession :&packet sizeInBytes:sizeof(packet)];
+
+    
+    if(!bluetooth)
+        if ([GameKitHelper sharedGameKitHelper].currentMatch != nil)
+            [[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
 }
 
 -(void) sendRandNumReceived
 {
-	if ([GameKitHelper sharedGameKitHelper].currentMatch != nil)
-	{
-        SRanNumReceivedPacket packet;
-        packet.type = kPacketTypeRanNumReceived;
-        
-		[[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
-	}
+    CCLOG(@"Send Random Number Method");
+    
+    SRanNumReceivedPacket packet;
+    packet.type = kPacketTypeRanNumReceived;
+    
+    if(bluetooth)
+        [self sendNetworkPacket:gameSession :&packet sizeInBytes:sizeof(packet)];
+    
+    if(!bluetooth)
+        if ([GameKitHelper sharedGameKitHelper].currentMatch != nil)
+            [[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
+
 }
 
 -(void) pauseReceived:(BOOL)paused
 {
-	if ([GameKitHelper sharedGameKitHelper].currentMatch != nil)
-	{
-        SPausePacket packet;
-        packet.type = kPacketTypePause;
-        packet.Pause = paused;
+    CCLOG(@"Pause Received Method");
+    SPausePacket packet;
+    packet.type = kPacketTypePause;
+    packet.Pause = paused;
+    
+    if(bluetooth)
+        [self sendNetworkPacket:gameSession :&packet sizeInBytes:sizeof(packet)];
+    if(!bluetooth)
+        if ([GameKitHelper sharedGameKitHelper].currentMatch != nil)
+            [[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
+}
+
+#pragma mark Peer Picker Related Methods
+-(void)startPicker {
+    
+    GKPeerPickerController*		picker;
+	self.gameState = kStatePicker;			// we're going to do Multiplayer!
+	
+	picker = [[GKPeerPickerController alloc] init]; // note: picker is released in various picker delegate methods when picker use is done.
+	picker.delegate = self;
+    
+    picker.connectionTypesMask = (GKPeerPickerConnectionTypeNearby |
+                                  GKPeerPickerConnectionTypeOnline);
+    [picker show]; // show the Peer Picker
+}
+
+#pragma mark GKPeerPickerControllerDelegate Methods
+
+- (void)peerPickerControllerDidCancel:(GKPeerPickerController *)picker {
+    
+    picker.delegate = nil;
+    
+    // invalidate and release game session if one is around.
+    if(self.gameSession != nil) {
+        [self invalidateSession:self.gameSession];
+        self.gameSession = nil;
+    }
+    
+    // go back to start mode
+    self.gameState = kStateStartGame;
+}
+
+//
+// Provide a custom session that has a custom session ID. This is also an opportunity to provide a session with a custom display name.
+//
+- (void)peerPickerController:(GKPeerPickerController *)picker didSelectConnectionType:(GKPeerPickerConnectionType)type{
+	if (type == GKPeerPickerConnectionTypeOnline) {
+        bluetooth = FALSE;
+        picker.delegate = nil;
+        [picker dismiss];
         
-		[[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
+        gkHelper = [GameKitHelper sharedGameKitHelper];
+		gkHelper.delegate = self;
+        [gkHelper authenticateLocalPlayer];
+        [self onAchievementsViewDismissed];
+		// Implement your own internet user interface here.
+    }
+}
+
+- (GKSession *)peerPickerController:(GKPeerPickerController *)picker sessionForConnectionType:(GKPeerPickerConnectionType)type {
+    GKSession *session = [[GKSession alloc] initWithSessionID:kSessionID displayName:nil sessionMode:GKSessionModePeer];
+    return session;
+}
+
+- (void)peerPickerController:(GKPeerPickerController *)picker didConnectPeer:(NSString *)peerID toSession:(GKSession *)session {
+    // Remember the current peer.
+    self.gamePeerId = peerID;  // copy
+    
+    // Make sure we have a reference to the game session and it is set up
+    self.gameSession = session; // retain
+    self.gameSession.delegate = self;
+    [self.gameSession setDataReceiveHandler:self withContext:NULL];
+    
+    // Done with the Peer Picker so dismiss it.
+    [picker dismiss];
+    picker.delegate = nil;
+    
+    // Start Multiplayer game by entering a cointoss state to determine who is server/client.
+    self.gameState = kStateMultiplayerCointoss;
+}
+
+
+#pragma mark Session Related Methods
+
+//
+// invalidate session
+//
+- (void)invalidateSession:(GKSession *)session {
+    if(session != nil) {
+        [session disconnectFromAllPeers];
+        session.available = NO;
+        [session setDataReceiveHandler: nil withContext: NULL];
+        session.delegate = nil;
+    }
+}
+
+#pragma mark GKSessionDelegate Methods
+
+// we've gotten a state change in the session
+- (void)session:(GKSession *)session peer:(NSString *)peerID didChangeState:(GKPeerConnectionState)state {
+    if(self.gameState == kStatePicker) {
+        return;             // only do stuff if we're in multiplayer, otherwise it is probably for Picker
+    }
+    
+    if(state == GKPeerStateDisconnected) {
+        // We've been disconnected from the other peer.
+        
+        // Update user alert or throw alert if it isn't already up
+        NSString *message = [NSString stringWithFormat:@"Could not reconnect with %@.", [session displayNameForPeer:peerID]];
+        if((self.gameState == kStateMultiplayerReconnect) && self.connectionAlert && self.connectionAlert.visible) {
+            self.connectionAlert.message = message;
+        }
+        else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Lost Connection" message:message delegate:self cancelButtonTitle:@"End Game" otherButtonTitles:nil];
+            self.connectionAlert = alert;
+            [alert show];
+        }
+        
+        // go back to start mode
+        self.gameState = kStateStartGame;
+    }
+}
+
+- (void)setGameState:(NSInteger)newState {
+    if(newState == kStateStartGame) {
+        if(self.gameSession) {
+            // invalidate session and release it.
+            [self invalidateSession:self.gameSession];
+            self.gameSession = nil;
+        }
+        
+        // reset game here
+        
+        
+    }
+    
+    gameState = newState;
+}
+
+-(void) session:(GKSession *)session didFailWithError:(NSError *)error
+{
+	CCLOG(@"match:didFailWithError");
+	[self setLastError:error];
+}
+-(void) setLastError:(NSError*)error
+{
+	lastError = error.copy;
+	if (lastError != nil)
+	{
+		NSLog(@"GameKitHelper ERROR: %@", lastError.userInfo.description);
 	}
 }
+- (void)receiveData:(NSData *)data fromPeer:(NSString *)peer inSession:(GKSession *)session context:(void *)context {
+    [self onReceivedData:data fromPlayer:peer];
+}
+
+-(void) sendNetworkPacket:(GKSession *)session :(void*) data sizeInBytes:(NSUInteger)sizeInBytes
+{
+    NSError* error = nil;
+    NSData* packet = [NSData dataWithBytes:data length:sizeInBytes];
+    [session sendDataToAllPeers:packet withDataMode:GKSendDataUnreliable error:&error];
+    [self setLastError:error];
+}
+
 
 @end
 

@@ -17,8 +17,6 @@
 		CE1E25D11709E3CC00C89AC9 /* background2-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = CE1E25D01709E3CC00C89AC9 /* background2-hd.png */; };
 		CE29F4FA1701557500342259 /* MultiplayerLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = CE29F4F91701557500342259 /* MultiplayerLayer.m */; };
 		CE29F4FD170155CE00342259 /* MultiplayerScene.m in Sources */ = {isa = PBXBuildFile; fileRef = CE29F4FC170155CE00342259 /* MultiplayerScene.m */; };
-		CE29F500170157F000342259 /* Nextpeer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE29F4FE170157F000342259 /* Nextpeer.framework */; };
-		CE29F5021701580400342259 /* NPResources_iPhone_Portrait.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CE29F5011701580400342259 /* NPResources_iPhone_Portrait.bundle */; };
 		CE3F842416C6E3460028F4DF /* Ball.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3F842316C6E3460028F4DF /* Ball.m */; };
 		CE60A2A316DC952600325F5D /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = CE60A2A216DC952600325F5D /* Default.png */; };
 		CE8829AB1706B24D00824780 /* libcocos2d-library.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC0C4B87154AB55A00B4B727 /* libcocos2d-library.a */; };
@@ -331,8 +329,6 @@
 		CE29F4F91701557500342259 /* MultiplayerLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiplayerLayer.m; sourceTree = "<group>"; };
 		CE29F4FB170155CE00342259 /* MultiplayerScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiplayerScene.h; sourceTree = "<group>"; };
 		CE29F4FC170155CE00342259 /* MultiplayerScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiplayerScene.m; sourceTree = "<group>"; };
-		CE29F4FE170157F000342259 /* Nextpeer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Nextpeer.framework; sourceTree = "<group>"; };
-		CE29F5011701580400342259 /* NPResources_iPhone_Portrait.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = NPResources_iPhone_Portrait.bundle; sourceTree = "<group>"; };
 		CE29F5111701593F00342259 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		CE29F5131701594900342259 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		CE3F842216C6E3460028F4DF /* Ball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ball.h; sourceTree = "<group>"; };
@@ -667,7 +663,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DC0C4B88154AB55A00B4B727 /* Foundation.framework in Frameworks */,
-				CE29F500170157F000342259 /* Nextpeer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -794,8 +789,6 @@
 		DC0C4B93154AB59800B4B727 /* libs */ = {
 			isa = PBXGroup;
 			children = (
-				CE29F5011701580400342259 /* NPResources_iPhone_Portrait.bundle */,
-				CE29F4FE170157F000342259 /* Nextpeer.framework */,
 				DC0C4B94154AB59800B4B727 /* cocos2d */,
 				DC0C4C54154AB59800B4B727 /* CocosDenshion */,
 				DC0C4C5E154AB59800B4B727 /* kazmath */,
@@ -1439,7 +1432,6 @@
 				CEB3DFED16DAB5C500F57214 /* ball-hd.png in Resources */,
 				CEB3DFEE16DAB5C500F57214 /* ball.png in Resources */,
 				CE60A2A316DC952600325F5D /* Default.png in Resources */,
-				CE29F5021701580400342259 /* NPResources_iPhone_Portrait.bundle in Resources */,
 				CEB19A2417053BD400403CB1 /* bounce.wav in Resources */,
 				CEB19A2717053E7000403CB1 /* wrong.wav in Resources */,
 				CEB19A2817053E7000403CB1 /* correct.wav in Resources */,
