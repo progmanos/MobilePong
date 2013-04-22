@@ -764,7 +764,6 @@ typedef enum {
 		gkHelper.delegate = self;
         [gkHelper authenticateLocalPlayer];
         [self onAchievementsViewDismissed];
-		// Implement your own internet user interface here.
     }
 }
 
