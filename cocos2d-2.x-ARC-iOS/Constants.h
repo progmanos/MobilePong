@@ -9,7 +9,7 @@
 #ifndef PongT2_Constants_h
 #define PongT2_Constants_h
 
-#define MAX_BALL_SPEED 6
+#define MAX_BALL_SPEED 8
 #define MIN_BALL_SPEED 4
 #define PADDLE_COLLISION_DIVIDER 21
 

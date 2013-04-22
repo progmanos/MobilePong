@@ -205,16 +205,84 @@ typedef enum {
 -(void) checkCollision
 {
     //Checks collison with player
+    //Checks collison with player
     int playerCollisionSeg = [player GetCollisionSegment:[ball tipOfBallX] leftPos:[ball leftOfBall] rightPos:[ball rightOfBall]];
     
-    if (playerCollisionSeg >= SegmentA && playerCollisionSeg <= SegmentC && [ball tipOfBall] >= ([player tipOfPaddle]-5) && [ball tipOfBall] <= ([player tipOfPaddle]) && ball.didCollide == FALSE) {
-        ball.velocity = [ball reflectStraight:CGPointMake(0,1)];
+    CGFloat adjSpeedLeftA = -(ball.position.x - 42.0f)*2.0f;
+    CGFloat adjSpeedRightA = -adjSpeedLeftA;
+    CGFloat adjSpeedLeftC = (ball.position.x-42.0f)*2.0f;
+    CGFloat adjSpeedRightC = -adjSpeedLeftC;
+    
+    CGFloat bluntAngleLeftA = -(21.0f-ball.position.x)*0.0374f;
+    CGFloat bluntAngleRightA = -bluntAngleLeftA;
+    CGFloat bluntAngleLeftC = (ball.position.x-42.0f)*0.0374f;
+    CGFloat bluntAngleRightC = -bluntAngleLeftC;
+    
+    CGPoint normVect = CGPointMake(0, 1);
+    
+    CGRect ballbox = CGRectMake(ball.ballSprite.position.x, ball.ballSprite.position.y, ball.ballSprite.contentSize.width, ball.ballSprite.contentSize.height);
+    
+    CGRect playerPaddleBox = CGRectMake(player.paddleSprite.position.x, player.paddleSprite.position.y, player.paddleSprite.contentSize.width, player.paddleSprite.contentSize.height);
+    
+    CGRect opponentPaddleBox = CGRectMake(opponent.paddleSprite.position.x, opponent.paddleSprite.position.y, opponent.paddleSprite.contentSize.width, opponent.paddleSprite.contentSize.height);
+    
+    if (CGRectIntersectsRect(ballbox, playerPaddleBox) && ball.didCollide == FALSE) {
+        
+        switch (playerCollisionSeg) {
+            case SegmentA:
+                if(ball.velocity.x >= 0) {
+                    ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftA andSpeedAdjust:adjSpeedLeftA];
+                }
+                else {
+                    ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightA andSpeedAdjust:adjSpeedRightA];
+                }
+                break;
+            case SegmentB:
+                ball.velocity = [ball reflectStraight:normVect];
+                break;
+            case SegmentC:
+                if(ball.velocity.y >= 0) {
+                    normVect.y = -normVect.y;
+                    ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftC andSpeedAdjust:adjSpeedLeftC];
+                }
+                else {
+                    normVect.y = -normVect.y;
+                    ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightC andSpeedAdjust:adjSpeedRightC];
+                }
+            default:
+                break;
+        }
+        
         ball.didCollide = TRUE;
     }
     else {
         int opponentCollisionSeg = [opponent GetCollisionSegment:[ball tipOfBallX] leftPos:[ball leftOfBall] rightPos:[ball rightOfBall]];
-        if (opponentCollisionSeg >= SegmentA && opponentCollisionSeg <= SegmentC && [ball opponentTipOfBall] <= ([opponent tipOfPaddle]+5) && [ball opponentTipOfBall] >= ([opponent tipOfPaddle])) {
-            ball.velocity = [ball reflectStraight:CGPointMake(0,-1)];
+        normVect.y = -normVect.y;
+        if (CGRectIntersectsRect(ballbox, opponentPaddleBox) && ball.didCollide == FALSE) {
+            
+            switch (opponentCollisionSeg) {
+                case SegmentA:
+                    if(ball.velocity.x >= 0) {
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftA andSpeedAdjust:adjSpeedLeftA];
+                    }
+                    else {
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightA andSpeedAdjust:adjSpeedRightA];
+                    }
+                    break;
+                case SegmentB:
+                    ball.velocity = [ball reflectStraight:normVect];
+                    break;
+                case SegmentC:
+                    if(ball.velocity.y >= 0) {
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftC andSpeedAdjust:adjSpeedLeftC];
+                    }
+                    else {
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightC andSpeedAdjust:adjSpeedRightC];
+                    }
+                default:
+                    break;
+            }
+            
             ball.didCollide = TRUE;
         }
     }

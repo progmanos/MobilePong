@@ -167,15 +167,13 @@
     CGFloat segB[] = {segARightEdge, segARightEdge + 20};
     CGFloat segC[] = {segB[1], segB[1]+20};
     
-    if(ballRightPos < segA[1] && ballRightPos >= segA[0]) {
+    if(ballCtrTip < segA[1] && ballRightPos >= segA[0])  {
         return SegmentA;
     }
-    else if( (ballposLeft >= segB[0] && ballRightPos < segB[1]) ||
-            (ballRightPos < segB[1] && ballRightPos >= segB[0] && ballposLeft >= segA[0])) {
+    else if(ballCtrTip >= segB[0] && ballCtrTip < segB[1])  {
         return SegmentB;
     }
-    else if((ballposLeft <= segC[1] && ballRightPos >= segC[0]) ||
-            (ballRightPos < segC[1] && ballRightPos >= segC[0] && ballposLeft >= segB[0])){
+    else if(ballposLeft <= segC[1] && ballCtrTip >= segC[0])  {
         return SegmentC;
     }
     

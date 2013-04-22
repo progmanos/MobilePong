@@ -107,7 +107,7 @@
     
     
     //Handles bouncing on walls
-    if(position.x < 0 || position.x >screenSize.width){
+    if(position.x < 4 || position.x > (screenSize.width - 4)){
         velocity.x = -velocity.x;}
     
     //AI scores and serves ball
@@ -259,7 +259,9 @@
 
 -(CGFloat) getAngle: (CGPoint) velocityVector
 {
-    return acosf(velocityVector.x / [self getSpeed:velocityVector]);
+    CGFloat vectAngle = atan2f(-velocityVector.y,-velocityVector.x);
+    vectAngle = CC_DEGREES_TO_RADIANS(vectAngle/M_PI*180 + 180);
+    return vectAngle;
 }
 
 -(CGPoint) reflectStraight: (CGPoint) normVect
@@ -272,11 +274,40 @@
     return newVelocity;
 }
 
--(CGPoint) reflect: (CGPoint) normVect withBlunt:  (BluntFuncBlock) bluntfunc
+-(CGPoint) reflect: (CGPoint) normVect withBlunt: (CGFloat) bluntVal andSpeedAdjust: (CGFloat) speedAdjVal
 {
     CGPoint reflectionVect = [self reflectStraight:normVect];
-    CGFloat newAngle = [self getAngle:reflectionVect] + bluntfunc(normVect.x);
-    CGPoint newVelocity = [self calcVelocity:[self getSpeed:reflectionVect] withAngle:newAngle];
+    CGFloat newAngle = [self getAngle:reflectionVect] + bluntVal;
+    
+    if(newAngle < 0) {
+        newAngle = newAngle + 2*M_PI;
+    }
+    
+    if (newAngle < M_PI && newAngle > (5*M_PI/6)) {
+        newAngle = 5*M_PI/6;
+    }
+    else if(newAngle >= M_PI && newAngle < (7*M_PI/6)) {
+        newAngle = 7*M_PI/6;
+    }
+    else if(newAngle > (11*M_PI/6) && newAngle < (2*M_PI)) {
+        newAngle = 11*M_PI/6;
+    }
+    else if(newAngle >= 0 && newAngle < M_PI/6) {
+        newAngle = M_PI/6;
+    }
+
+    CGFloat newSpeed = [self getSpeed:reflectionVect] + speedAdjVal;
+    
+    if (newSpeed > MAX_BALL_SPEED) {
+        newSpeed = MAX_BALL_SPEED;
+    }
+    else if(newSpeed < MIN_BALL_SPEED) {
+        newSpeed = MIN_BALL_SPEED;
+    }
+        
+    
+    CGPoint newVelocity = [self calcVelocity:newSpeed withAngle:newAngle];
+    
     return newVelocity;
 }
 

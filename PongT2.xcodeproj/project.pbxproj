@@ -1123,13 +1123,13 @@
 		DC4C8DFF16D8584C00A40403 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				CECB06721708E416009D3412 /* PauseScene.h */,
 				0173E634170A33DA002EFCAF /* MultiplayerOptionLayer.h */,
 				0173E635170A33DA002EFCAF /* MultiplayerOptionLayer.m */,
 				0173E631170A33B2002EFCAF /* MultiplayerOptionScene.h */,
 				0173E632170A33B2002EFCAF /* MultiplayerOptionScene.m */,
 				CECB06701708E416009D3412 /* PauseLayer.h */,
 				CECB06711708E416009D3412 /* PauseLayer.m */,
-				CECB06721708E416009D3412 /* PauseScene.h */,
 				CECB06731708E416009D3412 /* PauseScene.m */,
 				CECB06741708E416009D3412 /* TutorialLayer.h */,
 				CECB06751708E416009D3412 /* TutorialLayer.m */,

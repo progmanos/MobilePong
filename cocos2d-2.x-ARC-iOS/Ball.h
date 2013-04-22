@@ -109,12 +109,12 @@ typedef CGFloat (^BluntFuncBlock)(CGFloat x);
 
 /*
  @normVect: vector normal to the collision point
- @bluntfunc: a linear function, coded as an Objective-C block that increases or decreases the angle of
- reflection
+ @bluntVal: adjust angle with a blunt value
+ @speedajVal: adjust speed with a value
  
- Returns the reflection vector with a blunt
+ Returns the reflection vector with a blunt angle and speed
  */
--(CGPoint) reflect: (CGPoint) normVect withBlunt:  (BluntFuncBlock) bluntfunc;
+-(CGPoint) reflect: (CGPoint) normVect withBlunt: (CGFloat) bluntVal andSpeedAdjust: (CGFloat) speedAdjVal;
 
 @end
 
