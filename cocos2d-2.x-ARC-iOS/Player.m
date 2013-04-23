@@ -161,21 +161,28 @@
 -(int) GetCollisionSegment:(CGFloat)ballCtrTip leftPos:(CGFloat)ballposLeft rightPos:(CGFloat)ballRightPos
 {
     //define paddle segments ranges
-    CGFloat segALeftEdge = paddleSprite.position.x - (paddleSprite.contentSize.width)/2;
-    CGFloat segARightEdge = segALeftEdge + 20;
-    CGFloat segA[] = {segALeftEdge, segARightEdge};
-    CGFloat segB[] = {segARightEdge, segARightEdge + 20};
-    CGFloat segC[] = {segB[1], segB[1]+20};
     
-    if(ballCtrTip < segA[1] && ballRightPos >= segA[0])  {
+    //center of paddle minus half paddle size gives left end of paddle
+    CGFloat segALeftEdge = paddleSprite.position.x - (paddleSprite.contentSize.width)/2;
+    
+    //left end of paddle plus 1/3 of paddle size
+    CGFloat segARightEdge = segALeftEdge + (paddleSprite.contentSize.width/3);
+    
+    //center of paddle plus half of paddle size gives right end of paddle
+    CGFloat segCRightEdge = paddleSprite.position.x + (paddleSprite.contentSize.width)/2;
+    
+    //right end of paddle minus 1/3 of paddle size
+    CGFloat segCLeftEdge = segCRightEdge - (paddleSprite.contentSize.width/3);
+    
+    
+    if(ballRightPos > segALeftEdge && ballCtrTip < segARightEdge)
         return SegmentA;
-    }
-    else if(ballCtrTip >= segB[0] && ballCtrTip < segB[1])  {
+    
+    else if(ballCtrTip >= segARightEdge && ballCtrTip <= segCLeftEdge)
         return SegmentB;
-    }
-    else if(ballposLeft <= segC[1] && ballCtrTip >= segC[0])  {
+        
+    else if(ballCtrTip > segCLeftEdge && ballposLeft <= segCRightEdge)
         return SegmentC;
-    }
     
     return -1;
 }

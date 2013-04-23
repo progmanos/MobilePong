@@ -206,7 +206,7 @@
 
 //adds half of ball to get right of ball to get right tip
 -(CGFloat) rightOfBall{
-    return(position.x + (ballSprite.contentSize.height /* ballSprite.scaleY*/)/2);
+    return(position.x + (ballSprite.contentSize.width /* ballSprite.scaleY*/)/2);
 }
 
 -(float) getBottomTipY
@@ -239,7 +239,7 @@
 
 -(CGPoint) calcVelocity: (CGFloat) speed withAngle: (CGFloat) angle
 {
-    return CGPointMake(speed*cosf(speed), speed*sinf(angle));
+    return CGPointMake(speed*cosf(angle), speed*sinf(angle));
 }
 
 -(CGFloat) getSpeed
@@ -273,7 +273,6 @@
     CGPoint newVelocity = CGPointMake(reflectionVectX, reflectionVectY);
     return newVelocity;
 }
-
 -(CGPoint) reflect: (CGPoint) normVect withBlunt: (CGFloat) bluntVal andSpeedAdjust: (CGFloat) speedAdjVal
 {
     CGPoint reflectionVect = [self reflectStraight:normVect];
@@ -289,7 +288,7 @@
     else if(newAngle >= M_PI && newAngle < (7*M_PI/6)) {
         newAngle = 7*M_PI/6;
     }
-    else if(newAngle > (11*M_PI/6) && newAngle < (2*M_PI)) {
+    else if(newAngle > (11*M_PI/6) && newAngle <= (2*M_PI)) {
         newAngle = 11*M_PI/6;
     }
     else if(newAngle >= 0 && newAngle < M_PI/6) {
@@ -304,7 +303,7 @@
     else if(newSpeed < MIN_BALL_SPEED) {
         newSpeed = MIN_BALL_SPEED;
     }
-        
+    
     
     CGPoint newVelocity = [self calcVelocity:newSpeed withAngle:newAngle];
     

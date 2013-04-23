@@ -232,25 +232,30 @@
         //Checks collison with player
     int player1CollisionSeg = [player1 GetCollisionSegment:[ball tipOfBallX] leftPos:[ball leftOfBall] rightPos:[ball rightOfBall]];
     
-    CGFloat adjSpeedLeftA = -(ball.position.x - 42.0f)*2.0f;
-    CGFloat adjSpeedRightA = -adjSpeedLeftA;
-    CGFloat adjSpeedLeftC = (ball.position.x-42.0f)*2.0f;
-    CGFloat adjSpeedRightC = -adjSpeedLeftC;
+    int opponentCollisionSeg = [AIplayer GetCollisionSegment:[ball tipOfBallX] leftPos:[ball leftOfBall] rightPos:[ball rightOfBall]];
     
-    CGFloat bluntAngleLeftA = -(21.0f-ball.position.x)*0.0374f;
-    CGFloat bluntAngleRightA = -bluntAngleLeftA;
-    CGFloat bluntAngleLeftC = (ball.position.x-42.0f)*0.0374f;
-    CGFloat bluntAngleRightC = -bluntAngleLeftC;
+    
     
     CGPoint normVect = CGPointMake(0, 1);
     
-    CGRect ballbox = CGRectMake(ball.ballSprite.position.x, ball.ballSprite.position.y, ball.ballSprite.contentSize.width, ball.ballSprite.contentSize.height);
+    CGRect ballbox = CGRectMake((ball.ballSprite.position.x-ball.ballSprite.contentSize.width/2), (ball.ballSprite.position.y-ball.ballSprite.contentSize.height/2), ball.ballSprite.contentSize.width, ball.ballSprite.contentSize.height);
+    CGRect playerPaddleBox = CGRectMake((player1.paddleSprite.position.x - player1.paddleSprite.contentSize.width/2), (player1.paddleSprite.position.y - player1.paddleSprite.contentSize.height/2), player1.paddleSprite.contentSize.width, player1.paddleSprite.contentSize.height);
     
-    CGRect playerPaddleBox = CGRectMake(player1.paddleSprite.position.x, player1.paddleSprite.position.y, player1.paddleSprite.contentSize.width, player1.paddleSprite.contentSize.height);
-    
-    CGRect opponentPaddleBox = CGRectMake(AIplayer.paddleSprite.position.x, AIplayer.paddleSprite.position.y, AIplayer.paddleSprite.contentSize.width, AIplayer.paddleSprite.contentSize.height);
+    CGRect opponentPaddleBox = CGRectMake((AIplayer.paddleSprite.position.x - AIplayer.paddleSprite.contentSize.width/2), (AIplayer.paddleSprite.position.y - AIplayer.paddleSprite.contentSize.height/2), AIplayer.paddleSprite.contentSize.width, AIplayer.paddleSprite.contentSize.height);
     
     if (CGRectIntersectsRect(ballbox, playerPaddleBox) && ball.didCollide == FALSE) {
+
+        CGFloat adjSpeedLeftA = -(20.16 - ([ball getPosition].x - [player1 leftHalfOfPaddle]))*2.0f;
+        CGFloat adjSpeedRightA = (20.16 - ([ball getPosition].x - [player1 leftHalfOfPaddle]))*2.0f;
+        
+        CGFloat bluntAngleLeftA = -(20.16 - ([ball getPosition].x - [player1 leftHalfOfPaddle]))*0.0374f;
+        CGFloat bluntAngleRightA = (20.16 - ([ball getPosition].x - [player1 leftHalfOfPaddle]))*0.0374f;
+        
+        CGFloat adjSpeedLeftC = (20.16 - ([player1 rightHalfOfPaddle] - [ball getPosition].x))*2.0f;
+        CGFloat adjSpeedRightC = -(20.16 - ([player1 rightHalfOfPaddle] - [ball getPosition].x))*2.0f;
+        
+        CGFloat bluntAngleLeftC = -(20.16 - ([player1 rightHalfOfPaddle] - [ball getPosition].x))*0.0374f;
+        CGFloat bluntAngleRightC = (20.16 - ([player1 rightHalfOfPaddle] - [ball getPosition].x))*0.0374f;
         
         switch (player1CollisionSeg) {
             case SegmentA:
@@ -265,7 +270,7 @@
                 ball.velocity = [ball reflectStraight:normVect];
                 break;
             case SegmentC:
-                if(ball.velocity.y >= 0) {
+                if(ball.velocity.x >= 0) {
                     normVect.y = -normVect.y;
                     ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftC andSpeedAdjust:adjSpeedLeftC];
                 }
@@ -279,36 +284,45 @@
         
         ball.didCollide = TRUE;
     }
-    else {
-        int opponentCollisionSeg = [AIplayer GetCollisionSegment:[ball tipOfBallX] leftPos:[ball leftOfBall] rightPos:[ball rightOfBall]];
+    else if (CGRectIntersectsRect(ballbox, opponentPaddleBox) && ball.didCollide == FALSE) {
         normVect.y = -normVect.y;
-        if (CGRectIntersectsRect(ballbox, opponentPaddleBox) && ball.didCollide == FALSE) {
-            
-            switch (opponentCollisionSeg) {
-                case SegmentA:
-                    if(ball.velocity.x >= 0) {
-                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftA andSpeedAdjust:adjSpeedLeftA];
-                    }
-                    else {
-                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightA andSpeedAdjust:adjSpeedRightA];
-                    }
-                    break;
-                case SegmentB:
-                    ball.velocity = [ball reflectStraight:normVect];
-                    break;
-                case SegmentC:
-                    if(ball.velocity.y >= 0) {
-                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftC andSpeedAdjust:adjSpeedLeftC];
-                    }
-                    else {
-                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightC andSpeedAdjust:adjSpeedRightC];
-                    }
-                default:
-                    break;
-            }
-            
-            ball.didCollide = TRUE;
+        CGFloat adjSpeedLeftA = -(21 - ([ball getPosition].x - [AIplayer leftHalfOfPaddle]))*2.0f;
+        CGFloat adjSpeedRightA = (21 - ([ball getPosition].x - [AIplayer leftHalfOfPaddle]))*2.0f;
+        
+        CGFloat bluntAngleLeftA = -(21 - ([ball getPosition].x - [AIplayer leftHalfOfPaddle]))*0.0374f;
+        CGFloat bluntAngleRightA = (21 - ([ball getPosition].x - [AIplayer leftHalfOfPaddle]))*0.0374f;
+        
+        CGFloat adjSpeedLeftC = (21 - ([AIplayer rightHalfOfPaddle] - [ball getPosition].x))*2.0f;
+        CGFloat adjSpeedRightC = -(21 - ([AIplayer rightHalfOfPaddle] - [ball getPosition].x))*2.0f;
+        
+        CGFloat bluntAngleLeftC = (21 - ([AIplayer rightHalfOfPaddle] - [ball getPosition].x))*0.0374f;
+        CGFloat bluntAngleRightC = -(21 - ([AIplayer rightHalfOfPaddle] - [ball getPosition].x))*0.0374f;
+
+       switch (opponentCollisionSeg) {
+                
+            case SegmentA:
+                if(ball.velocity.x >= 0) {
+                    ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftA andSpeedAdjust:adjSpeedLeftA];
+                }
+                else {
+                    ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightA andSpeedAdjust:adjSpeedRightA];
+                }
+                break;
+            case SegmentB:
+                ball.velocity = [ball reflectStraight:normVect];
+                break;
+            case SegmentC:
+                if(ball.velocity.x >= 0) {
+                    ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftC andSpeedAdjust:adjSpeedLeftC];
+                }
+                else {
+                    ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightC andSpeedAdjust:adjSpeedRightC];
+                }
+            default:
+                break;
         }
+        
+        ball.didCollide = TRUE;
     }
 }
 
