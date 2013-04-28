@@ -14,9 +14,9 @@
     int selections;
     int lastSelction;
     CCMenu *optionsMenu;
-    CCLabelTTF *levelChoiceOnelabel;
-    CCLabelTTF *levelChoiceTwolabel;
-    CCLabelTTF *levelChoiceThreelabel;
+    CCLabelTTF *playTo5label;
+    CCLabelTTF *playTo11label;
+    CCLabelTTF *playTo15label;
 }
 
 -(void) returnToMainMenu;

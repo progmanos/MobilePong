@@ -42,7 +42,7 @@
     if (self != nil) {
         CGSize screenSize = [CCDirector sharedDirector].winSize;
         CCSprite *background =
-        [CCSprite spriteWithFile:@"background.png"];
+        [CCSprite spriteWithFile:@"background2.png"];
         [background setPosition:ccp(screenSize.width/2,
                                     screenSize.height/2)];
         [self addChild:background];
@@ -68,6 +68,7 @@
     // pop the options scene from the CCDirector and return to the menu scene
     [[CCDirector sharedDirector] popScene];
     gamePaused = FALSE;
+    countdown = 3;
   
 }
 

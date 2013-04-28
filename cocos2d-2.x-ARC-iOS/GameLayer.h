@@ -19,15 +19,16 @@
     int times;
     
     Ball *ball;
-    Player *player1;
-    Player *AIplayer;
-    CCLabelTTF *AIroundLabel;
-    CCLabelTTF *player1roundLabel;
-    CCLabelTTF *AIscoreLabel;
-    CCLabelTTF *player1scoreLabel;
+    Player *player;
+    Player *opponent;
+    CCLabelTTF *opponentRoundLabel;
+    CCLabelTTF *playerRoundLabel;
+    CCLabelTTF *opponentScoreLabel;
+    CCLabelTTF *playerScoreLabel;
     CCLabelTTF *timeLabel;
     CCLabelTTF *highScoreLabel;
     CCLabelTTF *winnerLabel;
+    CCLabelTTF *countdownLabel;
     ccTime totalTime;
     NSString *highscore;
     NSString *winner;
@@ -39,7 +40,8 @@
     CCMenu* menu;
     CGSize screenSize;
     
-    
+    int oneThirdOfPlayerPaddle;
+    int oneThirdOfOpponentPaddle;
     
 }
 

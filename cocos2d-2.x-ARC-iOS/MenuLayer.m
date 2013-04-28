@@ -40,7 +40,7 @@
     pointsToWin = 11;
     multiplayer = FALSE;
     CGSize screenSize = [CCDirector sharedDirector].winSize;
-    CCLabelTTF *playlabel = [CCLabelTTF labelWithString:@"Play Pong" fontName:@"Arial" fontSize:32];
+    CCLabelTTF *playlabel = [CCLabelTTF labelWithString:@"Single Player" fontName:@"Arial" fontSize:32];
     CCMenuItemFont *playGameItemLabel = [CCMenuItemFont itemWithLabel:playlabel target:self selector:@selector(playGame)];
     
     CCLabelTTF *optionsLabel = [CCLabelTTF labelWithString:@"Options" fontName:@"Arial" fontSize:32];

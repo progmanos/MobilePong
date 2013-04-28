@@ -25,6 +25,7 @@
 {
     if((self = [super init]))
     {
+        didCollideWithWall = FALSE;
         score = FALSE;
         [parentNode addChild:self];
         screenSize = [CCDirector sharedDirector].winSize;
@@ -37,43 +38,38 @@
         
         [self scheduleUpdate];
             
-        srandom(time(NULL));
+        //srandom(time(NULL));
         
         /* generate inital random angles */
-        CGFloat randSelect = random() % 10;
-        CGFloat randangle1 = random()%150+30;
-        CGFloat randangle2 = random()%330+210;
-        CGFloat randangle;
-        
-        if(randSelect >= 5)
-            randangle = randangle1;
-        else
-            randangle = randangle2;
-        
-        CGPoint initialvel = [self calcVelocity:MIN_BALL_SPEED withAngle: CC_DEGREES_TO_RADIANS(randangle)];
-        velocity.x = initialvel.x;
-        velocity.y = initialvel.y;
+        velocity = [self calcVelocity:MIN_BALL_SPEED withAngle:CC_DEGREES_TO_RADIANS([self getRandomAngle])];
     }
 
     
     return self;
 }
-
+-(CGFloat)getRandomAngle
+{
+    CGFloat randangle;
+    if(position.y < screenSize.height/2)
+        randangle = arc4random() % (150-31) + 30;
+    else
+        randangle = arc4random() % (330-211) + 210;
+    
+    return randangle;
+}
 -(void) update:(ccTime)delta
 {
     ballSprite.position = position;
-    if(!multiplayer && !score)
+    
+    if(!multiplayer && !score && countdown <1 )
         [self moveBall];
-    //else if(!score && playerConnected)
-    //{
-        //[self moveBall];
-    //}
+    
     if(position.y < -16)
     {
         score = TRUE;
     }
     
-    //pplayer scores and serves ball
+    //player scores and serves ball
     else if(position.y >500)
     {
         score = TRUE;
@@ -88,6 +84,7 @@
 {
     return velocity;
 }
+
 -(void) setPosition: (CGPoint) p
 {
     position = p;
@@ -107,17 +104,22 @@
     
     
     //Handles bouncing on walls
-    if(position.x < 4 || position.x > (screenSize.width - 4)){
-        velocity.x = -velocity.x;}
-    
+    if((position.x < 5 || position.x > (screenSize.width - 5))&&!didCollideWithWall){
+        didCollideWithWall = TRUE;
+        [[SimpleAudioEngine sharedEngine] playEffect:@"bounce.wav"];
+        velocity.x = -velocity.x;
+    }
+    if(position.x > 5 && position.x < (screenSize.width - 5))
+        didCollideWithWall = FALSE;
     //AI scores and serves ball
     if(position.y < -16)
     {
+        didCollideWithWall = FALSE;
         score = TRUE;
         [self AIserveBall];
     }
     
-    //pplayer scores and serves ball
+    //player scores and serves ball
     if(position.y >500)
     {
         score = TRUE;
@@ -133,7 +135,7 @@
 //Freezes ball on players side of the screen for 5 seconds
 -(void) player1serveBall
 {
-    
+    countdown = 3;
     tempVelocity = velocity;
     
     screenSize = [CCDirector sharedDirector].winSize;
@@ -150,14 +152,15 @@
 //Freezes ball on AI side of the screen for 5 seconds
 -(void) AIserveBall
 {
+    countdown = 2;
     
-    tempVelocity = velocity;
+    //tempVelocity = velocity;
     
     screenSize = [CCDirector sharedDirector].winSize;
     position = CGPointMake((arc4random()%300) + 1, (screenSize.height - (screenSize.height/4)));
     velocity.x = 0;
     velocity.y = 0;
-    [self performSelector:@selector(resumeMove) withObject:nil afterDelay:2.0];
+    [self performSelector:@selector(resumeMove) withObject:nil afterDelay:1.0];
 
 }
 
@@ -166,10 +169,12 @@
 -(void) resumeMove
 {
     score = FALSE;
-    CGPoint newvel = CGPointMake(tempVelocity.x, tempVelocity.y);
-    velocity.x = newvel.x;
-    velocity.y = newvel.y;
+    CGPoint initialvel = [self calcVelocity:MIN_BALL_SPEED withAngle: CC_DEGREES_TO_RADIANS([self getRandomAngle])];
+    velocity.x = initialvel.x;
+    velocity.y = initialvel.y;
     tempVelocity = CGPointMake(0, 0);
+    didCollide = FALSE;
+    didCollideWithWall = FALSE;
 }
 
 
@@ -275,27 +280,34 @@
 }
 -(CGPoint) reflect: (CGPoint) normVect withBlunt: (CGFloat) bluntVal andSpeedAdjust: (CGFloat) speedAdjVal
 {
-    CGPoint reflectionVect = [self reflectStraight:normVect];
-    CGFloat newAngle = [self getAngle:reflectionVect] + bluntVal;
+    //CGPoint reflectionVect = [self reflectStraight:normVect];
+    //CGFloat newAngle = [self getAngle:reflectionVect] + bluntVal;
+    NSLog(@"INITIAL ANGLE: %f", (([self getAngle]*180)/M_PI));
+    
+    CGFloat newAngle = ((2*M_PI)- [self getAngle])+ bluntVal;
+    NSLog(@"Adjusted Angle *BEFORE IF'S: %f", ((newAngle*180)/M_PI));
     
     if(newAngle < 0) {
         newAngle = newAngle + 2*M_PI;
     }
-    
-    if (newAngle < M_PI && newAngle > (5*M_PI/6)) {
+    if(newAngle > 2*M_PI){
+        newAngle = newAngle - 2*M_PI;
+    }
+    /*if (newAngle < M_PI && newAngle > (5*M_PI/6)) {
         newAngle = 5*M_PI/6;
     }
-    else if(newAngle >= M_PI && newAngle < (7*M_PI/6)) {
+    if(newAngle >= M_PI && newAngle < (7*M_PI/6)) {
         newAngle = 7*M_PI/6;
     }
-    else if(newAngle > (11*M_PI/6) && newAngle <= (2*M_PI)) {
+    if(newAngle > (11*M_PI/6) && newAngle <= (2*M_PI)) {
         newAngle = 11*M_PI/6;
     }
-    else if(newAngle >= 0 && newAngle < M_PI/6) {
+    if(newAngle >= 0 && newAngle < M_PI/6) {
         newAngle = M_PI/6;
     }
-
-    CGFloat newSpeed = [self getSpeed:reflectionVect] + speedAdjVal;
+    NSLog(@"Adjusted Angle: %f", ((newAngle*180)/M_PI));
+    */
+    CGFloat newSpeed = [self getSpeed] + speedAdjVal;
     
     if (newSpeed > MAX_BALL_SPEED) {
         newSpeed = MAX_BALL_SPEED;
@@ -305,8 +317,25 @@
     }
     
     
-    CGPoint newVelocity = [self calcVelocity:newSpeed withAngle:newAngle];
     
+    if(position.y < screenSize.width/2)
+    {
+        if(newAngle > 5*M_PI/6 && newAngle < 3*M_PI/2)
+            newAngle = 5*M_PI/6;
+        if(newAngle >= 3*M_PI/2 || newAngle < M_PI/6)
+            newAngle = M_PI/6;
+    }
+    
+    if(position.y > screenSize.width/2)
+    {
+        if(newAngle > M_PI/2 && newAngle < 7*M_PI/6)
+            newAngle = 7*M_PI/6;
+        if(newAngle > 11*M_PI/6 || newAngle <= M_PI/2)
+            newAngle = 11*M_PI/6;
+    }
+        
+    CGPoint newVelocity = [self calcVelocity:newSpeed withAngle:newAngle];
+        
     return newVelocity;
 }
 

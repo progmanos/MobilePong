@@ -41,7 +41,7 @@
     if (self != nil) {
         CGSize screenSize = [CCDirector sharedDirector].winSize;
         CCSprite *background =
-        [CCSprite spriteWithFile:@"background.png"];
+        [CCSprite spriteWithFile:@"background3.png"];
         [background setPosition:ccp(screenSize.width/2,
                                     screenSize.height/2)];
         [self addChild:background];

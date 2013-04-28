@@ -44,6 +44,7 @@ typedef enum  {
 -(int) getScore;
 -(void) updateScore;
 -(void) resetScore;
+-(void) setScore:(int)s;
 -(void) updateRoundScore;
 -(void) resetRoundScore;
 -(int) getRoundScore;

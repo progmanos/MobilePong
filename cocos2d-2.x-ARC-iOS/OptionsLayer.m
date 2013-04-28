@@ -49,42 +49,66 @@
 	if (self != nil) {
         
         CGSize screenSize = [CCDirector sharedDirector].winSize;
+        
+        CCSprite *background =
+        [CCSprite spriteWithFile:@"background2.png"];
+        [background setPosition:ccp(screenSize.width/2,
+                                    screenSize.height/2)];
+        [self addChild:background];
+        
+        CCLabelTTF *levelChoicesLabel = [CCLabelTTF labelWithString:@"Select points to win match:" fontName:@"Arial" fontSize:24];
+        CCMenuItemFont *levelChoicesItemLabel = [CCMenuItemFont itemWithLabel:levelChoicesLabel target:nil selector:nil];
+        levelChoicesLabel.color = ccWHITE;
+        
+        
         CCLabelTTF *levelOneLabel = [CCLabelTTF labelWithString:@"Beginner" fontName:@"Arial" fontSize:24];
         CCMenuItemFont *levelOne = [CCMenuItemFont itemWithLabel:levelOneLabel target:self selector:nil];
+        levelOneLabel.color = ccRED;
         
         CCLabelTTF *levelTwoLabel = [CCLabelTTF labelWithString:@"Intermediate" fontName:@"Arial" fontSize:24];
         CCMenuItemFont *levelTwo = [CCMenuItemFont itemWithLabel:levelTwoLabel target:self selector:nil];
+        levelTwoLabel.color = ccRED;
         
         CCLabelTTF *levelThreeLabel = [CCLabelTTF labelWithString:@"Advanced" fontName:@"Arial" fontSize:24];
         CCMenuItemFont *levelThree = [CCMenuItemFont itemWithLabel:levelThreeLabel target:self selector:nil];
+        levelThreeLabel.color = ccRED;
+        
         CCLabelTTF *backLabel = [CCLabelTTF labelWithString:@"Back to Main Menu" fontName:@"Arial" fontSize:24];
         CCMenuItemLabel *backItem = [CCMenuItemLabel itemWithLabel:backLabel target:self selector:@selector(returnToMainMenu)];
         
         
         //set number of match
-        CCLabelTTF *levelChoicesLabel = [CCLabelTTF labelWithString:@"Select points to win match:" fontName:@"Arial" fontSize:24];
-        CCMenuItemFont *levelChoicesItemLabel = [CCMenuItemFont itemWithLabel:levelChoicesLabel target:self selector:@selector(setMatchNum)];
-        levelChoicesLabel.color = ccRED;
+        CCLabelTTF *scoreChoicesLabel = [CCLabelTTF labelWithString:@"Select points to win match:" fontName:@"Arial" fontSize:24];
+        CCMenuItemFont *scoreChoicesItemLabel = [CCMenuItemFont itemWithLabel:scoreChoicesLabel target:nil selector:nil];
+        scoreChoicesLabel.color = ccWHITE;
         
-        levelChoiceOnelabel = [CCLabelTTF labelWithString:@"    5" fontName:@"Arial" fontSize:16];
-        CCMenuItemFont *levelChoiceOneItemLabel = [CCMenuItemFont itemWithLabel:levelChoiceOnelabel target:self selector:@selector(setMatchNum1)];
-        levelChoiceOnelabel.color = ccYELLOW ;
+        playTo5label = [CCLabelTTF labelWithString:@"    5" fontName:@"Arial" fontSize:24];
+        CCMenuItemFont *playTo5 = [CCMenuItemFont itemWithLabel:playTo5label target:self selector:@selector(setScoreTo5)];
+        playTo5label.color = ccYELLOW ;
         
-        levelChoiceTwolabel = [CCLabelTTF labelWithString:@"    11" fontName:@"Arial" fontSize:16];
-        CCMenuItemFont *levelChoiceTwoItemLabel = [CCMenuItemFont itemWithLabel:levelChoiceTwolabel target:self selector:@selector(setMatchNum2)];
-        levelChoiceTwolabel.color = ccYELLOW ;
+        playTo11label = [CCLabelTTF labelWithString:@"    11" fontName:@"Arial" fontSize:24];
+        CCMenuItemFont *playTo11 = [CCMenuItemFont itemWithLabel:playTo11label target:self selector:@selector(setScoreTo11)];
+        playTo11label.color = ccYELLOW ;
         
-        levelChoiceThreelabel = [CCLabelTTF labelWithString:@"  15" fontName:@"Arial" fontSize:16];
-        CCMenuItemFont *levelChoiceThreeItemLabel = [CCMenuItemFont itemWithLabel:levelChoiceThreelabel target:self selector:@selector(setMatchNum3)];
-        levelChoiceThreelabel.color = ccYELLOW ;
-
+        playTo15label = [CCLabelTTF labelWithString:@"    15" fontName:@"Arial" fontSize:24];
+        CCMenuItemFont *playTo15 = [CCMenuItemFont itemWithLabel:playTo15label target:self selector:@selector(setScoreTo15)];
+        playTo15label.color = ccYELLOW ;
+        
+        
         CCMenuItemToggle *LevelToggle = [CCMenuItemToggle itemWithTarget:self
                                                                 selector:@selector(switchLevels)
                                                                    items:levelOne,levelTwo,levelThree,nil];
-        optionsMenu = [CCMenu menuWithItems:LevelToggle, backItem,levelChoicesItemLabel,levelChoiceOneItemLabel, levelChoiceTwoItemLabel, levelChoiceThreeItemLabel, nil];
+        
+        CCMenuItemToggle *scoreToggle = [CCMenuItemToggle itemWithTarget:nil
+                                                                selector:nil
+                                                                   items:playTo5, playTo11, playTo15, nil];
+        
+        
+        optionsMenu = [CCMenu menuWithItems:levelChoicesItemLabel, LevelToggle, scoreChoicesItemLabel, scoreToggle, backItem, nil];
         [optionsMenu alignItemsVerticallyWithPadding:60.0f];
         [optionsMenu setPosition:ccp(screenSize.width/2, screenSize.height/2)];
         [self addChild:optionsMenu];
+        
         
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
         GameLevel level = [prefs integerForKey:@"level"];
@@ -107,75 +131,19 @@
     return self;
 }
 
--(void) setMatchNum1{
-    if(selections==0){
-        selections++;
-        levelChoiceOnelabel.color = ccGREEN ;
-        lastSelction=1;
-        pointsToWin =5;
-    }
-    else{
-        if(lastSelction==2){
-            levelChoiceTwolabel.color = ccYELLOW ;
-            levelChoiceOnelabel.color = ccGREEN ;
-            pointsToWin =5;
-            lastSelction=1;
-        }
-        else if(lastSelction==3){
-            levelChoiceThreelabel.color = ccYELLOW ;
-            levelChoiceOnelabel.color = ccGREEN ;
-            pointsToWin =5;
-            lastSelction=1;
-        }
-    }
+-(void)setScoreTo5
+{
+    pointsToWin = 5;
 }
 
-
--(void) setMatchNum2{
-    if(selections==0){
-        selections++;
-        levelChoiceTwolabel.color = ccGREEN ;
-        lastSelction=2;
-        pointsToWin =11;
-    }
-    else{
-        if(lastSelction==3){
-            levelChoiceThreelabel.color = ccYELLOW ;
-            levelChoiceTwolabel.color = ccGREEN ;
-            pointsToWin =11;
-            lastSelction=2;
-        }
-        else if(lastSelction==1){
-            levelChoiceOnelabel.color = ccYELLOW ;
-            levelChoiceTwolabel.color = ccGREEN ;
-            pointsToWin =11;
-            lastSelction=2;
-        }
-    }
+-(void)setScoreTo11
+{
+    pointsToWin = 11;
 }
 
-
--(void) setMatchNum3{
-    if(selections==0){
-        selections++;
-        levelChoiceThreelabel.color = ccGREEN ;
-        lastSelction=3;
-        pointsToWin =15;
-    }
-    else{
-        if(lastSelction==1){
-            levelChoiceOnelabel.color = ccYELLOW ;
-            levelChoiceThreelabel.color = ccGREEN ;
-            pointsToWin =15;
-            lastSelction=3;
-        }
-        else if(lastSelction==2){
-            levelChoiceTwolabel.color = ccYELLOW ;
-            levelChoiceThreelabel.color = ccGREEN ;
-            pointsToWin =15;
-            lastSelction=3;
-        }
-    }
+-(void)setScoreTo15
+{
+    pointsToWin = 15;
 }
 
 @end

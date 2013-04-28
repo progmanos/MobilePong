@@ -457,21 +457,24 @@
 	}
 }
 
--(void) sendDataToAllPlayers:(void*)data sizeInBytes:(NSUInteger)sizeInBytes
+-(void) sendDataToAllPlayers:(NSMutableArray*)data sizeInBytes:(NSUInteger)sizeInBytes
 {
 	if (isGameCenterAvailable == NO)
 		return;
 	
 	NSError* error = nil;
-	NSData* packet = [NSData dataWithBytes:data length:sizeInBytes];
+	//NSData *packet = [NSData dataWithBytes:data length:sizeInBytes];
+    NSData *packet = [NSKeyedArchiver archivedDataWithRootObject:data];
 	[currentMatch sendDataToAllPlayers:packet withDataMode:GKMatchSendDataUnreliable error:&error];
 	[self setLastError:error];
 }
 
 -(void) match:(GKMatch*)match didReceiveData:(NSData*)data fromPlayer:(NSString*)playerID
 {
+    NSLog(@"made it did receive data");
 	if ([delegate respondsToSelector:@selector(onReceivedData:fromPlayer:)])
 	{
+        NSLog(@"made it inside if statement");
 		[delegate onReceivedData:data fromPlayer:playerID];
 	}
 }

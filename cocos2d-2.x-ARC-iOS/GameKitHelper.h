@@ -84,7 +84,7 @@
 -(void) addPlayersToMatch:(GKMatchRequest*)request;
 -(void) cancelMatchmakingRequest;
 -(void) queryMatchmakingActivity;
--(void) sendDataToAllPlayers:(void*)data sizeInBytes:(NSUInteger)sizeInBytes;
+-(void) sendDataToAllPlayers:(NSMutableArray*)data sizeInBytes:(NSUInteger)sizeInBytes;
 -(void) showMatchmakerWithInvite:(GKInvite*)invite;
 -(void) showMatchmakerWithRequest:(GKMatchRequest*)request;
 

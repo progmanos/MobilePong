@@ -18,13 +18,15 @@
 {
     if ((self = [super init]))
     {
+       
+        countdown = 5;
         times =0;
         multiplayer = FALSE;
         prefs = [NSUserDefaults standardUserDefaults];
         
         playerScored = FALSE;
-        [player1 resetScore];
-        [AIplayer resetScore];
+        [player resetScore];
+        [opponent resetScore];
        
         
         currhighscore = [prefs integerForKey:@"highScore"];
@@ -52,41 +54,41 @@
         screenSize = [CCDirector sharedDirector].winSize;
         
         //sets background to court image
-        CCSprite *background = [CCSprite spriteWithFile:@"background.png"];
+        CCSprite *background = [CCSprite spriteWithFile:@"background3.png"];
         [self addChild:background z:0 tag:1];
         background.position = CGPointMake(screenSize.width/2, screenSize.height/2);
         
-        pauseButton = [CCMenuItemImage itemFromNormalImage:@"pausebutton.png" selectedImage:@"pausebutton.png" target:self selector:@selector(pauseButtonTapped:)];
+        pauseButton = [CCMenuItemImage itemFromNormalImage:@"pause.png" selectedImage:@"pause.png" target:self selector:@selector(pauseButtonTapped:)];
         
         menu = [CCMenu menuWithItems:pauseButton, nil];
         menu.position = CGPointMake(screenSize.width/2, screenSize.height/2);
         [self addChild:menu z:0];
         
         
-        //sets label for score of AIplayer
-        AIscoreLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:48];
-        AIscoreLabel.position = ccp((screenSize.width/2), (screenSize.height - (screenSize.height/6)));
-        AIscoreLabel.color = ccBLACK;
-        [self addChild:AIscoreLabel z:0];
+        //sets label for score of opponent
+        opponentScoreLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:48];
+        opponentScoreLabel.position = ccp((screenSize.width/2), (screenSize.height - (screenSize.height/6)));
+        opponentScoreLabel.color = ccBLACK;
+        [self addChild:opponentScoreLabel z:0];
         
-        //sets label for score of AIplayer
-        player1scoreLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:48];
-        player1scoreLabel.position = ccp((screenSize.width/2), (screenSize.height/6));
-        player1scoreLabel.color = ccBLACK;
-        [self addChild:player1scoreLabel z:0];
+        //sets label for score of opponent
+        playerScoreLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:48];
+        playerScoreLabel.position = ccp((screenSize.width/2), (screenSize.height/6));
+        playerScoreLabel.color = ccBLACK;
+        [self addChild:playerScoreLabel z:0];
         
         
-        //sets label for score of AIplayer's round
-        AIroundLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:12];
-        AIroundLabel.position = ccp((screenSize.width)/2, ((screenSize.height)-45));
-        AIroundLabel.color = ccBLACK;
-        [self addChild:AIroundLabel z:0];
+        //sets label for score of opponent's round
+        opponentRoundLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:12];
+        opponentRoundLabel.position = ccp((screenSize.width)/2, ((screenSize.height)-45));
+        opponentRoundLabel.color = ccBLACK;
+        [self addChild:opponentRoundLabel z:0];
         
-        //sets label for score of player1's round
-        player1roundLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:12];
-        player1roundLabel.position = ccp((screenSize.width)/2, 45);
-        player1roundLabel.color = ccBLACK;
-        [self addChild:player1roundLabel z:0];
+        //sets label for score of player's round
+        playerRoundLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:12];
+        playerRoundLabel.position = ccp((screenSize.width)/2, 45);
+        playerRoundLabel.color = ccBLACK;
+        [self addChild:playerRoundLabel z:0];
         
         //sets label for time of gameplay
         timeLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:24];
@@ -106,26 +108,33 @@
         [highScoreLabel setString:(highscore)];
         
         
-        //creates ball, player, and AI player
+        //sets label for countdown
+        countdownLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:12];
+        countdownLabel.position = ccp(screenSize.width/2, screenSize.height/2);
+        [self addChild:countdownLabel z:0];
+        [countdownLabel setString:([NSString stringWithFormat:@"%d", countdown])];
+        countdownLabel.color = ccRED;
+        
+        //creates ball, player, and opponent player
         ball = [Ball ballWithParentNode:self];
-        player1 = [Player playerWithParentNode:self];
-        player1.playerType = User;
-        AIplayer = [Player playerWithParentNode:self];
-        AIplayer.playerType = Opponent;
+        player = [Player playerWithParentNode:self];
+        player.playerType = User;
+        opponent = [Player playerWithParentNode:self];
+        opponent.playerType = Opponent;
         
-        //sets initial position of player1 & AIplayer
-        [player1 setPosition:CGPointMake(screenSize.width / 2, 20.0)];
-        [AIplayer setPosition:CGPointMake(screenSize.width/2, (screenSize.height - 20))];
+        //sets initial position of player & opponent
+        [player setPosition:CGPointMake(screenSize.width / 2, 20.0)];
+        [opponent setPosition:CGPointMake(screenSize.width/2, (screenSize.height - 20))];
         
-        //Set AI round score
-        [AIroundLabel setString:[NSString stringWithFormat:@"Rounds Won: " @"%d", [AIplayer getRoundScore]]];
+        //Set opponent round score
+        [opponentRoundLabel setString:[NSString stringWithFormat:@"Rounds Won: " @"%d", [opponent getRoundScore]]];
         
-        //Set player1 round score
-        [player1roundLabel setString:[NSString stringWithFormat:@"Rounds Won: " @"%d", [player1 getRoundScore]]];
+        //Set player round score
+        [playerRoundLabel setString:[NSString stringWithFormat:@"Rounds Won: " @"%d", [opponent getRoundScore]]];
         
         
-        //initialize player and AI velocity
-        [player1 setSpeed:(6)];
+        //initialize player and opponent velocity
+        [player setSpeed:(6)];
         
         //rudimentary AI
         //shrink the paddle by 20 pixels for level 1 and 10 for level two
@@ -133,21 +142,22 @@
         // increase the velocity per level
         switch (level) {
             case Level_One:
-                [AIplayer setSpeed:(3)];
-                [AIplayer resizePaddleWidth:([AIplayer initialPaddleWidth] - 20)];
+                [opponent setSpeed:(3)];
+                [opponent resizePaddleWidth:([opponent initialPaddleWidth] - 20)];
                 break;
             case Level_Two:
-                [AIplayer setSpeed:(4)];
-                [AIplayer resizePaddleWidth:([AIplayer initialPaddleWidth] - 10)];
+                [opponent setSpeed:(4)];
+                [opponent resizePaddleWidth:([opponent initialPaddleWidth] - 10)];
                 break;
             case Level_Three:
-                [AIplayer setSpeed:(5)];
+                [opponent setSpeed:(5)];
                 break;
             default:
                 break;
         }
         
-        
+        oneThirdOfPlayerPaddle = [player paddleSprite].contentSize.width/3;
+        oneThirdOfOpponentPaddle = [opponent paddleSprite].contentSize.width/3;
        
         
         [self scheduleUpdate];
@@ -160,7 +170,6 @@
 
 - (void)pauseButtonTapped: (id)sender {
     [[CCDirector sharedDirector] pushScene:[PauseScene node]];
-
 }
 
 -(void) dealloc
@@ -170,20 +179,24 @@
 
 -(void) movePlayerLeft
 {
-    [player1 moveLeft];
+    [player moveLeft];
 }
 
 -(void) movePlayerRight
 {
-    [player1 moveRight];
+    [player moveRight];
 }
 
 -(void) ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     UITouch *touch = [touches anyObject];
     CGPoint point = [touch locationInView: [touch view]];
-    CGFloat currPaddleWidth = player1.getPaddleWidth;
-    if(point.x < (player1.paddleSprite.position.x - (currPaddleWidth/2))) {
+    CGFloat currPaddleWidth = player.getPaddleWidth;
+    if(point.x< (player.paddleSprite.position.x - (currPaddleWidth/2)))
+    {
+        [self schedule:@selector(movePlayerLeft)];
+    }
+    if(point.x < (player.paddleSprite.position.x - (currPaddleWidth/2))) {
         [self schedule:@selector(movePlayerLeft)];
     }
     else {
@@ -202,19 +215,30 @@
 
 -(void) update:(ccTime)delta
 {
-    
     //time in seconds
     totalTime += delta;
+    countdown -= delta;
     
-    [AIroundLabel setString:[NSString stringWithFormat:@"Rounds Won: " @"%d", [AIplayer getRoundScore]]];
-    [player1roundLabel setString:[NSString stringWithFormat:@"Rounds Won: " @"%d", [player1 getRoundScore]]];
+    
+    if((int)countdown > 0)
+        menu.position = CGPointMake(-100, -100);
+    else
+        menu.position = CGPointMake(screenSize.width/2, screenSize.height/2);
+    
+    if((int)countdown > 0 && (int)countdown <=3)
+        [countdownLabel setString:[NSString stringWithFormat:@"%d", (int)countdown]];
+    else
+        [countdownLabel setString:@" "];
+    
+    [opponentRoundLabel setString:[NSString stringWithFormat:@"Rounds Won: " @"%d", [opponent getRoundScore]]];
+    [playerRoundLabel setString:[NSString stringWithFormat:@"Rounds Won: " @"%d", [player getRoundScore]]];
     
     [self checkCollision];
-    [self checkAIScore];
+    [self checkOpponentScore];
     [self checkPlayerScore];
     [self updateScore];
     [self checkWin];
-    [self moveAIPaddle];
+    [self moveOpponentPaddle];
     
     
     //prevents scoring from incrementing more than once
@@ -230,99 +254,187 @@
 {
     //Checks collison with player
         //Checks collison with player
-    int player1CollisionSeg = [player1 GetCollisionSegment:[ball tipOfBallX] leftPos:[ball leftOfBall] rightPos:[ball rightOfBall]];
+    int playerCollisionSeg = [player GetCollisionSegment:[ball tipOfBallX] leftPos:[ball leftOfBall] rightPos:[ball rightOfBall]];
     
-    int opponentCollisionSeg = [AIplayer GetCollisionSegment:[ball tipOfBallX] leftPos:[ball leftOfBall] rightPos:[ball rightOfBall]];
+    int opponentCollisionSeg = [opponent GetCollisionSegment:[ball tipOfBallX] leftPos:[ball leftOfBall] rightPos:[ball rightOfBall]];
     
     
     
     CGPoint normVect = CGPointMake(0, 1);
     
     CGRect ballbox = CGRectMake((ball.ballSprite.position.x-ball.ballSprite.contentSize.width/2), (ball.ballSprite.position.y-ball.ballSprite.contentSize.height/2), ball.ballSprite.contentSize.width, ball.ballSprite.contentSize.height);
-    CGRect playerPaddleBox = CGRectMake((player1.paddleSprite.position.x - player1.paddleSprite.contentSize.width/2), (player1.paddleSprite.position.y - player1.paddleSprite.contentSize.height/2), player1.paddleSprite.contentSize.width, player1.paddleSprite.contentSize.height);
+    CGRect playerPaddleBox = CGRectMake((player.paddleSprite.position.x - player.paddleSprite.contentSize.width/2), (player.paddleSprite.position.y - player.paddleSprite.contentSize.height/2), player.paddleSprite.contentSize.width, player.paddleSprite.contentSize.height);
     
-    CGRect opponentPaddleBox = CGRectMake((AIplayer.paddleSprite.position.x - AIplayer.paddleSprite.contentSize.width/2), (AIplayer.paddleSprite.position.y - AIplayer.paddleSprite.contentSize.height/2), AIplayer.paddleSprite.contentSize.width, AIplayer.paddleSprite.contentSize.height);
+    CGRect opponentPaddleBox = CGRectMake((opponent.paddleSprite.position.x - opponent.paddleSprite.contentSize.width/2), (opponent.paddleSprite.position.y - opponent.paddleSprite.contentSize.height/2), opponent.paddleSprite.contentSize.width, opponent.paddleSprite.contentSize.height);
     
-    if (CGRectIntersectsRect(ballbox, playerPaddleBox) && ball.didCollide == FALSE) {
-
-        CGFloat adjSpeedLeftA = -(20.16 - ([ball getPosition].x - [player1 leftHalfOfPaddle]))*2.0f;
-        CGFloat adjSpeedRightA = (20.16 - ([ball getPosition].x - [player1 leftHalfOfPaddle]))*2.0f;
+    if (CGRectIntersectsRect(ballbox, playerPaddleBox) && ball.didCollide == FALSE && ball.ballSprite.position.y > player.paddleSprite.position.y) {
         
-        CGFloat bluntAngleLeftA = -(20.16 - ([ball getPosition].x - [player1 leftHalfOfPaddle]))*0.0374f;
-        CGFloat bluntAngleRightA = (20.16 - ([ball getPosition].x - [player1 leftHalfOfPaddle]))*0.0374f;
+        ball.didCollide = TRUE;
         
-        CGFloat adjSpeedLeftC = (20.16 - ([player1 rightHalfOfPaddle] - [ball getPosition].x))*2.0f;
-        CGFloat adjSpeedRightC = -(20.16 - ([player1 rightHalfOfPaddle] - [ball getPosition].x))*2.0f;
+        float ballPosRelativeToLeftPaddle = [ball getPosition].x - [player leftHalfOfPaddle];
         
-        CGFloat bluntAngleLeftC = -(20.16 - ([player1 rightHalfOfPaddle] - [ball getPosition].x))*0.0374f;
-        CGFloat bluntAngleRightC = (20.16 - ([player1 rightHalfOfPaddle] - [ball getPosition].x))*0.0374f;
+        //ensures that a number between 0 and 21 is returned. Any other value will cause error.
+        if(ballPosRelativeToLeftPaddle <= 0)
+            ballPosRelativeToLeftPaddle = 0;
+        if(ballPosRelativeToLeftPaddle > 21)
+            ballPosRelativeToLeftPaddle = 21;
         
-        switch (player1CollisionSeg) {
+        float ballPosRelativeToRightPaddle = [player rightHalfOfPaddle] - [ball getPosition].x;
+        
+        //ensures that a number between 0 and 21 is returned. Any other value will cause error.
+        if(ballPosRelativeToRightPaddle < 0)
+            ballPosRelativeToRightPaddle = 0;
+        if(ballPosRelativeToRightPaddle > 21)
+            ballPosRelativeToRightPaddle = 21;
+        
+        CGFloat adjSpeedLeftA = (oneThirdOfPlayerPaddle - ballPosRelativeToLeftPaddle)*.09524f;
+        CGFloat adjSpeedRightA = -(oneThirdOfPlayerPaddle - ballPosRelativeToLeftPaddle)*.09524f;
+        
+        CGFloat bluntAngleLeftA = (oneThirdOfPlayerPaddle - ballPosRelativeToLeftPaddle)*0.0374f;
+        CGFloat bluntAngleRightA = -(oneThirdOfPlayerPaddle - ballPosRelativeToLeftPaddle)*0.0374f;
+        
+        CGFloat adjSpeedLeftC = -(oneThirdOfPlayerPaddle - ballPosRelativeToRightPaddle)*.09524f;
+        CGFloat adjSpeedRightC = (oneThirdOfPlayerPaddle - ballPosRelativeToRightPaddle)*.09524f;
+        
+        CGFloat bluntAngleLeftC = -(oneThirdOfPlayerPaddle -ballPosRelativeToRightPaddle)*0.0374f;
+        CGFloat bluntAngleRightC = (oneThirdOfPlayerPaddle - ballPosRelativeToRightPaddle)*0.0374f;
+        
+        switch (playerCollisionSeg) {
             case SegmentA:
+                [[SimpleAudioEngine sharedEngine] playEffect:@"bounce.wav"];
                 if(ball.velocity.x >= 0) {
-                    ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftA andSpeedAdjust:adjSpeedLeftA];
+                    CCLOG(@"\nHit segment A approaching from left");
+                    CCLOG(@"\nX %f", ballPosRelativeToLeftPaddle);
+                    CCLOG(@"\nBlunt Angle: %f", (bluntAngleLeftA*180/M_PI));
+                    if(([ball getAngle]<=(M_PI/2) && [ball getAngle] >0)||([ball getAngle] >(M_PI) && [ball getAngle] < (3*M_PI/2)))
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightA andSpeedAdjust:adjSpeedRightA];
+                    else
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftA andSpeedAdjust:adjSpeedRightA];
+                        
                 }
                 else {
-                    ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightA andSpeedAdjust:adjSpeedRightA];
+                    CCLOG(@"\nHit segment A approaching from right");
+                    CCLOG(@"\nX %f", ballPosRelativeToLeftPaddle);
+                    CCLOG(@"\nBlunt Angle: %f", (bluntAngleRightA*180/M_PI));
+                    if(([ball getAngle]<=(M_PI/2) && [ball getAngle] >0)||([ball getAngle] >(M_PI) && [ball getAngle] < (3*M_PI/2)))
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftA andSpeedAdjust:adjSpeedLeftA];
+                    else
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightA andSpeedAdjust:adjSpeedLeftA];
                 }
                 break;
             case SegmentB:
-                ball.velocity = [ball reflectStraight:normVect];
+                [[SimpleAudioEngine sharedEngine] playEffect:@"bounce.wav"];
+                NSLog(@"\nHit segment C");
+                ball.velocity = [ball reflect:normVect withBlunt:0 andSpeedAdjust:0];
                 break;
             case SegmentC:
+                [[SimpleAudioEngine sharedEngine] playEffect:@"bounce.wav"];
                 if(ball.velocity.x >= 0) {
+                    CCLOG(@"\nHit segment C approaching from left");
+                    CCLOG(@"\nX %f", ballPosRelativeToRightPaddle);
+                    CCLOG(@"\nBlunt Angle: %f", (bluntAngleLeftC*180/M_PI));
                     normVect.y = -normVect.y;
-                    ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftC andSpeedAdjust:adjSpeedLeftC];
-                }
+                    if(([ball getAngle]<=(M_PI/2) && [ball getAngle] >0)||([ball getAngle] >(M_PI) && [ball getAngle] < (3*M_PI/2)))
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightC andSpeedAdjust:adjSpeedRightC];
+                    else
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftC andSpeedAdjust:adjSpeedRightC];                }
                 else {
+                    CCLOG(@"\nHit segment C approaching from right");
+                    CCLOG(@"\nX %f", ballPosRelativeToRightPaddle);
+                    CCLOG(@"\nBlunt Angle: %f", (bluntAngleRightC*180/M_PI));
                     normVect.y = -normVect.y;
-                    ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightC andSpeedAdjust:adjSpeedRightC];
-                }
+                    if(([ball getAngle]<=(M_PI/2) && [ball getAngle] >0)||([ball getAngle] >(M_PI) && [ball getAngle] < (3*M_PI/2)))
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftC andSpeedAdjust:adjSpeedLeftC];
+                    else
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightC andSpeedAdjust:adjSpeedLeftC];                }
             default:
                 break;
         }
         
-        ball.didCollide = TRUE;
     }
-    else if (CGRectIntersectsRect(ballbox, opponentPaddleBox) && ball.didCollide == FALSE) {
-        normVect.y = -normVect.y;
-        CGFloat adjSpeedLeftA = -(21 - ([ball getPosition].x - [AIplayer leftHalfOfPaddle]))*2.0f;
-        CGFloat adjSpeedRightA = (21 - ([ball getPosition].x - [AIplayer leftHalfOfPaddle]))*2.0f;
+    else if (CGRectIntersectsRect(ballbox, opponentPaddleBox) && ball.didCollide == FALSE && ball.ballSprite.position.y < opponent.paddleSprite.position.y) {
         
-        CGFloat bluntAngleLeftA = -(21 - ([ball getPosition].x - [AIplayer leftHalfOfPaddle]))*0.0374f;
-        CGFloat bluntAngleRightA = (21 - ([ball getPosition].x - [AIplayer leftHalfOfPaddle]))*0.0374f;
-        
-        CGFloat adjSpeedLeftC = (21 - ([AIplayer rightHalfOfPaddle] - [ball getPosition].x))*2.0f;
-        CGFloat adjSpeedRightC = -(21 - ([AIplayer rightHalfOfPaddle] - [ball getPosition].x))*2.0f;
-        
-        CGFloat bluntAngleLeftC = (21 - ([AIplayer rightHalfOfPaddle] - [ball getPosition].x))*0.0374f;
-        CGFloat bluntAngleRightC = -(21 - ([AIplayer rightHalfOfPaddle] - [ball getPosition].x))*0.0374f;
+        ball.didCollide = TRUE;
 
-       switch (opponentCollisionSeg) {
-                
+        float ballPosRelativeToLeftPaddle = [ball getPosition].x - [opponent leftHalfOfPaddle];
+        
+        //ensures that a number between 0 and 21 is returned. Any other value will cause error.
+        if(ballPosRelativeToLeftPaddle <= 0)
+            ballPosRelativeToLeftPaddle = 0;
+        if(ballPosRelativeToLeftPaddle > 21)
+            ballPosRelativeToLeftPaddle = 21;
+        
+        float ballPosRelativeToRightPaddle = [opponent rightHalfOfPaddle] - [ball getPosition].x;
+        
+        //ensures that a number between 0 and 21 is returned. Any other value will cause error.
+        if(ballPosRelativeToRightPaddle < 0)
+            ballPosRelativeToRightPaddle = 0;
+        if(ballPosRelativeToRightPaddle > 21)
+            ballPosRelativeToRightPaddle = 21;
+        
+        CGFloat adjSpeedLeftA = (oneThirdOfOpponentPaddle - ballPosRelativeToLeftPaddle)*.09524f;
+        CGFloat adjSpeedRightA = -(oneThirdOfOpponentPaddle - ballPosRelativeToLeftPaddle)*.09524f;
+        
+        CGFloat bluntAngleLeftA = (oneThirdOfOpponentPaddle - ballPosRelativeToLeftPaddle)*0.0374f;
+        CGFloat bluntAngleRightA = -(oneThirdOfOpponentPaddle - ballPosRelativeToLeftPaddle)*0.0374f;
+        
+        CGFloat adjSpeedLeftC = -(oneThirdOfOpponentPaddle - ballPosRelativeToRightPaddle)*.09524f;
+        CGFloat adjSpeedRightC = (oneThirdOfOpponentPaddle - ballPosRelativeToRightPaddle)*.09524f;
+        
+        CGFloat bluntAngleLeftC = -(oneThirdOfOpponentPaddle -ballPosRelativeToRightPaddle)*0.0374f;
+        CGFloat bluntAngleRightC = (oneThirdOfOpponentPaddle - ballPosRelativeToRightPaddle)*0.0374f;
+        
+        switch (opponentCollisionSeg) {
             case SegmentA:
+                [[SimpleAudioEngine sharedEngine] playEffect:@"bounce.wav"];
                 if(ball.velocity.x >= 0) {
-                    ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftA andSpeedAdjust:adjSpeedLeftA];
+                    CCLOG(@"\nHit segment A approaching from left");
+                    CCLOG(@"\nX %f", ballPosRelativeToLeftPaddle);
+                    CCLOG(@"\nBlunt Angle: %f", (bluntAngleLeftA*180/M_PI));
+                    if(([ball getAngle]<=(M_PI/2) && [ball getAngle] >0)||([ball getAngle] >(M_PI) && [ball getAngle] < (3*M_PI/2)))
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightA andSpeedAdjust:adjSpeedRightA];
+                    else
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftA andSpeedAdjust:adjSpeedRightA];
+                    
                 }
                 else {
-                    ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightA andSpeedAdjust:adjSpeedRightA];
+                    CCLOG(@"\nHit segment A approaching from right");
+                    CCLOG(@"\nX %f", ballPosRelativeToLeftPaddle);
+                    CCLOG(@"\nBlunt Angle: %f", (bluntAngleRightA*180/M_PI));
+                    if(([ball getAngle]<=(M_PI/2) && [ball getAngle] >0)||([ball getAngle] >(M_PI) && [ball getAngle] < (3*M_PI/2)))
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftA andSpeedAdjust:adjSpeedLeftA];
+                    else
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightA andSpeedAdjust:adjSpeedLeftA];
                 }
                 break;
             case SegmentB:
-                ball.velocity = [ball reflectStraight:normVect];
+                [[SimpleAudioEngine sharedEngine] playEffect:@"bounce.wav"];
+                NSLog(@"\nHit segment C");
+                ball.velocity = [ball reflect:normVect withBlunt:0 andSpeedAdjust:0];
                 break;
             case SegmentC:
+                [[SimpleAudioEngine sharedEngine] playEffect:@"bounce.wav"];
                 if(ball.velocity.x >= 0) {
-                    ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftC andSpeedAdjust:adjSpeedLeftC];
-                }
+                    CCLOG(@"\nHit segment C approaching from left");
+                    CCLOG(@"\nX %f", ballPosRelativeToRightPaddle);
+                    CCLOG(@"\nBlunt Angle: %f", (bluntAngleLeftC*180/M_PI));
+                    normVect.y = -normVect.y;
+                    if(([ball getAngle]<=(M_PI/2) && [ball getAngle] >0)||([ball getAngle] >(M_PI) && [ball getAngle] < (3*M_PI/2)))
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightC andSpeedAdjust:adjSpeedRightC];
+                    else
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftC andSpeedAdjust:adjSpeedRightC];                }
                 else {
-                    ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightC andSpeedAdjust:adjSpeedRightC];
-                }
+                    CCLOG(@"\nHit segment C approaching from right");
+                    CCLOG(@"\nX %f", ballPosRelativeToRightPaddle);
+                    CCLOG(@"\nBlunt Angle: %f", (bluntAngleRightC*180/M_PI));
+                    normVect.y = -normVect.y;
+                    if(([ball getAngle]<=(M_PI/2) && [ball getAngle] >0)||([ball getAngle] >(M_PI) && [ball getAngle] < (3*M_PI/2)))
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftC andSpeedAdjust:adjSpeedLeftC];
+                    else
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightC andSpeedAdjust:adjSpeedLeftC];                }
             default:
                 break;
         }
-        
-        ball.didCollide = TRUE;
     }
 }
 
@@ -334,18 +446,18 @@
     if([ball getYpos] >= 496 && !playerScored)
     {
         [[SimpleAudioEngine sharedEngine] playEffect:@"correct.wav"];
-        [player1 updateScore];
+        [player updateScore];
         playerScored = TRUE;
     }
 }
 
--(void)checkAIScore
+-(void)checkOpponentScore
 {
-    //AI score
+    //opponent score
     if([ball getYpos] <= -10 && !playerScored)
     {
         [[SimpleAudioEngine sharedEngine] playEffect:@"wrong.wav"];
-        [AIplayer updateScore];
+        [opponent updateScore];
         playerScored = TRUE;
     }
 }
@@ -353,43 +465,43 @@
 -(void)updateScore
 {
     
-    //Updates player1score
-    [player1scoreLabel setString:[NSString stringWithFormat:@"%d", [player1 getScore]]];
+    //Updates player score
+    [playerScoreLabel setString:[NSString stringWithFormat:@"%d", [player getScore]]];
     
-    //Updates AIscore
-    [AIscoreLabel setString:[NSString stringWithFormat:@"%d", [AIplayer getScore]]];
+    //Updates opponent score
+    [opponentScoreLabel setString:[NSString stringWithFormat:@"%d", [opponent getScore]]];
 }
 
--(void)moveAIPaddle
+-(void)moveOpponentPaddle
 {
     //handles movement of AI paddle
-    if ([AIplayer getXpos] > [ball getXpos] && [ball getYpos] > 200)
-        [AIplayer moveLeft];
+    if ([opponent getXpos] > [ball getXpos] && [ball getYpos] > 200)
+        [opponent moveLeft];
     
-    if ([AIplayer getXpos] < [ball getXpos] && [ball getYpos]  > 200)
-        [AIplayer moveRight];
+    if ([opponent getXpos] < [ball getXpos] && [ball getYpos]  > 200)
+        [opponent moveRight];
 }
 
 -(void) checkWin
 {
     //play to 11 to win
-    if([AIplayer getScore] == pointsToWin)
-        [self AIwinsGame];
+    if([opponent getScore] == pointsToWin)
+        [self opponentWinsGame];
     
     //play to 11 to win
-    if([player1 getScore] == pointsToWin)
-        [self player1WinsGame];
+    if([player getScore] == pointsToWin)
+        [self playerWinsGame];
 }
 
 //Displays "Sorry, you lose" in red for 3 seconds. Then starts a new game
--(void) AIwinsGame
+-(void) opponentWinsGame
 {
     if(times==0){
-        [AIplayer updateRoundScore];
+        [opponent updateRoundScore];
         times =1;
     }
     
-    if([AIplayer getRoundScore]< 3){
+    if([opponent getRoundScore]< 3){
         
         winner = @"Sorry, you lose the round";
         winnerLabel.color = ccRED;
@@ -412,14 +524,14 @@
 
 
 //Displays "Congratulations, you won" in red for 3 seconds. Then starts a new game
--(void) player1WinsGame
+-(void) playerWinsGame
 {
     if(times==0){
-       [player1 updateRoundScore];
+       [player updateRoundScore];
     times =1;
     }
     
-    if([player1 getRoundScore]<3){
+    if([player getRoundScore]<3){
         winner = @"Congratulations\n you won the round!";
         winnerLabel.color = ccGREEN;
         [winnerLabel setString:(winner)];
@@ -455,21 +567,21 @@
     totalTime = 0;
     
     //resets scores
-    [player1 resetScore];
-    [AIplayer resetScore];
+    [player resetScore];
+    [opponent resetScore];
     
     currhighscore = [prefs integerForKey:@"highScore"];
     if(currhighscore == nil)
         currhighscore = 0;
     //resets rounds after game is over
-    if([player1 getRoundScore]==3|| [AIplayer getRoundScore]==3){
-        [player1 resetRoundScore];
-        [AIplayer resetRoundScore];
-        //Set AI round score
-        [AIroundLabel setString:[NSString stringWithFormat:@"Rounds: " @"%d", [AIplayer getRoundScore]]];
+    if([player getRoundScore]==3|| [opponent getRoundScore]==3){
+        [player resetRoundScore];
+        [opponent resetRoundScore];
+        //Set opponent round score
+        [opponentRoundLabel setString:[NSString stringWithFormat:@"Rounds: " @"%d", [opponent getRoundScore]]];
         
-        //Set player1 round score
-        [player1roundLabel setString:[NSString stringWithFormat:@"Rounds: " @"%d", [player1 getRoundScore]]];
+        //Set player round score
+        [playerRoundLabel setString:[NSString stringWithFormat:@"Rounds: " @"%d", [player getRoundScore]]];
         
         [[CCDirector sharedDirector] pushScene:[EndGameScene node]];
         

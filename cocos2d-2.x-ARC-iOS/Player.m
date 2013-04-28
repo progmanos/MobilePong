@@ -117,6 +117,11 @@
     score = 0;
 }
 
+-(void) setScore:(int) s
+{
+    score = s;
+}
+
 -(int) getRoundScore
 {
     return roundScore;
@@ -177,12 +182,10 @@
     
     if(ballRightPos > segALeftEdge && ballCtrTip < segARightEdge)
         return SegmentA;
-    
-    else if(ballCtrTip >= segARightEdge && ballCtrTip <= segCLeftEdge)
-        return SegmentB;
-        
     else if(ballCtrTip > segCLeftEdge && ballposLeft <= segCRightEdge)
         return SegmentC;
+    else// if(ballCtrTip >= segARightEdge && ballCtrTip <= segCLeftEdge)
+        return SegmentB;
     
     return -1;
 }

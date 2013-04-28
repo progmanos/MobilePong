@@ -26,10 +26,11 @@
     int             gameUniqueID;
     int             gamePacketNumber;
     NSString        *gamePeerId;
-    NSDate          *lastHeartbeatDate;
     
     
     UIAlertView     *connectionAlert;
+    UIAlertView     *pauseAlert;
+    UIAlertView     *gameOverAlert;
     
     int times;
     Ball *ball;
@@ -40,14 +41,13 @@
     CCLabelTTF *timeLabel;
     CCLabelTTF *countdownLabel;
     CCLabelTTF *winnerLabel;
-    CCLabelTTF *playerPauseLabel;
     ccTime totalTime;
-    NSString *countdown;
     NSString *winner;
     NSUserDefaults *prefs;
     NSInteger *currhighscore;
     NSInteger *currentscore;
     BOOL playerScored;
+    BOOL gameOverViewDisplayed;
     CCMenuItemImage* pauseButton;
     CCMenu* menu;
     CGSize screenSize;
@@ -62,21 +62,23 @@
     BOOL bluetooth;
     int ournumber;
     int opponentnumber;
-    int countdowntostart;
+    
+    int oneThirdOfPlayerPaddle;
+    int oneThirdOfOpponentPaddle;
     
     CCLabelTTF *whichPlayerLabel;
     
     NSError* lastError;
     
+    NSMutableArray* myData;
+    
 }
-
 
 @property(nonatomic) NSInteger      gameState;
 @property(nonatomic) NSInteger      peerStatus;
 
 @property(nonatomic, retain) GKSession *gameSession;
 @property(nonatomic, copy)   NSString *gamePeerId;
-@property(nonatomic, retain) NSDate *lastHeartbeatDate;
 
 @property(nonatomic, retain) UIAlertView *connectionAlert;
 
@@ -87,7 +89,7 @@
 -(void)checkCollisionWithOpponent;
 
 - (void)playerReset;
--(void) sendNetworkPacket:(GKSession *)session :(void*) data sizeInBytes:(NSUInteger)sizeInBytes;
+-(void) sendNetworkPacket:(GKSession *)session :(NSMutableArray*) data sizeInBytes:(NSUInteger)sizeInBytes;
 -(void) sendScore;
 -(void) sendBallPosition:(CGPoint)ballPos;
 -(void) sendVelocity:(CGPoint)ballVel;

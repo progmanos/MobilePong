@@ -9,14 +9,13 @@
 #import "GameLayer.h"
 #import "SimpleAudioEngine.h"
 #import <GameKit/GameKit.h>
-#import "NetworkPackets.h"
 #import "AppDelegate.h"
 #import "RootViewController.h"
 #import "MultiplayerLayer.h"
 
 
 //
-// various states the game can get into
+// various states for peer picker
 //
 typedef enum {
     kStateStartGame,
@@ -26,10 +25,10 @@ typedef enum {
     kStateMultiplayerReconnect
 } gameStates;
 
+
 // GameKit Session ID for app
 #define kSessionID @"PONG"
 
-#pragma mark -
 
 @interface MultiplayerLayer(Private)
 -(void) setLastError:(NSError*)error;
@@ -43,9 +42,12 @@ typedef enum {
 {
     if ((self = [super init]))
     {
+        gameOverViewDisplayed = FALSE;
         bluetooth = TRUE;
         gameSession = nil;
         gamePeerId = nil;
+        
+        countdown = 5;
         
         NSString *uid = [[UIDevice currentDevice] uniqueIdentifier];
         
@@ -60,30 +62,28 @@ typedef enum {
         endMultiPlayer = FALSE;
         gamePaused = FALSE;
         times = 0;
-        countdowntostart = 5;
-        opponentnumber = 0;
-        ournumber = arc4random()%100;
+        ournumber = arc4random()%100000;
+        //ournumber = 0;
         opponentRecRandNum = FALSE;
         player1=FALSE;
         player2=FALSE;
         playerDetermined=FALSE;
         initialPosition=FALSE;
-        playerConnected=FALSE;
+        playerConnected=TRUE;
         playerScored=FALSE;
         
-        //countdown = [NSString stringWithFormat:@"TIME TO START: %d ", (int)countdowntostart];
+        
         CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
         self.isTouchEnabled = YES;
         
-        // move this to a header file for use in other classes
         screenSize = [CCDirector sharedDirector].winSize;
         
         //sets background to court image
-        CCSprite *background = [CCSprite spriteWithFile:@"background.png"];
+        CCSprite *background = [CCSprite spriteWithFile:@"background3.png"];
         [self addChild:background z:0 tag:1];
         background.position = CGPointMake(screenSize.width/2, screenSize.height/2);
         
-        pauseButton = [CCMenuItemImage itemFromNormalImage:@"pausebutton.png" selectedImage:@"pausebutton.png" target:self selector:@selector(pauseButtonTapped:)];
+        pauseButton = [CCMenuItemImage itemFromNormalImage:@"pause.png" selectedImage:@"pause.png" target:self selector:@selector(pauseButtonTapped:)];
         
         menu = [CCMenu menuWithItems:pauseButton, nil];
         menu.position = CGPointMake(screenSize.width/2, screenSize.height/2);
@@ -102,10 +102,10 @@ typedef enum {
         [self addChild:playerscoreLabel z:0];
         
         //sets label for time of gameplay
-        timeLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:24];
+       /* timeLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:24];
         timeLabel.color = ccRED;
         timeLabel.position = ccp(30, 30);
-        [self addChild:timeLabel z:1];
+        [self addChild:timeLabel z:1];*/
         
         //sets label for winner of the game
         winnerLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:48];
@@ -113,10 +113,11 @@ typedef enum {
         [self addChild:winnerLabel z:2];
         
         //sets label for countdown
-        countdownLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:12];
-        countdownLabel.position = ccp(35, 5);
+        countdownLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:20];
+        countdownLabel.position = ccp(screenSize.width/2, screenSize.height/2);
         [self addChild:countdownLabel z:0];
-        //[countdownLabel setString:(countdown)];
+        [countdownLabel setString:([NSString stringWithFormat:@"%d", countdown])];
+        countdownLabel.color = ccRED;
        
         
         //sets label for which player
@@ -125,10 +126,6 @@ typedef enum {
         [self addChild:whichPlayerLabel z:0];
         [whichPlayerLabel setString:(@" ")];
         
-        playerPauseLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:24];
-        playerPauseLabel.position = ccp(screenSize.width/2, screenSize.height/2 + 40);
-        playerPauseLabel.color = ccWHITE;
-        [self addChild:playerPauseLabel z:2];
         
         //creates ball, player, and AI player
         ball = [Ball ballWithParentNode:self];
@@ -144,6 +141,11 @@ typedef enum {
         //initialize player velocity
         [player setSpeed:5];
         
+        oneThirdOfPlayerPaddle = [player paddleSprite].contentSize.width/3;
+        oneThirdOfOpponentPaddle = [opponent paddleSprite].contentSize.width/3;
+        
+
+        
         [self scheduleUpdate];
         
         
@@ -153,12 +155,11 @@ typedef enum {
 }
 
 
-- (void)pauseButtonTapped: (id)sender {
-    
+- (void)pauseButtonTapped: (id)sender
+{
     gamePaused = TRUE;
     [[CCDirector sharedDirector] pushScene:[PauseScene node]];
-    [self pauseReceived:TRUE];
-     }
+}
 
 -(void) dealloc
 {
@@ -170,7 +171,7 @@ typedef enum {
     [player moveLeft];
     
     //sends paddle position every time paddle moves left
-    [self sendPaddlePosition:[player getXpos]];
+    //[self sendPaddlePosition:[player getXpos]];
 }
 
 -(void) movePlayerRight
@@ -178,7 +179,7 @@ typedef enum {
     [player moveRight];
     
     //sends paddle position every time the paddle moves rights
-    [self sendPaddlePosition:[player getXpos]];
+    //[self sendPaddlePosition:[player getXpos]];
 }
 
 -(void) ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -205,8 +206,7 @@ typedef enum {
 -(void) checkCollision
 {
     //Checks collison with player
-    //Checks collison with player
-    int player1CollisionSeg = [player GetCollisionSegment:[ball tipOfBallX] leftPos:[ball leftOfBall] rightPos:[ball rightOfBall]];
+    int playerCollisionSeg = [player GetCollisionSegment:[ball tipOfBallX] leftPos:[ball leftOfBall] rightPos:[ball rightOfBall]];
     
     int opponentCollisionSeg = [opponent GetCollisionSegment:[ball tipOfBallX] leftPos:[ball leftOfBall] rightPos:[ball rightOfBall]];
     
@@ -219,90 +219,176 @@ typedef enum {
     
     CGRect opponentPaddleBox = CGRectMake((opponent.paddleSprite.position.x - opponent.paddleSprite.contentSize.width/2), (opponent.paddleSprite.position.y - opponent.paddleSprite.contentSize.height/2), opponent.paddleSprite.contentSize.width, opponent.paddleSprite.contentSize.height);
     
-    if (CGRectIntersectsRect(ballbox, playerPaddleBox) && ball.didCollide == FALSE) {
+    if (CGRectIntersectsRect(ballbox, playerPaddleBox) && ball.didCollide == FALSE && ball.ballSprite.position.y > player.paddleSprite.position.y) {
         
-        CGFloat adjSpeedLeftA = -(20.16 - ([ball getPosition].x - [player leftHalfOfPaddle]))*2.0f;
-        CGFloat adjSpeedRightA = (20.16 - ([ball getPosition].x - [player leftHalfOfPaddle]))*2.0f;
+        ball.didCollide = TRUE;
         
-        CGFloat bluntAngleLeftA = -(20.16 - ([ball getPosition].x - [player leftHalfOfPaddle]))*0.0374f;
-        CGFloat bluntAngleRightA = (20.16 - ([ball getPosition].x - [player leftHalfOfPaddle]))*0.0374f;
+        float ballPosRelativeToLeftPaddle = [ball getPosition].x - [player leftHalfOfPaddle];
         
-        CGFloat adjSpeedLeftC = (20.16 - ([player rightHalfOfPaddle] - [ball getPosition].x))*2.0f;
-        CGFloat adjSpeedRightC = -(20.16 - ([player rightHalfOfPaddle] - [ball getPosition].x))*2.0f;
+        //ensures that a number between 0 and 21 is returned. Any other value will cause error.
+        if(ballPosRelativeToLeftPaddle <= 0)
+            ballPosRelativeToLeftPaddle = 0;
+        if(ballPosRelativeToLeftPaddle > 21)
+            ballPosRelativeToLeftPaddle = 21;
         
-        CGFloat bluntAngleLeftC = -(20.16 - ([player rightHalfOfPaddle] - [ball getPosition].x))*0.0374f;
-        CGFloat bluntAngleRightC = (20.16 - ([player rightHalfOfPaddle] - [ball getPosition].x))*0.0374f;
+        float ballPosRelativeToRightPaddle = [player rightHalfOfPaddle] - [ball getPosition].x;
         
-        switch (player1CollisionSeg) {
+        //ensures that a number between 0 and 21 is returned. Any other value will cause error.
+        if(ballPosRelativeToRightPaddle < 0)
+            ballPosRelativeToRightPaddle = 0;
+        if(ballPosRelativeToRightPaddle > 21)
+            ballPosRelativeToRightPaddle = 21;
+        
+        CGFloat adjSpeedLeftA = (oneThirdOfPlayerPaddle - ballPosRelativeToLeftPaddle)*.09524f;
+        CGFloat adjSpeedRightA = -(oneThirdOfPlayerPaddle - ballPosRelativeToLeftPaddle)*.09524f;
+        
+        CGFloat bluntAngleLeftA = (oneThirdOfPlayerPaddle - ballPosRelativeToLeftPaddle)*0.0374f;
+        CGFloat bluntAngleRightA = -(oneThirdOfPlayerPaddle - ballPosRelativeToLeftPaddle)*0.0374f;
+        
+        CGFloat adjSpeedLeftC = -(oneThirdOfPlayerPaddle - ballPosRelativeToRightPaddle)*.09524f;
+        CGFloat adjSpeedRightC = (oneThirdOfPlayerPaddle - ballPosRelativeToRightPaddle)*.09524f;
+        
+        CGFloat bluntAngleLeftC = -(oneThirdOfPlayerPaddle -ballPosRelativeToRightPaddle)*0.0374f;
+        CGFloat bluntAngleRightC = (oneThirdOfPlayerPaddle - ballPosRelativeToRightPaddle)*0.0374f;
+        
+        switch (playerCollisionSeg) {
             case SegmentA:
+                [[SimpleAudioEngine sharedEngine] playEffect:@"bounce.wav"];
                 if(ball.velocity.x >= 0) {
-                    ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftA andSpeedAdjust:adjSpeedLeftA];
+                    CCLOG(@"\nHit segment A approaching from left");
+                    CCLOG(@"\nX %f", ballPosRelativeToLeftPaddle);
+                    CCLOG(@"\nBlunt Angle: %f", (bluntAngleLeftA*180/M_PI));
+                    if(([ball getAngle]<=(M_PI/2) && [ball getAngle] >0)||([ball getAngle] >(M_PI) && [ball getAngle] < (3*M_PI/2)))
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightA andSpeedAdjust:adjSpeedRightA];
+                    else
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftA andSpeedAdjust:adjSpeedRightA];
+                    
                 }
                 else {
-                    ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightA andSpeedAdjust:adjSpeedRightA];
+                    CCLOG(@"\nHit segment A approaching from right");
+                    CCLOG(@"\nX %f", ballPosRelativeToLeftPaddle);
+                    CCLOG(@"\nBlunt Angle: %f", (bluntAngleRightA*180/M_PI));
+                    if(([ball getAngle]<=(M_PI/2) && [ball getAngle] >0)||([ball getAngle] >(M_PI) && [ball getAngle] < (3*M_PI/2)))
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftA andSpeedAdjust:adjSpeedLeftA];
+                    else
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightA andSpeedAdjust:adjSpeedLeftA];
                 }
                 break;
             case SegmentB:
-                ball.velocity = [ball reflectStraight:normVect];
+                [[SimpleAudioEngine sharedEngine] playEffect:@"bounce.wav"];
+                NSLog(@"\nHit segment C");
+                ball.velocity = [ball reflect:normVect withBlunt:0 andSpeedAdjust:0];
                 break;
             case SegmentC:
+                [[SimpleAudioEngine sharedEngine] playEffect:@"bounce.wav"];
                 if(ball.velocity.x >= 0) {
+                    CCLOG(@"\nHit segment C approaching from left");
+                    CCLOG(@"\nX %f", ballPosRelativeToRightPaddle);
+                    CCLOG(@"\nBlunt Angle: %f", (bluntAngleLeftC*180/M_PI));
                     normVect.y = -normVect.y;
-                    ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftC andSpeedAdjust:adjSpeedLeftC];
-                }
+                    if(([ball getAngle]<=(M_PI/2) && [ball getAngle] >0)||([ball getAngle] >(M_PI) && [ball getAngle] < (3*M_PI/2)))
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightC andSpeedAdjust:adjSpeedRightC];
+                    else
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftC andSpeedAdjust:adjSpeedRightC];                }
                 else {
+                    CCLOG(@"\nHit segment C approaching from right");
+                    CCLOG(@"\nX %f", ballPosRelativeToRightPaddle);
+                    CCLOG(@"\nBlunt Angle: %f", (bluntAngleRightC*180/M_PI));
                     normVect.y = -normVect.y;
-                    ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightC andSpeedAdjust:adjSpeedRightC];
-                }
+                    if(([ball getAngle]<=(M_PI/2) && [ball getAngle] >0)||([ball getAngle] >(M_PI) && [ball getAngle] < (3*M_PI/2)))
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftC andSpeedAdjust:adjSpeedLeftC];
+                    else
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightC andSpeedAdjust:adjSpeedLeftC];                }
             default:
                 break;
         }
         
-        ball.didCollide = TRUE;
     }
-    else if (CGRectIntersectsRect(ballbox, opponentPaddleBox) && ball.didCollide == FALSE) {
-        normVect.y = -normVect.y;
-        CGFloat adjSpeedLeftA = -(21 - ([ball getPosition].x - [opponent leftHalfOfPaddle]))*2.0f;
-        CGFloat adjSpeedRightA = (21 - ([ball getPosition].x - [opponent leftHalfOfPaddle]))*2.0f;
+    else if (CGRectIntersectsRect(ballbox, opponentPaddleBox) && ball.didCollide == FALSE && ball.ballSprite.position.y < opponent.paddleSprite.position.y) {
         
-        CGFloat bluntAngleLeftA = -(21 - ([ball getPosition].x - [opponent leftHalfOfPaddle]))*0.0374f;
-        CGFloat bluntAngleRightA = (21 - ([ball getPosition].x - [opponent leftHalfOfPaddle]))*0.0374f;
+        ball.didCollide = TRUE;
         
-        CGFloat adjSpeedLeftC = (21 - ([opponent rightHalfOfPaddle] - [ball getPosition].x))*2.0f;
-        CGFloat adjSpeedRightC = -(21 - ([opponent rightHalfOfPaddle] - [ball getPosition].x))*2.0f;
+        float ballPosRelativeToLeftPaddle = [ball getPosition].x - [opponent leftHalfOfPaddle];
         
-        CGFloat bluntAngleLeftC = (21 - ([opponent rightHalfOfPaddle] - [ball getPosition].x))*0.0374f;
-        CGFloat bluntAngleRightC = -(21 - ([opponent rightHalfOfPaddle] - [ball getPosition].x))*0.0374f;
+        //ensures that a number between 0 and 21 is returned. Any other value will cause error.
+        if(ballPosRelativeToLeftPaddle <= 0)
+            ballPosRelativeToLeftPaddle = 0;
+        if(ballPosRelativeToLeftPaddle > 21)
+            ballPosRelativeToLeftPaddle = 21;
+        
+        float ballPosRelativeToRightPaddle = [opponent rightHalfOfPaddle] - [ball getPosition].x;
+        
+        //ensures that a number between 0 and 21 is returned. Any other value will cause error.
+        if(ballPosRelativeToRightPaddle < 0)
+            ballPosRelativeToRightPaddle = 0;
+        if(ballPosRelativeToRightPaddle > 21)
+            ballPosRelativeToRightPaddle = 21;
+        
+        CGFloat adjSpeedLeftA = (oneThirdOfOpponentPaddle - ballPosRelativeToLeftPaddle)*.09524f;
+        CGFloat adjSpeedRightA = -(oneThirdOfOpponentPaddle - ballPosRelativeToLeftPaddle)*.09524f;
+        
+        CGFloat bluntAngleLeftA = (oneThirdOfOpponentPaddle - ballPosRelativeToLeftPaddle)*0.0374f;
+        CGFloat bluntAngleRightA = -(oneThirdOfOpponentPaddle - ballPosRelativeToLeftPaddle)*0.0374f;
+        
+        CGFloat adjSpeedLeftC = -(oneThirdOfOpponentPaddle - ballPosRelativeToRightPaddle)*.09524f;
+        CGFloat adjSpeedRightC = (oneThirdOfOpponentPaddle - ballPosRelativeToRightPaddle)*.09524f;
+        
+        CGFloat bluntAngleLeftC = -(oneThirdOfOpponentPaddle -ballPosRelativeToRightPaddle)*0.0374f;
+        CGFloat bluntAngleRightC = (oneThirdOfOpponentPaddle - ballPosRelativeToRightPaddle)*0.0374f;
         
         switch (opponentCollisionSeg) {
-                
             case SegmentA:
+                [[SimpleAudioEngine sharedEngine] playEffect:@"bounce.wav"];
                 if(ball.velocity.x >= 0) {
-                    ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftA andSpeedAdjust:adjSpeedLeftA];
+                    CCLOG(@"\nHit segment A approaching from left");
+                    CCLOG(@"\nX %f", ballPosRelativeToLeftPaddle);
+                    CCLOG(@"\nBlunt Angle: %f", (bluntAngleLeftA*180/M_PI));
+                    if(([ball getAngle]<=(M_PI/2) && [ball getAngle] >0)||([ball getAngle] >(M_PI) && [ball getAngle] < (3*M_PI/2)))
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightA andSpeedAdjust:adjSpeedRightA];
+                    else
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftA andSpeedAdjust:adjSpeedRightA];
+                    
                 }
                 else {
-                    ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightA andSpeedAdjust:adjSpeedRightA];
+                    CCLOG(@"\nHit segment A approaching from right");
+                    CCLOG(@"\nX %f", ballPosRelativeToLeftPaddle);
+                    CCLOG(@"\nBlunt Angle: %f", (bluntAngleRightA*180/M_PI));
+                    if(([ball getAngle]<=(M_PI/2) && [ball getAngle] >0)||([ball getAngle] >(M_PI) && [ball getAngle] < (3*M_PI/2)))
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftA andSpeedAdjust:adjSpeedLeftA];
+                    else
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightA andSpeedAdjust:adjSpeedLeftA];
                 }
                 break;
             case SegmentB:
-                ball.velocity = [ball reflectStraight:normVect];
+                [[SimpleAudioEngine sharedEngine] playEffect:@"bounce.wav"];
+                NSLog(@"\nHit segment C");
+                ball.velocity = [ball reflect:normVect withBlunt:0 andSpeedAdjust:0];
                 break;
             case SegmentC:
+                [[SimpleAudioEngine sharedEngine] playEffect:@"bounce.wav"];
                 if(ball.velocity.x >= 0) {
-                    ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftC andSpeedAdjust:adjSpeedLeftC];
-                }
+                    CCLOG(@"\nHit segment C approaching from left");
+                    CCLOG(@"\nX %f", ballPosRelativeToRightPaddle);
+                    CCLOG(@"\nBlunt Angle: %f", (bluntAngleLeftC*180/M_PI));
+                    normVect.y = -normVect.y;
+                    if(([ball getAngle]<=(M_PI/2) && [ball getAngle] >0)||([ball getAngle] >(M_PI) && [ball getAngle] < (3*M_PI/2)))
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightC andSpeedAdjust:adjSpeedRightC];
+                    else
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftC andSpeedAdjust:adjSpeedRightC];                }
                 else {
-                    ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightC andSpeedAdjust:adjSpeedRightC];
-                }
+                    CCLOG(@"\nHit segment C approaching from right");
+                    CCLOG(@"\nX %f", ballPosRelativeToRightPaddle);
+                    CCLOG(@"\nBlunt Angle: %f", (bluntAngleRightC*180/M_PI));
+                    normVect.y = -normVect.y;
+                    if(([ball getAngle]<=(M_PI/2) && [ball getAngle] >0)||([ball getAngle] >(M_PI) && [ball getAngle] < (3*M_PI/2)))
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleLeftC andSpeedAdjust:adjSpeedLeftC];
+                    else
+                        ball.velocity = [ball reflect:normVect withBlunt:bluntAngleRightC andSpeedAdjust:adjSpeedLeftC];                }
             default:
                 break;
         }
-        
-        ball.didCollide = TRUE;
     }
 }
-
-
 
 -(void)checkPlayerScore
 {
@@ -326,7 +412,7 @@ typedef enum {
     if([ball getYpos] <= 0 && !playerScored)
     {
         //play sound
-        [[SimpleAudioEngine sharedEngine] playEffect:@"correct.wav"];
+        [[SimpleAudioEngine sharedEngine] playEffect:@"wrong.wav"];
         
         //increment player score
         [opponent updateScore];
@@ -354,7 +440,7 @@ typedef enum {
     //before game starts, player one send their ball position to player
     if(player1)
     {
-        [self sendBallPosition:[ball getPosition]];
+        //[self sendBallPosition:[ball getPosition]];
         initialPosition = TRUE;
     }
     if(player2)
@@ -379,67 +465,77 @@ typedef enum {
 
 -(void) update:(ccTime)delta
 {
-    [playerPauseLabel setString:(@" ")];
+    //ARRAY PACKET ORDER
+    // [0] - packet number - numberWithInt
+    // [1] – ball angle - numberWithDouble
+    // [2] - ball speed - numberWithDouble
+    // [3] - x-coord of ball position - numberWithInt
+    // [4] - y-coord of ball position - numberWithInt
+    // [5] - position of your paddle - numberWithInt
+    // [6] - opponent's current score - numberWithInt
+    // [7] - your current score - numberWithInt
+    // [8] - pause state (0:unpaused, 1:paused) - numberWithInt
+    // [9] – did I just score? (bool yes or no) - numberWithBool
+    // [10] – randomly generated number that determines if host or not - numberWithInt
+    // [11] – determines game version
+    // [12] – countdown
+    
+    int numpacket = 0;
+    
+    myData = [NSArray arrayWithObjects:
+              [NSNumber numberWithInt:numpacket],
+              [NSNumber numberWithDouble:[ball getAngle]],
+              [NSNumber numberWithDouble:[ball getSpeed]],
+              [NSNumber numberWithInt:[ball getPosition].x],
+              [NSNumber numberWithInt:[ball getPosition].y],
+              [NSNumber numberWithInt:[player getXpos]],
+              [NSNumber numberWithInt:[opponent getScore]],
+              [NSNumber numberWithInt:[player getScore]],
+              [NSNumber numberWithInt:gamePaused],
+              [NSNumber numberWithBool:playerScored],
+              [NSNumber numberWithInt:ournumber],
+              [NSNumber numberWithInt:1],
+              [NSNumber numberWithInt:((int)countdown)],
+              nil];
+    if(playerConnected)
+        [self sendArray:myData];
+    
     if(endMultiPlayer && !bluetooth)
         [gkHelper disconnectCurrentMatch];
     
-    //check that a match has been made
-    if([self currentMatch])
-    {
-        
-        //determine which player is which
-        if(!opponentRecRandNum)
-        {
-            [self sendRandomNumber:ournumber];
-            usleep(10000);
-        }
-        
-        //set initial position of each player after players are decided
-        if(!initialPosition && playerDetermined && opponentRecRandNum)
-            [self initialize];
-        
-        
-        
-        //if countdown has ended and initial position has been set, game begins
-        if(initialPosition)
-        {
-            [self playGame:delta];
-        }
-    }
-    else
-        playerConnected = FALSE;
-     
-}
-
-
--(void)playGame:(ccTime)delta
-{
-    playerConnected = TRUE;
     //time in seconds
     totalTime += delta;
     
+    if(player1)
+        countdown -= delta;
+    
+    if((int)countdown > 0)
+        menu.position = CGPointMake(-100, -100);
+    else
+        menu.position = CGPointMake(screenSize.width/2, screenSize.height/2);
+    
+    if((int)countdown > 0 && (int)countdown <=3)
+        [countdownLabel setString:[NSString stringWithFormat:@"%d", (int)countdown]];
+    else
+        [countdownLabel setString:@" "];
+
     [self checkCollision];
     [self checkPlayerScore];
     [self checkOpponentScore];
     [self updateScore];
     [self checkWin];
     
-    if(player1)
-    {
-        [self sendBallPosition:[ball getPosition]];
+    if(player1 && countdown < 1)
         [ball moveBall];
-    }
-  
+    
     //prevents scoring from incrementing more than once
     if([ball getYpos] > 10 && [ball getYpos] < 400)
         playerScored = FALSE;
-    
-    //updates time
-    [timeLabel setString:[NSString stringWithFormat:@"%d", (int)totalTime]];
-    if(!gamePaused)
-        [self pauseReceived:FALSE];
-
+     
 }
+
+
+
 
 -(void) checkWin
 {
@@ -457,25 +553,43 @@ typedef enum {
 //Displays "Sorry, you lose" in red for 3 seconds. Then starts a new game
 -(void) AIwinsGame
 {
-    
-    winner = @"Sorry, you lose";
-    winnerLabel.color = ccRED;
+    if(!gameOverViewDisplayed)
+    {
+    gameOverAlert = [[UIAlertView alloc] initWithTitle:@"Sorry, you lose" message:nil delegate:self cancelButtonTitle:@"Main Menu" otherButtonTitles:nil, nil];
+    [gameOverAlert show];
+    gameOverViewDisplayed = TRUE;
+    [[CCDirector sharedDirector] pause];
+
+    }
+    //[[CCDirector sharedDirector] pause];
+    //winner = @"Sorry, you lose";
+    /*winnerLabel.color = ccRED;
     [winnerLabel setString:(winner)];
     [gkHelper disconnectCurrentMatch];
-   // [self performSelector:@selector(newGame) withObject:nil afterDelay:3.0];
+   // [self performSelector:@selector(newGame) withObject:nil afterDelay:3.0];*/
 }
 
 //Displays "Congratulations, you won" in red for 3 seconds. Then starts a new game
 -(void) playerWinsGame
 {
-    winner = @"Congratulations\n you won!";
+    if(!gameOverViewDisplayed)
+    {
+        gameOverAlert = [[UIAlertView alloc] initWithTitle:@"Congratulations, you won!" message:nil delegate:self cancelButtonTitle:@"Main Menu" otherButtonTitles:nil, nil];
+        [gameOverAlert show];
+        gameOverViewDisplayed = TRUE;
+        [[CCDirector sharedDirector] pause];
+
+    }
+
+    [[CCDirector sharedDirector] pause];
+    /*winner = @"Congratulations\n you won!";
     winnerLabel.color = ccGREEN;
     [winnerLabel setString:(winner)];
     [gkHelper disconnectCurrentMatch];
     
    
   //  [self performSelector:@selector(newGame) withObject:nil afterDelay:3.0];
-    
+    */
 }
 
 
@@ -526,298 +640,196 @@ typedef enum {
 		GKMatchRequest* request = [[GKMatchRequest alloc] init];
 		request.minPlayers = 2;
 		request.maxPlayers = 2;
+        playerConnected = TRUE;
 		
 //		GameKitHelper* gkHelper = [GameKitHelper sharedGameKitHelper];
 		[gkHelper showMatchmakerWithRequest:request];
 	}
 }
 
--(void) onAchievementsViewDismissed
-{
-	CCLOG(@"onAchievementsViewDismissed");
+
+-(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     
-	// add small delay because leaderboard view must be fully moved outside the screen
-	// before a new view can be shown
-	[self scheduleOnce:@selector(showMatchmaking:) delay:2.0f];
+    //u need to change 0 to other value(,1,2,3) if u have more buttons.then u can check which button was pressed.
+    
+    if (buttonIndex == 0) {
+        
+        [gkHelper disconnectCurrentMatch];
+        [[CCDirector sharedDirector] popScene];
+    }
+    
+    
+    
 }
-
-
 // TM16: handles receiving of data, determines packet type and based on that executes certain code
 -(void) onReceivedData:(NSData*)data fromPlayer:(NSString*)playerID
 {
-	SBasePacket* basePacket = (SBasePacket*)data.bytes;
-	CCLOG(@"onReceivedData: %@ fromPlayer: %@ - Packet type: %i", data, playerID, basePacket->type);
-	
-	switch (basePacket->type)
-	{
+    //ARRAY PACKET ORDER
+    // [0] - packet number - numberWithInt
+    // [1] – ball angle - numberWithDouble
+    // [2] - ball speed - numberWithDouble
+    // [3] - x-coord of ball position - numberWithInt
+    // [4] - y-coord of ball position - numberWithInt
+    // [5] - position of your paddle - numberWithInt
+    // [6] - opponent's current score - numberWithInt
+    // [7] - your current score - numberWithInt
+    // [8] - pause state (0:unpaused, 1:paused) - numberWithInt
+    // [9] – did I just score? (bool yes or no) - numberWithBool
+    // [10] – randomly generated number that determines if host or not - numberWithInt
+    // [11] – determines game version 
+    // [12] – countdown
+    
+    (CCLOG(@"ON receive data method"));
 
-		case kPacketTypeScore:
-		{
-			SScorePacket* scorePacket = (SScorePacket*)basePacket;
-			CCLOG(@"\tscore = %i", scorePacket->score);
-			break;
-		}
-        case kPacketTypeRanNumReceived:
-		{
-			SRanNumReceivedPacket* posRecPacket = (SRanNumReceivedPacket*)basePacket;
-            opponentRecRandNum = TRUE;
-			break;
-		}
-		case kPacketTypeBallPosition:
-		{
-			SBallPositionPacket* positionPacket = (SBallPositionPacket*)basePacket;
-			CCLOG(@"\tposition = (%.1f, %.1f)", positionPacket->position.x, positionPacket->position.y);
-            CGPoint temp = CGPointMake((screenSize.width - positionPacket->position.x), (screenSize.height - positionPacket->position.y));
+    
+    NSMutableArray *myArray = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    
+    
+    
+    
+//-----Compares our number to oppoenet number to determine which player is player 1 and 2--------------------------------
+    opponentnumber = [[myArray objectAtIndex:10]intValue];
+    if(ournumber > opponentnumber)
+    {
+        [whichPlayerLabel setString:(@"PLAYER 1")];
+        player1 = TRUE;
+        player2 = FALSE;
+    }
+    else if(ournumber<opponentnumber)
+    {
+        [whichPlayerLabel setString:(@"PLAYER 2")];
+        player2 = TRUE;
+        player1 = FALSE;
+    }
+    else if(ournumber == opponentnumber)
+    {
+        ournumber = arc4random()%100000;
+    }
+//-------end of determine players-----------------------------------------------------------------------------------------
+    
+    
+    
+    
+//-----------------Sets ball posistion-------------------------------------------------------------------------------------
+    if(!player1)
+    {
+        int xpos = [[myArray objectAtIndex:3]intValue]; //myArray[3] = ballx
+        int ypos = [[myArray objectAtIndex:4]intValue]; //myArray[4] = bally
+        
+        if([[myArray objectAtIndex:11]intValue]==0)
+           {
+               CGPoint temp = CGPointMake((screenSize.width - xpos), (ypos));
+               [ball setPosition:temp];
+           }
+        else
+        {
+            CGPoint temp = CGPointMake((screenSize.width - xpos), (screenSize.height -ypos));
             [ball setPosition:temp];
-            
-			if (playerID != [GKLocalPlayer localPlayer].playerID)
-			{
-                
-			}
-			break;
-		}
-        case kPacketTypeVelocity:
-		{
-			SVelocityPacket* velocityPacket = (SVelocityPacket*)basePacket;
-			CCLOG(@"\tvelocity = (%.1f, %.1f)", velocityPacket->velocity.x, velocityPacket->velocity.y);
-            CGPoint temp = CGPointMake(-(velocityPacket->velocity.x), -(velocityPacket->velocity.y));
-			[ball setVelocity:temp];
-            
-			if (playerID != [GKLocalPlayer localPlayer].playerID)
-			{
-                
-			}
-			break;
-		}
-        case kPacketTypePaddlePosition:
-		{
-			SPaddlePositionPacket* ppositionPacket = (SPaddlePositionPacket*)basePacket;
-			CCLOG(@"\tPADDLEPOS = %i", (int)ppositionPacket->paddleposition);
-            [opponent setXPosition: (screenSize.width - ppositionPacket->paddleposition)];
-			
-			if (playerID != [GKLocalPlayer localPlayer].playerID)
-			{
-                
-			}
-			break;
-		}
-        case kPacketTypeRandomNumber:
-		{
-			SRandomNumberPacket* randNumPacket = (SRandomNumberPacket*)basePacket;
-			CCLOG(@"\trecieved OPPONENT RandomNumer = %i", randNumPacket->randomNumber);
-			opponentnumber = randNumPacket->randomNumber;
-			if (playerID != [GKLocalPlayer localPlayer].playerID)
-			{
-                
-			}
-            if(ournumber > opponentnumber)
-            {
-                
-                [whichPlayerLabel setString:(@"PLAYER 1")];
-                player1 = TRUE;
-                player2 = FALSE;
-                playerDetermined = TRUE;
-                CCLOG(@"Player1");
-                [self sendRandNumReceived];
+        }
+        NSLog(@"Not player 1");
+        NSLog(@"XPOS: %i", xpos);
+        NSLog(@"YPOS: %i", ypos);
+    }
+//-----------------end set ball position-------------------------------------------------------------------------------------
+    
+    
+    
+    
+//-----------------set opponents paddle position------------------------------------------------------------------------------
+    if([[myArray objectAtIndex:11]intValue]==0)
+    {
+        int opponentpaddlepos = [[myArray objectAtIndex:5]intValue]; //myArray[5] = paddle position
+        [opponent setXPosition: ((screenSize.width)-opponentpaddlepos)];
+        //[player setXPosition:([player getXpos]+[player paddleSprite].scaleX/2)];
+    }
+    else
+    {
+        int opponentpaddlepos = [[myArray objectAtIndex:5]intValue]; //myArray[5] = paddle position
+        [opponent setXPosition: (screenSize.width - opponentpaddlepos)];
+    }
+//-----------------end set opponents paddle position----------------------------------------------------------------------------
+    
+ 
+    
+//-----------------handles pauses--------------------------------------------------------------------------------------------
+    //gamePaused = ; /
+    if([[myArray objectAtIndex:8]intValue])//myArray[8] = pause state
+    {
+        if(player1)
+        {
+            pauseAlert = [[UIAlertView alloc] initWithTitle:@" Player 2 has paused the game" message:nil delegate:self cancelButtonTitle:@"Quit Game" otherButtonTitles:nil, nil];
+            [pauseAlert show];
             }
-            else if(ournumber<opponentnumber)
-            {
-                [whichPlayerLabel setString:(@"PLAYER 2")];
-                player2 = TRUE;
-                player1 = FALSE;
-                playerDetermined = TRUE;
-                CCLOG(@"Player2");
-                [self sendRandNumReceived];
-            }
-            else
-            {
-                ournumber = arc4random()%100;
-                [self sendRandomNumber:ournumber];
-            }
-			break;
-		}
-        case kPacketTypeCountdown:
-		{
-			SCountdownPacket* ctdownPacket = (SCountdownPacket*)basePacket;
-			CCLOG(@"\tCountdown = %i", ctdownPacket->countdown);
-			countdowntostart = ctdownPacket->countdown;
-			if (playerID != [GKLocalPlayer localPlayer].playerID)
-			{
-                
-			}
-			break;
-		}
-        case kPacketTypePause:
-		{
-			SPausePacket* pausePacket = (SPausePacket*)basePacket;
-            if(pausePacket->Pause)
-            {
-                if(player1)
-                    [playerPauseLabel setString:(@"Player 2 has paused the game")];
-                if(!player1)
-                    [playerPauseLabel setString:(@"Player 1 has paused the game")];
-                [[CCDirector sharedDirector] pause];
-            }
-                
-            else
-            {
-                [playerPauseLabel setString:(@" ")];
-                [[CCDirector sharedDirector] resume];
-            }
-			break;
-		}
-		default:
-			CCLOG(@"unknown packet type %i", basePacket->type);
-			break;
-	}
-}
+        if(player2)
+        {
+            pauseAlert = [[UIAlertView alloc] initWithTitle:@"Player 1 has paused the game" message:nil delegate:self cancelButtonTitle:@"Quit Game" otherButtonTitles:nil, nil];
+            [pauseAlert show];
+        }
+        [[CCDirector sharedDirector] pause];
 
-// send score
--(void) sendScore
-{
-    CCLOG(@"Send Score Method");
+    }
+
+    else
+    {
+        [pauseAlert dismissWithClickedButtonIndex:-1 animated:YES];
+        [[CCDirector sharedDirector] resume];
+    }
+//-----------------end handle pause------------------------------------------------------------------------------------------------
     
-    SScorePacket packet;
-    packet.type = kPacketTypeScore;
-    
-    if(bluetooth)
-      [self sendNetworkPacket:gameSession :&packet sizeInBytes:sizeof(packet)];
 
     
-	if(!bluetooth)
-        if ([GameKitHelper sharedGameKitHelper].currentMatch != nil)
-            [[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
+    
+//-----------------check opponent score value------------------------------------------------------------------------------
+   /* if([[myArray objectAtIndex:7]intValue]!= [opponent getScore])
+    {
+        [opponent setScore:([[myArray objectAtIndex:7]integerValue])];
+
+    }*/
+
+//-----------------end check opponent score value----------------------------------------------------------------------------
+    
+    
+    
+    
+    
+    
+//-----------------handle countdown------------------------------------------------------------------------------
+    if(player2)
+        countdown = [[myArray objectAtIndex:12]intValue];
+    
+//-----------------end handle countdown---------------------------------------------------------------------------
+
+
 }
 
 //send ball position
--(void) sendBallPosition:(CGPoint)ballPos
+-(void) sendArray:(NSMutableArray *)myArray
 {
-    CCLOG(@"Send Ball Position Method");
     
-    SBallPositionPacket packet;
-    packet.type = kPacketTypeBallPosition;
-    packet.position = ballPos;
+    CCLOG(@"Sending Array....");
     
     if(bluetooth)
-        [self sendNetworkPacket:gameSession :&packet sizeInBytes:sizeof(packet)];
-
+        [self sendNetworkPacket:gameSession :myArray sizeInBytes:sizeof(myArray)];
+    
     
 	if(!bluetooth)
         if ([GameKitHelper sharedGameKitHelper].currentMatch != nil)
-            [[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
-}
-
-
-
-//send velocity
--(void) sendVelocity:(CGPoint)ballVel
-{
-    CCLOG(@"Send Velocity Method");
-    
-    SVelocityPacket packet;
-    packet.type = kPacketTypeVelocity;
-    packet.velocity = ballVel;
-    
-    if(bluetooth)
-           [self sendNetworkPacket:gameSession :&packet sizeInBytes:sizeof(packet)];
-    
-	if(!bluetooth)
-       if ([GameKitHelper sharedGameKitHelper].currentMatch != nil)
-           [[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
-}
-
--(void) sendPaddlePosition:(CGFloat)paddleX
-{
-    CCLOG(@"Send Paddle Position Method");
-    SPaddlePositionPacket packet;
-    packet.type = kPacketTypePaddlePosition;
-    packet.paddleposition = paddleX;
-    
-	if(bluetooth)
-           [self sendNetworkPacket:gameSession :&packet sizeInBytes:sizeof(packet)];
-
-    if(!bluetooth)
-          if ([GameKitHelper sharedGameKitHelper].currentMatch != nil)
-              [[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
-}
-
--(void) sendRandomNumber:(int)ranNumber
-{
-    CCLOG(@"Send Rand Num");
-    SRandomNumberPacket packet;
-    packet.type = kPacketTypeRandomNumber;
-    packet.randomNumber = ranNumber;
-    CCLOG(@"sending number...");
-    
-    if(bluetooth)
-        [self sendNetworkPacket:gameSession :&packet sizeInBytes:sizeof(packet)];
-
-    if(!bluetooth)
-        if ([GameKitHelper sharedGameKitHelper].currentMatch != nil)
-            [[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
-    
-    
-}
-
--(void) sendCountdown:(int)ctdown
-{
-    CCLOG(@"Send Countdown Method");
-    
-    SCountdownPacket packet;
-    packet.type = kPacketTypeCountdown;
-    packet.countdown = ctdown;
-    
-    if(bluetooth)
-        [self sendNetworkPacket:gameSession :&packet sizeInBytes:sizeof(packet)];
-
-    
-    if(!bluetooth)
-        if ([GameKitHelper sharedGameKitHelper].currentMatch != nil)
-            [[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
-}
-
--(void) sendRandNumReceived
-{
-    CCLOG(@"Send Random Number Method");
-    
-    SRanNumReceivedPacket packet;
-    packet.type = kPacketTypeRanNumReceived;
-    
-    if(bluetooth)
-        [self sendNetworkPacket:gameSession :&packet sizeInBytes:sizeof(packet)];
-    
-    if(!bluetooth)
-        if ([GameKitHelper sharedGameKitHelper].currentMatch != nil)
-            [[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
-
-}
-
--(void) pauseReceived:(BOOL)paused
-{
-    CCLOG(@"Pause Received Method");
-    SPausePacket packet;
-    packet.type = kPacketTypePause;
-    packet.Pause = paused;
-    
-    if(bluetooth)
-        [self sendNetworkPacket:gameSession :&packet sizeInBytes:sizeof(packet)];
-    if(!bluetooth)
-        if ([GameKitHelper sharedGameKitHelper].currentMatch != nil)
-            [[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:&packet sizeInBytes:sizeof(packet)];
+            [[GameKitHelper sharedGameKitHelper] sendDataToAllPlayers:myArray sizeInBytes:sizeof(myArray)];
 }
 
 #pragma mark Peer Picker Related Methods
 -(void)startPicker {
     
     GKPeerPickerController*		picker;
-	self.gameState = kStatePicker;			// we're going to do Multiplayer!
-	
+	self.gameState = kStatePicker;
+    
 	picker = [[GKPeerPickerController alloc] init]; // note: picker is released in various picker delegate methods when picker use is done.
 	picker.delegate = self;
     
     picker.connectionTypesMask = (GKPeerPickerConnectionTypeNearby |
                                   GKPeerPickerConnectionTypeOnline);
     [picker show]; // show the Peer Picker
+    playerConnected = TRUE;
 }
 
 #pragma mark GKPeerPickerControllerDelegate Methods
@@ -848,7 +860,8 @@ typedef enum {
         gkHelper = [GameKitHelper sharedGameKitHelper];
 		gkHelper.delegate = self;
         [gkHelper authenticateLocalPlayer];
-        [self onAchievementsViewDismissed];
+        [self scheduleOnce:@selector(showMatchmaking:) delay:0.0f];
+
     }
 }
 
@@ -922,11 +935,7 @@ typedef enum {
             // invalidate session and release it.
             [self invalidateSession:self.gameSession];
             self.gameSession = nil;
-        }
-        
-        // reset game here
-        
-        
+        } 
     }
     
     gameState = newState;
@@ -946,19 +955,25 @@ typedef enum {
 	}
 }
 - (void)receiveData:(NSData *)data fromPeer:(NSString *)peer inSession:(GKSession *)session context:(void *)context {
+    CCLOG(@"Receiving data with Bluetooth...");
     [self onReceivedData:data fromPlayer:peer];
 }
 
--(void) sendNetworkPacket:(GKSession *)session :(void*) data sizeInBytes:(NSUInteger)sizeInBytes
+-(void) sendNetworkPacket:(GKSession *)session :(NSMutableArray*) data sizeInBytes:(NSUInteger)sizeInBytes
 {
+    CCLOG(@"Sending data with Bluetooth...");
     NSError* error = nil;
-    NSData* packet = [NSData dataWithBytes:data length:sizeInBytes];
+    NSData *packet = [NSKeyedArchiver archivedDataWithRootObject:data];
     [session sendDataToAllPeers:packet withDataMode:GKSendDataUnreliable error:&error];
     [self setLastError:error];
 }
 
 
+
+
 @end
+
+
 
 
 

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 #import "Constants.h"
+#import "SimpleAudioEngine.h"
 
 @interface Ball : CCNode
 
@@ -18,6 +19,7 @@
     CGPoint tempVelocity;
     CGSize screenSize;
     BOOL score;
+    BOOL didCollideWithWall;
 }
 @property (nonatomic, assign) CCSprite* ballSprite;
 @property (nonatomic) BOOL didCollide;

@@ -9,7 +9,7 @@
 #ifndef PongT2_Constants_h
 #define PongT2_Constants_h
 
-#define MAX_BALL_SPEED 7
+#define MAX_BALL_SPEED 8
 #define MIN_BALL_SPEED 4
 #define PADDLE_COLLISION_DIVIDER 21
 
@@ -32,6 +32,6 @@ BOOL playerConnected;
 BOOL initialPosition;
 BOOL endMultiPlayer;
 int pointsToWin;
-
+ccTime countdown;
 
 #endif
