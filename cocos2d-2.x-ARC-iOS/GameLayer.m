@@ -109,7 +109,7 @@
         
         
         //sets label for countdown
-        countdownLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:12];
+        countdownLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:30];
         countdownLabel.position = ccp(screenSize.width/2, screenSize.height/2);
         [self addChild:countdownLabel z:0];
         [countdownLabel setString:([NSString stringWithFormat:@"%d", countdown])];

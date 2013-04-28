@@ -58,6 +58,7 @@
 -(void) returnToMainMenu
 {
     endMultiPlayer = TRUE;
+    gameOver = TRUE;
     // pop the options scene from the CCDirector and return to the menu scene
     [[CCDirector sharedDirector] popScene];
     [[CCDirector sharedDirector] popScene];

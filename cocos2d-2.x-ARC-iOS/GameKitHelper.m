@@ -586,6 +586,7 @@
 -(void) matchmakerViewControllerWasCancelled:(GKMatchmakerViewController*)viewController
 {
 	[self dismissModalViewController];
+    CCLOG(@"CANCELLED");
 	if ([delegate respondsToSelector:@selector(onMatchmakingViewDismissed)])
 	{
 		[delegate onMatchmakingViewDismissed];

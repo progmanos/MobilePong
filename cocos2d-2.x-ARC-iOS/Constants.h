@@ -31,6 +31,7 @@ NSString* name;
 BOOL playerConnected;
 BOOL initialPosition;
 BOOL endMultiPlayer;
+BOOL gameOver;
 int pointsToWin;
 ccTime countdown;
 
