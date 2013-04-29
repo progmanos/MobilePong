@@ -118,5 +118,9 @@ typedef CGFloat (^BluntFuncBlock)(CGFloat x);
  */
 -(CGPoint) reflect: (CGPoint) normVect withBlunt: (CGFloat) bluntVal andSpeedAdjust: (CGFloat) speedAdjVal;
 
+
+-(void) changeMadBall;
+-(void) changeYellowBall;
+-(void) changeGreenBall;
 @end
 

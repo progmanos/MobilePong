@@ -40,20 +40,21 @@
     pointsToWin = 11;
     multiplayer = FALSE;
     CGSize screenSize = [CCDirector sharedDirector].winSize;
-    CCLabelTTF *playlabel = [CCLabelTTF labelWithString:@"Single Player" fontName:@"Arial" fontSize:32];
+    CCLabelTTF *playlabel = [CCSprite spriteWithFile:@"SinglePlayer.png"];//[CCLabelTTF labelWithString:@"Single Player" fontName:@"Arial" fontSize:32];
     CCMenuItemFont *playGameItemLabel = [CCMenuItemFont itemWithLabel:playlabel target:self selector:@selector(playGame)];
+    playGameItemLabel.color = ccBLUE;
     
-    CCLabelTTF *optionsLabel = [CCLabelTTF labelWithString:@"Options" fontName:@"Arial" fontSize:32];
+    CCLabelTTF *optionsLabel = [CCSprite spriteWithFile:@"Options.png"];//[CCLabelTTF labelWithString:@"Options" fontName:@"Arial" fontSize:32];
     optionsLabel.color = ccRED;
     
     CCMenuItemFont *optionsItemLabel = [CCMenuItemFont itemWithLabel:optionsLabel target:self selector:@selector(showOptions)];
     
-    CCLabelTTF *tutorialLabel = [CCLabelTTF labelWithString:@"Tutorial" fontName:@"Arial" fontSize:32];
+    CCLabelTTF *tutorialLabel = [CCSprite spriteWithFile:@"TutorialBut.png"];//[CCLabelTTF labelWithString:@"Tutorial" fontName:@"Arial" fontSize:32];
     tutorialLabel.color = ccYELLOW;
     CCMenuItemFont *tutorialItemLabel  = [CCMenuItemFont itemWithLabel:tutorialLabel target:self selector:@selector(tutorial)];
     
-    CCLabelTTF *multiplayerLabel = [CCLabelTTF labelWithString:@"Multiplayer" fontName:@"Arial" fontSize:32];
-    optionsLabel.color = ccRED;
+    CCLabelTTF *multiplayerLabel = [CCSprite spriteWithFile:@"multiplayerBut.png"];//[CCLabelTTF labelWithString:@"Multiplayer" fontName:@"Arial" fontSize:32];
+    multiplayerLabel.color = ccGREEN;
     
     CCMenuItemFont *multiplayerItemLabel = [CCMenuItemFont itemWithLabel:multiplayerLabel target:self selector:@selector(showMultiplayer)];
     
@@ -64,7 +65,7 @@
     [mainMenu alignItemsVerticallyWithPadding:screenSize.height * 0.059f];
     [mainMenu setPosition:
      ccp(screenSize.width / 2.0f,
-         screenSize.height / 2.0f)];
+         screenSize.height / 2.25f)];
     
     [self addChild:mainMenu z:1];
 }
@@ -76,7 +77,7 @@
     if (self != nil) {
         CGSize screenSize = [CCDirector sharedDirector].winSize;
         CCSprite *background =
-        [CCSprite spriteWithFile:@"background2.png"];
+        [CCSprite spriteWithFile:@"MainMenu2.png"];
         [background setPosition:ccp(screenSize.width/2,
                                     screenSize.height/2)];
         [self addChild:background];

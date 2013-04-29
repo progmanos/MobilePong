@@ -66,6 +66,7 @@
     
     if(position.y < -16)
     {
+        
         score = TRUE;
     }
     
@@ -73,9 +74,13 @@
     else if(position.y >500)
     {
         score = TRUE;
+        //[self changeMadBall];
     }
-    else
+    else{
         score = FALSE;
+        //[self changeMadBall];
+    }
+    
 }
 
 
@@ -339,6 +344,20 @@
     return newVelocity;
 }
 
+-(void) changeMadBall
+{
+ ballSprite = [CCSprite spriteWithFile:@"mad_ball.png"];
+}
+
+-(void) changeYellowBall
+{
+    ballSprite = [CCSprite spriteWithFile:@"yellow_ball.png"];
+}
+
+-(void) changeGreenBall
+{
+    ballSprite = [CCSprite spriteWithFile:@"green_ball.png"];
+}
 
 
 @end

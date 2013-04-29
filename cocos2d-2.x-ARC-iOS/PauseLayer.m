@@ -13,10 +13,11 @@
 -(void) displayMenu
 {
     CGSize screenSize = [CCDirector sharedDirector].winSize;
-    CCLabelTTF *resumelabel = [CCLabelTTF labelWithString:@"Resume" fontName:@"Arial" fontSize:32];
+    CCLabelTTF *resumelabel = [CCSprite spriteWithFile:@"resume.png"];//[CCLabelTTF labelWithString:@"Resume" fontName:@"Arial" fontSize:32];
     CCMenuItemFont *resumeGameItemLabel = [CCMenuItemFont itemWithLabel:resumelabel target:self selector:@selector(returnToGame)];
+    resumelabel.color = ccBLUE;
     
-    CCLabelTTF *mainMenuLabel = [CCLabelTTF labelWithString:@"Main Menu" fontName:@"Arial" fontSize:32];
+    CCLabelTTF *mainMenuLabel = [CCSprite spriteWithFile:@"MainMenuBut.png"];//[CCLabelTTF labelWithString:@"Main Menu" fontName:@"Arial" fontSize:32];
     mainMenuLabel.color = ccRED;
     
     CCMenuItemFont *mainMenuGameItemLabel = [CCMenuItemFont itemWithLabel:mainMenuLabel target:self selector:@selector(returnToMainMenu)];
@@ -42,7 +43,7 @@
     if (self != nil) {
         CGSize screenSize = [CCDirector sharedDirector].winSize;
         CCSprite *background =
-        [CCSprite spriteWithFile:@"background2.png"];
+        [CCSprite spriteWithFile:@"Pausemenu.png"];
         [background setPosition:ccp(screenSize.width/2,
                                     screenSize.height/2)];
         [self addChild:background];

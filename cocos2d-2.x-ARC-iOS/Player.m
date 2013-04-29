@@ -109,6 +109,7 @@
 
 -(void) updateScore
 {
+    
     score += 1;
 }
 
@@ -124,12 +125,14 @@
 
 -(int) getRoundScore
 {
+    
     return roundScore;
 }
 
 -(void) updateRoundScore
 {
     roundScore += 1;
+
 }
 
 -(void) resetRoundScore

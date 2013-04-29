@@ -445,6 +445,7 @@
     //Player score
     if([ball getYpos] >= 496 && !playerScored)
     {
+        //[ball changeGreenBall];
         [[SimpleAudioEngine sharedEngine] playEffect:@"correct.wav"];
         [player updateScore];
         playerScored = TRUE;
@@ -458,6 +459,7 @@
     {
         [[SimpleAudioEngine sharedEngine] playEffect:@"wrong.wav"];
         [opponent updateScore];
+        //[ball changeMadBall];
         playerScored = TRUE;
     }
 }
@@ -496,6 +498,7 @@
 //Displays "Sorry, you lose" in red for 3 seconds. Then starts a new game
 -(void) opponentWinsGame
 {
+    //[ball changeMadBall];
     if(times==0){
         [opponent updateRoundScore];
         times =1;
@@ -526,6 +529,7 @@
 //Displays "Congratulations, you won" in red for 3 seconds. Then starts a new game
 -(void) playerWinsGame
 {
+    
     if(times==0){
        [player updateRoundScore];
     times =1;
