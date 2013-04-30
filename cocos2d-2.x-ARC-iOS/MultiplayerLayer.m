@@ -577,6 +577,11 @@ typedef enum {
     //u need to change 0 to other value(,1,2,3) if u have more buttons.then u can check which button was pressed.
     
     if (buttonIndex == 0) {
+        
+        if(bluetooth)
+            [gameSession disconnectFromAllPeers];
+        if(online)
+            [gkHelper disconnectCurrentMatch];
         [gkHelper disconnectCurrentMatch];
         [[CCDirector sharedDirector] resume];
         [[CCDirector sharedDirector] popScene];
