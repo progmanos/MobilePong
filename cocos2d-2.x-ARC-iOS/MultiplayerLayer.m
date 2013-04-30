@@ -454,6 +454,7 @@ typedef enum {
 
 -(void) update:(ccTime)delta
 {
+    
     if(gamePaused)
         [[CCDirector sharedDirector] pushScene:[PauseScene node]];
 
@@ -542,12 +543,17 @@ typedef enum {
 -(void) onPlayerDisconnected:(NSString*)playerID;
 {
     
-    sleep(5);
+    if(online)
+        [gkHelper disconnectCurrentMatch];
+    if(bluetooth)
+        [gameSession disconnectFromAllPeers];
+    
     if(!gameOver)
     {
         if(gamePaused)
+        {
             [pauseAlert dismissWithClickedButtonIndex:-1 animated:YES];
-        // We've been disconnected from the other peer.
+        }
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Lost Connection" message:nil delegate:self cancelButtonTitle:@"End Game" otherButtonTitles:nil];
         self.connectionAlert = alert;
         [alert show];
@@ -555,6 +561,9 @@ typedef enum {
     
         [[CCDirector sharedDirector] pause];
     }
+    
+    else return;
+
 }
 
 
@@ -578,12 +587,11 @@ typedef enum {
     
     if (buttonIndex == 0) {
         
+        [[CCDirector sharedDirector] resume];
         if(bluetooth)
             [gameSession disconnectFromAllPeers];
         if(online)
             [gkHelper disconnectCurrentMatch];
-        [gkHelper disconnectCurrentMatch];
-        [[CCDirector sharedDirector] resume];
         [[CCDirector sharedDirector] popScene];
         if(gamePaused)
             [[CCDirector sharedDirector] popScene];
@@ -595,14 +603,14 @@ typedef enum {
 //Displays "Sorry, you lose" in red for 3 seconds. Then starts a new game
 -(void) AIwinsGame
 {
-
     gameOver = TRUE;
+
     if(!gameOverViewDisplayed)
     {
-    gameOverAlert = [[UIAlertView alloc] initWithTitle:@"Sorry, you lose" message:nil delegate:self cancelButtonTitle:@"Main Menu" otherButtonTitles:nil, nil];
-    [gameOverAlert show];
-    gameOverViewDisplayed = TRUE;
-    [[CCDirector sharedDirector] pause];
+        gameOverAlert = [[UIAlertView alloc] initWithTitle:@"Sorry, you lose" message:nil delegate:self cancelButtonTitle:@"Main Menu" otherButtonTitles:nil, nil];
+        [gameOverAlert show];
+        gameOverViewDisplayed = TRUE;
+        //[[CCDirector sharedDirector] pause];
 
     }
     
@@ -617,23 +625,18 @@ typedef enum {
 //Displays "Congratulations, you won" in red for 3 seconds. Then starts a new game
 -(void) playerWinsGame
 {
-    
-    if(bluetooth)
-        [gameSession disconnectFromAllPeers];
-    if(online)
-        [gkHelper disconnectCurrentMatch];
     gameOver = TRUE;
     if(!gameOverViewDisplayed)
     {
         gameOverAlert = [[UIAlertView alloc] initWithTitle:@"Congratulations, you won!" message:nil delegate:self cancelButtonTitle:@"Main Menu" otherButtonTitles:nil, nil];
         [gameOverAlert show];
         gameOverViewDisplayed = TRUE;
-        [[CCDirector sharedDirector] pause];
+        //[[CCDirector sharedDirector] pause];
 
     }
     
 
-    [[CCDirector sharedDirector] pause];
+    //[[CCDirector sharedDirector] pause];
     /*winner = @"Congratulations\n you won!";
     winnerLabel.color = ccGREEN;
     [winnerLabel setString:(winner)];
