@@ -64,6 +64,7 @@
     BOOL bluetooth;
     BOOL online;
     BOOL createdConnection;
+    BOOL pauseAlertDisplayed;
     int ournumber;
     int opponentnumber;
     
@@ -75,6 +76,8 @@
     NSError* lastError;
     
     NSMutableArray* myData;
+    
+    NSString* opponentName;
     
 }
 

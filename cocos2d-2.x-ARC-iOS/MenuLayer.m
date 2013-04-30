@@ -43,7 +43,7 @@
     CCLabelTTF *playlabel = [CCLabelTTF labelWithString:@"Single Player" fontName:@"Arial" fontSize:32];
     CCMenuItemFont *playGameItemLabel = [CCMenuItemFont itemWithLabel:playlabel target:self selector:@selector(playGame)];
     
-    CCLabelTTF *optionsLabel = [CCLabelTTF labelWithString:@"Options" fontName:@"Arial" fontSize:32];
+    CCLabelTTF *optionsLabel = [CCLabelTTF labelWithString:@"Settings" fontName:@"Arial" fontSize:32];
     optionsLabel.color = ccRED;
     
     CCMenuItemFont *optionsItemLabel = [CCMenuItemFont itemWithLabel:optionsLabel target:self selector:@selector(showOptions)];

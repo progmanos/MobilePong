@@ -49,6 +49,7 @@ typedef enum {
         gameOver = FALSE;
         gameSession = nil;
         gamePeerId = nil;
+        pauseAlertDisplayed = FALSE;
         
         countdown = 0;
 
@@ -456,6 +457,7 @@ typedef enum {
     if(gamePaused)
         [[CCDirector sharedDirector] pushScene:[PauseScene node]];
 
+
     
     //ARRAY PACKET ORDER
     // [0] - packet number - numberWithInt
@@ -492,10 +494,6 @@ typedef enum {
     if(online || bluetooth)
         [self sendArray:myData];
     
-    if(online)
-        if([gkHelper currentMatch])
-            
-    
     if(endMultiPlayer && !bluetooth)
         [gkHelper disconnectCurrentMatch];
     
@@ -523,7 +521,7 @@ typedef enum {
     [self updateScore];
     [self checkWin];
     
-    if(player1 && countdown < 1)
+    if(player1 && countdown < 1 && !gameOver)
         [ball moveBall];
     
     //prevents scoring from incrementing more than once
@@ -544,7 +542,7 @@ typedef enum {
 -(void) onPlayerDisconnected:(NSString*)playerID;
 {
     
-    
+    sleep(5);
     if(!gameOver)
     {
         if(gamePaused)
@@ -592,6 +590,7 @@ typedef enum {
 //Displays "Sorry, you lose" in red for 3 seconds. Then starts a new game
 -(void) AIwinsGame
 {
+
     gameOver = TRUE;
     if(!gameOverViewDisplayed)
     {
@@ -601,6 +600,7 @@ typedef enum {
     [[CCDirector sharedDirector] pause];
 
     }
+    
     //[[CCDirector sharedDirector] pause];
     //winner = @"Sorry, you lose";
     /*winnerLabel.color = ccRED;
@@ -612,6 +612,11 @@ typedef enum {
 //Displays "Congratulations, you won" in red for 3 seconds. Then starts a new game
 -(void) playerWinsGame
 {
+    
+    if(bluetooth)
+        [gameSession disconnectFromAllPeers];
+    if(online)
+        [gkHelper disconnectCurrentMatch];
     gameOver = TRUE;
     if(!gameOverViewDisplayed)
     {
@@ -782,7 +787,11 @@ typedef enum {
     if([[myArray objectAtIndex:11]intValue]==0)
     {
         int opponentpaddlepos = [[myArray objectAtIndex:5]intValue]; //myArray[5] = paddle position
-        [opponent setXPosition: ((screenSize.width)-opponentpaddlepos)];
+        if(player1)
+        [opponent setXPosition: opponentpaddlepos];
+        else
+            [opponent setXPosition: (screenSize.width - opponentpaddlepos)];
+
         //[player setXPosition:([player getXpos]+[player paddleSprite].scaleX/2)];
     }
     else
@@ -795,24 +804,31 @@ typedef enum {
  
     
 //-----------------handles pauses------------------------------------------------------------------------
-    if([[myArray objectAtIndex:8]intValue])//myArray[8] = pause state
+    if([[myArray objectAtIndex:8]intValue])
     {
+       if(!pauseAlertDisplayed && !gameOver)//myArray[8] = pause state
+       {
         if(player1)
         {
             pauseAlert = [[UIAlertView alloc] initWithTitle:@" Player 2 has paused the game" message:nil delegate:self cancelButtonTitle:@"Quit Game" otherButtonTitles:nil, nil];
             [pauseAlert show];
+            pauseAlertDisplayed = TRUE;
+            [[CCDirector sharedDirector] pause];
+
             }
-        if(player2)
+        if(player2 & !gameOver)
         {
             pauseAlert = [[UIAlertView alloc] initWithTitle:@"Player 1 has paused the game" message:nil delegate:self cancelButtonTitle:@"Quit Game" otherButtonTitles:nil, nil];
             [pauseAlert show];
+            pauseAlertDisplayed = TRUE;
         }
-        [[CCDirector sharedDirector] pause];
-
+           
+       }
+        
     }
-
     else
     {
+        pauseAlertDisplayed = FALSE;
         [pauseAlert dismissWithClickedButtonIndex:-1 animated:YES];
         [[CCDirector sharedDirector] resume];
     }

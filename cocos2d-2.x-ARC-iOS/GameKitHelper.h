@@ -69,8 +69,8 @@
 						   range:(NSRange)range
 					 playerScope:(GKLeaderboardPlayerScope)playerScope
 					   timeScope:(GKLeaderboardTimeScope)timeScope;
--(void) retrieveTopTenAllTimeGlobalScores;
 -(void) showLeaderboard;
+
 
 // Achievements
 -(GKAchievement*) getAchievementByID:(NSString*)identifier;

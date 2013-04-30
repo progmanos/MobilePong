@@ -93,7 +93,7 @@
              
              if (error == nil)
              {
-                 [self loadAchievements];
+                 //[self loadAchievements];
              }
          }];
 	}
@@ -162,7 +162,7 @@
 }
 
 #pragma mark Scores & Leaderboard
-
+/*
 -(void) submitScore:(int64_t)score category:(NSString*)category
 {
 	if (isGameCenterAvailable == NO)
@@ -219,18 +219,10 @@
 	}
 }
 
--(void) retrieveTopTenAllTimeGlobalScores
-{
-	[self retrieveScoresForPlayers:nil
-						  category:nil
-							 range:NSMakeRange(1, 10)
-					   playerScope:GKLeaderboardPlayerScopeGlobal
-						 timeScope:GKLeaderboardTimeScopeAllTime];
-}
 
 #pragma mark Achievements
 
--(void) loadAchievements
+/*-(void) loadAchievements
 {
 	if (isGameCenterAvailable == NO)
 		return;
@@ -314,7 +306,7 @@
 			 [delegate onResetAchievements:success];
 		 }
 	 }];
-}
+}*/
 
 #pragma mark Matchmaking
 
@@ -515,7 +507,7 @@
 
 // Leaderboards
 
--(void) showLeaderboard
+/*-(void) showLeaderboard
 {
 	if (isGameCenterAvailable == NO)
 		return;
@@ -560,7 +552,7 @@
 		[delegate onAchievementsViewDismissed];
 	}
 }
-
+*/
 // Matchmaking
 
 -(void) showMatchmakerWithInvite:(GKInvite*)invite
@@ -625,7 +617,7 @@
 @end
 
 
-@implementation GKLeaderboardViewController (OrientationFix)
+/*@implementation GKLeaderboardViewController (OrientationFix)
 -(BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return UIInterfaceOrientationIsLandscape(interfaceOrientation);
@@ -638,7 +630,7 @@
 	return UIInterfaceOrientationIsLandscape(interfaceOrientation);
 }
 @end
-
+*/
 @implementation GKMatchmakerViewController (OrientationFix)
 -(BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
