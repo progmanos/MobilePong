@@ -65,7 +65,7 @@
     [mainMenu alignItemsVerticallyWithPadding:screenSize.height * 0.059f];
     [mainMenu setPosition:
      ccp(screenSize.width / 2.0f,
-         screenSize.height / 2.25f)];
+         screenSize.height / 2.0f)];
     
     [self addChild:mainMenu z:1];
 }

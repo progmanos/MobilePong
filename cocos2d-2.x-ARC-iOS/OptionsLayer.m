@@ -56,7 +56,7 @@
                                     screenSize.height/2)];
         [self addChild:background];
         
-        CCLabelTTF *levelChoicesLabel = [CCLabelTTF labelWithString:@"Select points to win match:" fontName:@"Arial" fontSize:24];
+        CCLabelTTF *levelChoicesLabel = [CCLabelTTF labelWithString:@"Select Difficulty:" fontName:@"Arial" fontSize:24];
         CCMenuItemFont *levelChoicesItemLabel = [CCMenuItemFont itemWithLabel:levelChoicesLabel target:nil selector:nil];
         levelChoicesLabel.color = ccWHITE;
         
@@ -75,6 +75,7 @@
         
         CCLabelTTF *backLabel = [CCLabelTTF labelWithString:@"Back to Main Menu" fontName:@"Arial" fontSize:24];
         CCMenuItemLabel *backItem = [CCMenuItemLabel itemWithLabel:backLabel target:self selector:@selector(returnToMainMenu)];
+        backItem.color = ccBLACK;
         
         
         //set number of match
@@ -104,7 +105,7 @@
         
         
         optionsMenu = [CCMenu menuWithItems:levelChoicesItemLabel, LevelToggle, scoreChoicesItemLabel, scoreToggle, backItem, nil];
-        [optionsMenu alignItemsVerticallyWithPadding:60.0f];
+        [optionsMenu alignItemsVerticallyWithPadding:20.0f];
         [optionsMenu setPosition:ccp(screenSize.width/2, screenSize.height/2)];
         [self addChild:optionsMenu];
         
