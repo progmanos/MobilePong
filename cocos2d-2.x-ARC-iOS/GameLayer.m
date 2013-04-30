@@ -63,6 +63,7 @@
         UISwipeGestureRecognizer *swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeGesture:)];
         [self addGestureRecognizer:swipeGestureRecognizer];
         swipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionUp | UISwipeGestureRecognizerDirectionDown;
+        swipeGestureRecognizer.numberOfTouchesRequired = 2;
         
         
         //sets label for score of opponent
