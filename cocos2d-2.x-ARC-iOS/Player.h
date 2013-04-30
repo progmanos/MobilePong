@@ -19,6 +19,7 @@ typedef enum  {
 
 @interface Player : CCNode
 {
+    int colorchange;
     int roundScore;
     int score;
     int speed;
@@ -57,6 +58,11 @@ typedef enum  {
 -(float) getRightCornerX;
 -(void) resizePaddleWidth:(float)width;
 
+
+-(void) changeWinning;
+-(void) changeLosing;
+-(void) changeSame;
+-(void) change;
 
 -(CGFloat) tipOfPaddle;
 -(CGFloat) rightHalfOfPaddle;

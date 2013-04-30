@@ -448,6 +448,19 @@
         //[ball changeGreenBall];
         [[SimpleAudioEngine sharedEngine] playEffect:@"correct.wav"];
         [player updateScore];
+        if([player getScore]==[opponent getScore]){
+            [player changeSame];
+            [opponent changeSame];
+        }
+        else if([player getScore]<[opponent getScore]){
+            [player changeLosing];
+            [opponent changeWinning];
+        }
+        else{
+            [player changeWinning];
+            [opponent changeLosing];
+        }
+        
         playerScored = TRUE;
     }
 }
@@ -460,8 +473,25 @@
         [[SimpleAudioEngine sharedEngine] playEffect:@"wrong.wav"];
         [opponent updateScore];
         //[ball changeMadBall];
+        //change colore of paddle depending on who is winning
+        if([player getScore]==[opponent getScore]){
+            [player changeSame];
+            [opponent changeSame];
+        }
+        else if([player getScore]<[opponent getScore]){
+            [player changeLosing];
+            [opponent changeWinning];
+        }
+        else{
+            [player changeWinning];
+            [opponent changeLosing];
+        }
+
+        
         playerScored = TRUE;
+        
     }
+    
 }
 
 -(void)updateScore

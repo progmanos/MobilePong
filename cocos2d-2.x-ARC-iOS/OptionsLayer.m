@@ -51,7 +51,7 @@
         CGSize screenSize = [CCDirector sharedDirector].winSize;
         
         CCSprite *background =
-        [CCSprite spriteWithFile:@"MainMenu2.png"];
+        [CCSprite spriteWithFile:@"background2.png"];
         [background setPosition:ccp(screenSize.width/2,
                                     screenSize.height/2)];
         [self addChild:background];

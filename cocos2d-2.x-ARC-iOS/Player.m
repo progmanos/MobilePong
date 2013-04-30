@@ -24,6 +24,7 @@
 {
     if((self = [super init]))
     {
+        colorchange = 3;
         [parentNode addChild:self];
         screenSize = [CCDirector sharedDirector].winSize;
         
@@ -192,4 +193,55 @@
     
     return -1;
 }
+
+-(void) changeWinning {
+    while (colorchange<0) {
+      [NSTimer scheduledTimerWithTimeInterval:.8
+                                     target:self
+                                   selector:@selector(change)
+                                   userInfo:nil
+                                    repeats:NO];  
+    }
+    colorchange = 3;
+    paddleSprite.color = ccGREEN;
+   
+}
+-(void)change{
+    
+    if(colorchange==3){
+        paddleSprite.color = ccORANGE;
+    }
+    else if(colorchange==2){
+        paddleSprite.color = ccBLUE;
+    }
+    else {
+        paddleSprite.color = ccWHITE;
+    }
+}
+-(void) changeLosing{
+    while (colorchange<0) {
+        [NSTimer scheduledTimerWithTimeInterval:.8
+                                         target:self
+                                       selector:@selector(change)
+                                       userInfo:nil
+                                        repeats:NO];
+    }
+
+    paddleSprite.color = ccRED;
+    colorchange = 3;
+}
+-(void) changeSame{
+    while (colorchange<0) {
+        [NSTimer scheduledTimerWithTimeInterval:.8
+                                         target:self
+                                       selector:@selector(change)
+                                       userInfo:nil
+                                        repeats:NO];
+    }
+
+    paddleSprite.color = ccYELLOW;
+    colorchange = 3;
+}
+    
+
 @end
