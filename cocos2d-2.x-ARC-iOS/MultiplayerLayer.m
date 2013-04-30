@@ -821,14 +821,15 @@ typedef enum {
             pauseAlert = [[UIAlertView alloc] initWithTitle:@" Player 2 has paused the game" message:nil delegate:self cancelButtonTitle:@"Quit Game" otherButtonTitles:nil, nil];
             [pauseAlert show];
             pauseAlertDisplayed = TRUE;
-            [[CCDirector sharedDirector] pause];
+            //[[CCDirector sharedDirector] pause];
 
             }
-        if(player2 & !gameOver)
+        if(player2)
         {
             pauseAlert = [[UIAlertView alloc] initWithTitle:@"Player 1 has paused the game" message:nil delegate:self cancelButtonTitle:@"Quit Game" otherButtonTitles:nil, nil];
             [pauseAlert show];
             pauseAlertDisplayed = TRUE;
+            [[CCDirector sharedDirector] pause];
         }
            
        }

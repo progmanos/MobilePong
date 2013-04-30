@@ -62,10 +62,10 @@
     mainMenu = [CCMenu
                 menuWithItems:playGameItemLabel, multiplayerItemLabel, optionsItemLabel, tutorialItemLabel, nil];
     
-    [mainMenu alignItemsVerticallyWithPadding:screenSize.height * 0.059f];
+    [mainMenu alignItemsVerticallyWithPadding:screenSize.height * 0.04f];
     [mainMenu setPosition:
      ccp(screenSize.width / 2.0f,
-         screenSize.height / 2.25f)];
+         screenSize.height / 2.0f)];
     
     [self addChild:mainMenu z:1];
 }
