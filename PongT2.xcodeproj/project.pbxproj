@@ -327,6 +327,7 @@
 		DC4C8DFC16D4984400A40403 /* MenuLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = DC4C8DF816D4984400A40403 /* MenuLayer.m */; };
 		DC4C8DFD16D4984400A40403 /* MenuScene.h in Headers */ = {isa = PBXBuildFile; fileRef = DC4C8DF916D4984400A40403 /* MenuScene.h */; };
 		DC4C8DFE16D4984400A40403 /* MenuScene.m in Sources */ = {isa = PBXBuildFile; fileRef = DC4C8DFA16D4984400A40403 /* MenuScene.m */; };
+		DC4D2629172DB9E800FE9F95 /* CCNode+SFGestureRecognizers.m in Sources */ = {isa = PBXBuildFile; fileRef = DC4D2628172DB9E800FE9F95 /* CCNode+SFGestureRecognizers.m */; };
 		DC6B433916D86558002B5BB5 /* court.png in Resources */ = {isa = PBXBuildFile; fileRef = DC6B433816D86558002B5BB5 /* court.png */; };
 /* End PBXBuildFile section */
 
@@ -672,6 +673,8 @@
 		DC4C8DF816D4984400A40403 /* MenuLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuLayer.m; sourceTree = "<group>"; };
 		DC4C8DF916D4984400A40403 /* MenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuScene.h; sourceTree = "<group>"; };
 		DC4C8DFA16D4984400A40403 /* MenuScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuScene.m; sourceTree = "<group>"; };
+		DC4D2627172DB9E800FE9F95 /* CCNode+SFGestureRecognizers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCNode+SFGestureRecognizers.h"; sourceTree = "<group>"; };
+		DC4D2628172DB9E800FE9F95 /* CCNode+SFGestureRecognizers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCNode+SFGestureRecognizers.m"; sourceTree = "<group>"; };
 		DC6B433816D86558002B5BB5 /* court.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = court.png; sourceTree = "<group>"; };
 		DCBD22B616DB419B00711C30 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -843,6 +846,7 @@
 		DC0C4B93154AB59800B4B727 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				DC4D2626172DB9E800FE9F95 /* CCNode+SFGestureRecognizers */,
 				DC0C4B94154AB59800B4B727 /* cocos2d */,
 				DC0C4C54154AB59800B4B727 /* CocosDenshion */,
 				DC0C4C5E154AB59800B4B727 /* kazmath */,
@@ -1246,6 +1250,15 @@
 			name = Objects;
 			sourceTree = "<group>";
 		};
+		DC4D2626172DB9E800FE9F95 /* CCNode+SFGestureRecognizers */ = {
+			isa = PBXGroup;
+			children = (
+				DC4D2627172DB9E800FE9F95 /* CCNode+SFGestureRecognizers.h */,
+				DC4D2628172DB9E800FE9F95 /* CCNode+SFGestureRecognizers.m */,
+			);
+			path = "CCNode+SFGestureRecognizers";
+			sourceTree = "<group>";
+		};
 		DCBD22B516DB415300711C30 /* Constants */ = {
 			isa = PBXGroup;
 			children = (
@@ -1543,7 +1556,6 @@
 		};
 /* End PBXShellScriptBuildPhase section */
 
-
 /* Begin PBXSourcesBuildPhase section */
 		DC0C49ED154AB4DD00B4B727 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -1562,6 +1574,7 @@
 				0173E636170A33DA002EFCAF /* MultiplayerOptionLayer.m in Sources */,
 				0171D918170A6D31001AF171 /* EndGameLayer.m in Sources */,
 				0171D91B170A6D5D001AF171 /* EndGameScene.m in Sources */,
+				DC4D2629172DB9E800FE9F95 /* CCNode+SFGestureRecognizers.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

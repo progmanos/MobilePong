@@ -62,9 +62,8 @@ typedef enum {
         
         self.gameState = kStateStartGame; // Setting to kStateStartGame does a reset of players, scores, etc.
         [self startPicker];
- 
-        
-        
+        prefs = [NSUserDefaults standardUserDefaults];
+               
         endMultiPlayer = FALSE;
         gamePaused = FALSE;
         times = 0;
@@ -89,11 +88,11 @@ typedef enum {
         [self addChild:background z:0 tag:1];
         background.position = CGPointMake(screenSize.width/2, screenSize.height/2);
         
-        pauseButton = [CCMenuItemImage itemFromNormalImage:@"pause.png" selectedImage:@"pause.png" target:self selector:@selector(pauseButtonTapped:)];
-        
-        menu = [CCMenu menuWithItems:pauseButton, nil];
-        menu.position = CGPointMake(screenSize.width/2, screenSize.height/2);
-        [self addChild:menu z:0];
+        // swipe gesture detection for pausing game
+        UISwipeGestureRecognizer *swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeGesture:)];
+        [self addGestureRecognizer:swipeGestureRecognizer];
+        swipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionUp | UISwipeGestureRecognizerDirectionDown;
+	swipeGestureRecognizer.numberOfTouchesRequired = 2;
         
         //sets label for score of Opponent
         OpponentScoreLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:48];
@@ -117,6 +116,8 @@ typedef enum {
         winnerLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:48];
         winnerLabel.position = ccp(screenSize.width/2, screenSize.height/2);
         [self addChild:winnerLabel z:2];
+        
+       
         
         //sets label for countdown
         countdownLabel = [CCLabelTTF labelWithString:@" " fontName:@"Marker Felt" fontSize:30];
@@ -160,10 +161,6 @@ typedef enum {
     return self;
 }
 
-- (void)pauseButtonTapped: (id)sender
-{
-    gamePaused = TRUE;
-}
 
 -(void) dealloc
 {
@@ -200,6 +197,11 @@ typedef enum {
     [self unschedule:@selector(movePlayerRight)];
 }
 
+-(void) handleSwipeGesture:(UISwipeGestureRecognizer *) swipeGestureRecognizer
+{
+    gamePaused = TRUE;
+    [[CCDirector sharedDirector] pushScene:[PauseScene node]];
+}
 
 -(void) checkCollision
 {
@@ -494,6 +496,10 @@ typedef enum {
     if(online || bluetooth)
         [self sendArray:myData];
     
+    if(gameOver == TRUE) {
+        [self disConnectGame];
+    }
+    
     if(endMultiPlayer && !bluetooth)
         [gkHelper disconnectCurrentMatch];
     
@@ -614,14 +620,18 @@ typedef enum {
    // [self performSelector:@selector(newGame) withObject:nil afterDelay:3.0];*/
 }
 
-//Displays "Congratulations, you won" in red for 3 seconds. Then starts a new game
--(void) playerWinsGame
-{
-    
+-(void) disConnectGame {
     if(bluetooth)
         [gameSession disconnectFromAllPeers];
     if(online)
         [gkHelper disconnectCurrentMatch];
+}
+
+//Displays "Congratulations, you won" in red for 3 seconds. Then starts a new game
+-(void) playerWinsGame
+{
+    
+    
     gameOver = TRUE;
     if(!gameOverViewDisplayed)
     {
@@ -632,7 +642,7 @@ typedef enum {
 
     }
     
-
+    
     [[CCDirector sharedDirector] pause];
     /*winner = @"Congratulations\n you won!";
     winnerLabel.color = ccGREEN;

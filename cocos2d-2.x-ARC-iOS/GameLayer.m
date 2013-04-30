@@ -12,6 +12,8 @@
 #import "PauseScene.h"
 
 
+//static NSString * const UIGestureRecognizerNodeKey = @"UIGestureRecognizerNodeKey";
+
 @implementation GameLayer
 
 -(id) init
@@ -45,7 +47,6 @@
             [self SetLevel:defaultLevel];
         }
         
-      
         
         CCLOG(@"%@: %@", NSStringFromSelector(_cmd), self);
         self.isTouchEnabled = YES;
@@ -57,12 +58,11 @@
         CCSprite *background = [CCSprite spriteWithFile:@"background3.png"];
         [self addChild:background z:0 tag:1];
         background.position = CGPointMake(screenSize.width/2, screenSize.height/2);
-        
-        pauseButton = [CCMenuItemImage itemFromNormalImage:@"pause.png" selectedImage:@"pause.png" target:self selector:@selector(pauseButtonTapped:)];
-        
-        menu = [CCMenu menuWithItems:pauseButton, nil];
-        menu.position = CGPointMake(screenSize.width/2, screenSize.height/2);
-        [self addChild:menu z:0];
+   
+        // swipe gesture detection for pausing game
+        UISwipeGestureRecognizer *swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeGesture:)];
+        [self addGestureRecognizer:swipeGestureRecognizer];
+        swipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionUp | UISwipeGestureRecognizerDirectionDown;
         
         
         //sets label for score of opponent
@@ -189,6 +189,11 @@
 
 -(void) ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+  //  if ([touches count] == 3) {
+    //    [[CCDirector sharedDirector] pushScene:[PauseScene node]];
+      //  return;
+    //}
+    
     UITouch *touch = [touches anyObject];
     CGPoint point = [touch locationInView: [touch view]];
     CGFloat currPaddleWidth = player.getPaddleWidth;
@@ -211,10 +216,14 @@
 }
 
 
-
+-(void) handleSwipeGesture:(UISwipeGestureRecognizer *) swipeGestureRecognizer
+{
+        [[CCDirector sharedDirector] pushScene:[PauseScene node]];
+}
 
 -(void) update:(ccTime)delta
 {
+  
     //time in seconds
     totalTime += delta;
     countdown -= delta;
@@ -663,6 +672,8 @@
     // save the data
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
+
+
 
 @end
 
