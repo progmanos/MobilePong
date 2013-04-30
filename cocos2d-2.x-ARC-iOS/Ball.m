@@ -109,12 +109,12 @@
     
     
     //Handles bouncing on walls
-    if((position.x < 5 || position.x > (screenSize.width - 5))&&!didCollideWithWall){
+    if((position.x < 10 || position.x > (screenSize.width - 10))&&!didCollideWithWall){
         didCollideWithWall = TRUE;
         [[SimpleAudioEngine sharedEngine] playEffect:@"bounce.wav"];
         velocity.x = -velocity.x;
     }
-    if(position.x > 5 && position.x < (screenSize.width - 5))
+    if(position.x > 9 && position.x < (screenSize.width - 9))
         didCollideWithWall = FALSE;
     //AI scores and serves ball
     if(position.y < -16)

@@ -541,20 +541,24 @@ typedef enum {
 //Called when players are disconnected
 -(void) onPlayerDisconnected:(NSString*)playerID;
 {
-    
-    sleep(5);
+    if(online)
+        [gkHelper disconnectCurrentMatch];
+    if(bluetooth)
+        [gameSession disconnectFromAllPeers];
     if(!gameOver)
     {
         if(gamePaused)
+        {
             [pauseAlert dismissWithClickedButtonIndex:-1 animated:YES];
         // We've been disconnected from the other peer.
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Lost Connection" message:nil delegate:self cancelButtonTitle:@"End Game" otherButtonTitles:nil];
         self.connectionAlert = alert;
         [alert show];
+        }
     
-    
-        [[CCDirector sharedDirector] pause];
+        //[[CCDirector sharedDirector] pause];
     }
+    else return;
 }
 
 
@@ -578,12 +582,11 @@ typedef enum {
     
     if (buttonIndex == 0) {
         
+        [[CCDirector sharedDirector] resume];
         if(bluetooth)
             [gameSession disconnectFromAllPeers];
         if(online)
             [gkHelper disconnectCurrentMatch];
-        [gkHelper disconnectCurrentMatch];
-        [[CCDirector sharedDirector] resume];
         [[CCDirector sharedDirector] popScene];
         if(gamePaused)
             [[CCDirector sharedDirector] popScene];
@@ -597,13 +600,14 @@ typedef enum {
 {
 
     gameOver = TRUE;
+    
     if(!gameOverViewDisplayed)
     {
-    gameOverAlert = [[UIAlertView alloc] initWithTitle:@"Sorry, you lose" message:nil delegate:self cancelButtonTitle:@"Main Menu" otherButtonTitles:nil, nil];
-    [gameOverAlert show];
-    gameOverViewDisplayed = TRUE;
-    [[CCDirector sharedDirector] pause];
-
+        gameOverAlert = [[UIAlertView alloc] initWithTitle:@"Sorry, you lose" message:nil delegate:self cancelButtonTitle:@"Main Menu" otherButtonTitles:nil, nil];
+        [gameOverAlert show];
+        gameOverViewDisplayed = TRUE;
+        //[[CCDirector sharedDirector] pause];
+        
     }
     
     //[[CCDirector sharedDirector] pause];
@@ -618,17 +622,13 @@ typedef enum {
 -(void) playerWinsGame
 {
     
-    if(bluetooth)
-        [gameSession disconnectFromAllPeers];
-    if(online)
-        [gkHelper disconnectCurrentMatch];
     gameOver = TRUE;
     if(!gameOverViewDisplayed)
     {
         gameOverAlert = [[UIAlertView alloc] initWithTitle:@"Congratulations, you won!" message:nil delegate:self cancelButtonTitle:@"Main Menu" otherButtonTitles:nil, nil];
         [gameOverAlert show];
         gameOverViewDisplayed = TRUE;
-        [[CCDirector sharedDirector] pause];
+       // [[CCDirector sharedDirector] pause];
 
     }
     
@@ -818,10 +818,10 @@ typedef enum {
             pauseAlert = [[UIAlertView alloc] initWithTitle:@" Player 2 has paused the game" message:nil delegate:self cancelButtonTitle:@"Quit Game" otherButtonTitles:nil, nil];
             [pauseAlert show];
             pauseAlertDisplayed = TRUE;
-            [[CCDirector sharedDirector] pause];
+            //[[CCDirector sharedDirector] pause];
 
             }
-        if(player2 & !gameOver)
+        if(player2)
         {
             pauseAlert = [[UIAlertView alloc] initWithTitle:@"Player 1 has paused the game" message:nil delegate:self cancelButtonTitle:@"Quit Game" otherButtonTitles:nil, nil];
             [pauseAlert show];
