@@ -13,10 +13,11 @@
 -(void) displayMenu
 {
     CGSize screenSize = [CCDirector sharedDirector].winSize;
-    CCLabelTTF *resumelabel = [CCLabelTTF labelWithString:@"Resume" fontName:@"Arial" fontSize:32];
+    CCLabelTTF *resumelabel = [CCLabelTTF labelWithString:@"Resume" fontName:@"Arial" fontSize:32];//[CCSprite spriteWithFile:@"resume.png"];
     CCMenuItemFont *resumeGameItemLabel = [CCMenuItemFont itemWithLabel:resumelabel target:self selector:@selector(returnToGame)];
+    resumelabel.color = ccBLUE;
     
-    CCLabelTTF *mainMenuLabel = [CCLabelTTF labelWithString:@"Main Menu" fontName:@"Arial" fontSize:32];
+    CCLabelTTF *mainMenuLabel = [CCLabelTTF labelWithString:@"Main Menu" fontName:@"Arial" fontSize:32];//[CCSprite spriteWithFile:@"MainMenuBut.png"];
     mainMenuLabel.color = ccRED;
     
     CCMenuItemFont *mainMenuGameItemLabel = [CCMenuItemFont itemWithLabel:mainMenuLabel target:self selector:@selector(returnToMainMenu)];
@@ -58,6 +59,7 @@
 -(void) returnToMainMenu
 {
     endMultiPlayer = TRUE;
+    gameOver = TRUE;
     // pop the options scene from the CCDirector and return to the menu scene
     [[CCDirector sharedDirector] popScene];
     [[CCDirector sharedDirector] popScene];

@@ -40,20 +40,21 @@
     pointsToWin = 11;
     multiplayer = FALSE;
     CGSize screenSize = [CCDirector sharedDirector].winSize;
-    CCLabelTTF *playlabel = [CCLabelTTF labelWithString:@"Single Player" fontName:@"Arial" fontSize:32];
+    CCLabelTTF *playlabel = [CCLabelTTF labelWithString:@"Single Player" fontName:@"Arial" fontSize:32];//[CCSprite spriteWithFile:@"SinglePlayer.png"];
     CCMenuItemFont *playGameItemLabel = [CCMenuItemFont itemWithLabel:playlabel target:self selector:@selector(playGame)];
+    playGameItemLabel.color = ccORANGE;
     
-    CCLabelTTF *optionsLabel = [CCLabelTTF labelWithString:@"Options" fontName:@"Arial" fontSize:32];
+    CCLabelTTF *optionsLabel = [CCLabelTTF labelWithString:@"Settings" fontName:@"Arial" fontSize:32];
     optionsLabel.color = ccRED;
     
     CCMenuItemFont *optionsItemLabel = [CCMenuItemFont itemWithLabel:optionsLabel target:self selector:@selector(showOptions)];
     
-    CCLabelTTF *tutorialLabel = [CCLabelTTF labelWithString:@"Tutorial" fontName:@"Arial" fontSize:32];
+    CCLabelTTF *tutorialLabel = [CCLabelTTF labelWithString:@"Tutorial" fontName:@"Arial" fontSize:32];//[CCSprite spriteWithFile:@"TutorialBut.png"];
     tutorialLabel.color = ccYELLOW;
     CCMenuItemFont *tutorialItemLabel  = [CCMenuItemFont itemWithLabel:tutorialLabel target:self selector:@selector(tutorial)];
     
-    CCLabelTTF *multiplayerLabel = [CCLabelTTF labelWithString:@"Multiplayer" fontName:@"Arial" fontSize:32];
-    optionsLabel.color = ccRED;
+    CCLabelTTF *multiplayerLabel = [CCLabelTTF labelWithString:@"Multiplayer" fontName:@"Arial" fontSize:32];//[CCSprite spriteWithFile:@"multiplayerBut.png"];
+    multiplayerLabel.color = ccGREEN;
     
     CCMenuItemFont *multiplayerItemLabel = [CCMenuItemFont itemWithLabel:multiplayerLabel target:self selector:@selector(showMultiplayer)];
     
@@ -64,7 +65,7 @@
     [mainMenu alignItemsVerticallyWithPadding:screenSize.height * 0.059f];
     [mainMenu setPosition:
      ccp(screenSize.width / 2.0f,
-         screenSize.height / 2.0f)];
+         screenSize.height / 2.25f)];
     
     [self addChild:mainMenu z:1];
 }

@@ -27,6 +27,7 @@
     int             gamePacketNumber;
     NSString        *gamePeerId;
     
+    GKPeerPickerController*		myPicker;
     
     UIAlertView     *connectionAlert;
     UIAlertView     *pauseAlert;
@@ -42,6 +43,7 @@
     CCLabelTTF *countdownLabel;
     CCLabelTTF *winnerLabel;
     ccTime totalTime;
+    ccTime disconnectTime;
     NSString *winner;
     NSUserDefaults *prefs;
     NSInteger *currhighscore;
@@ -60,6 +62,9 @@
     BOOL playerDetermined;
     BOOL opponentRecRandNum;
     BOOL bluetooth;
+    BOOL online;
+    BOOL createdConnection;
+    BOOL pauseAlertDisplayed;
     int ournumber;
     int opponentnumber;
     
@@ -71,6 +76,8 @@
     NSError* lastError;
     
     NSMutableArray* myData;
+    
+    NSString* opponentName;
     
 }
 
@@ -90,12 +97,4 @@
 
 - (void)playerReset;
 -(void) sendNetworkPacket:(GKSession *)session :(NSMutableArray*) data sizeInBytes:(NSUInteger)sizeInBytes;
--(void) sendScore;
--(void) sendBallPosition:(CGPoint)ballPos;
--(void) sendVelocity:(CGPoint)ballVel;
--(void) sendPaddlePosition:(CGFloat)paddleX;
--(void) sendRandomNumber:(int)ranNumber;
--(void) sendCountdown:(int)ctdown;
--(void) sendRandNumReceived;
--(void) pauseReceived:(BOOL)paused;
 @end

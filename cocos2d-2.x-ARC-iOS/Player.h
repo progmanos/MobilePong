@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 #import "Constants.h"
+#import "Ball.h"
 
 typedef enum  {
         SegmentA = 0,
@@ -18,6 +19,7 @@ typedef enum  {
 
 @interface Player : CCNode
 {
+    int colorchange;
     int roundScore;
     int score;
     int speed;
@@ -56,6 +58,11 @@ typedef enum  {
 -(float) getRightCornerX;
 -(void) resizePaddleWidth:(float)width;
 
+
+-(void) changeWinning;
+-(void) changeLosing;
+-(void) changeSame;
+-(void) change;
 
 -(CGFloat) tipOfPaddle;
 -(CGFloat) rightHalfOfPaddle;

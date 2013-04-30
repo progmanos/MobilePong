@@ -17,6 +17,11 @@
     CCLabelTTF *playTo5label;
     CCLabelTTF *playTo11label;
     CCLabelTTF *playTo15label;
+    CCMenuItemToggle *scoreToggle;
+    CCMenuItemFont *playTo5;
+    CCMenuItemFont *playTo11;
+    CCMenuItemFont *playTo15;
+    
 }
 
 -(void) returnToMainMenu;

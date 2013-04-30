@@ -83,15 +83,15 @@
         scoreChoicesLabel.color = ccWHITE;
         
         playTo5label = [CCLabelTTF labelWithString:@"    5" fontName:@"Arial" fontSize:24];
-        CCMenuItemFont *playTo5 = [CCMenuItemFont itemWithLabel:playTo5label target:self selector:@selector(setScoreTo5)];
+        playTo5 = [CCMenuItemFont itemWithLabel:playTo5label target:self selector:nil];
         playTo5label.color = ccYELLOW ;
         
         playTo11label = [CCLabelTTF labelWithString:@"    11" fontName:@"Arial" fontSize:24];
-        CCMenuItemFont *playTo11 = [CCMenuItemFont itemWithLabel:playTo11label target:self selector:@selector(setScoreTo11)];
+        playTo11 = [CCMenuItemFont itemWithLabel:playTo11label target:self selector:nil];
         playTo11label.color = ccYELLOW ;
         
         playTo15label = [CCLabelTTF labelWithString:@"    15" fontName:@"Arial" fontSize:24];
-        CCMenuItemFont *playTo15 = [CCMenuItemFont itemWithLabel:playTo15label target:self selector:@selector(setScoreTo15)];
+        playTo15 = [CCMenuItemFont itemWithLabel:playTo15label target:self selector:nil];
         playTo15label.color = ccYELLOW ;
         
         
@@ -99,8 +99,7 @@
                                                                 selector:@selector(switchLevels)
                                                                    items:levelOne,levelTwo,levelThree,nil];
         
-        CCMenuItemToggle *scoreToggle = [CCMenuItemToggle itemWithTarget:nil
-                                                                selector:nil
+        scoreToggle = [CCMenuItemToggle itemWithTarget:self selector:@selector(switchScore)
                                                                    items:playTo5, playTo11, playTo15, nil];
         
         
@@ -130,20 +129,16 @@
     }
     return self;
 }
-
--(void)setScoreTo5
+-(void)switchScore
 {
-    pointsToWin = 5;
-}
+    if(scoreToggle.selectedItem == playTo5)        
+        pointsToWin = 5;
+    if(scoreToggle.selectedItem == playTo11)
+        pointsToWin = 11;
+    if(scoreToggle.selectedItem == playTo15)
+        pointsToWin = 15;
 
--(void)setScoreTo11
-{
-    pointsToWin = 11;
-}
-
--(void)setScoreTo15
-{
-    pointsToWin = 15;
+        
 }
 
 @end

@@ -100,6 +100,8 @@
 // getting a call, pause the game
 -(void) applicationWillResignActive:(UIApplication *)application
 {
+    
+    gamePaused = TRUE;
 	if( [navController_ visibleViewController] == director_ )
 		[director_ pause];
 }
@@ -107,12 +109,16 @@
 // call got rejected
 -(void) applicationDidBecomeActive:(UIApplication *)application
 {
+    
+    gamePaused = TRUE;
 	if( [navController_ visibleViewController] == director_ )
 		[director_ resume];
 }
 
 -(void) applicationDidEnterBackground:(UIApplication*)application
 {
+    
+    gamePaused = TRUE;
 	if( [navController_ visibleViewController] == director_ )
 		[director_ stopAnimation];
 }
